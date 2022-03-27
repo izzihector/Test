@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id ="hr_doc_wizard_form_view" model="ir.ui.view">
+        <field name="name">hr.doc.wizard.form.view</field>
+        <field name="model">hr.doc.wiz</field>
+        <field name="arch" type ="xml">
+            <form>
+                <group name="grp_main">
+                    <group name="grp_doc">
+                        <field name="app_doc_id" />
+                    </group>
+                </group>
+                <footer>
+                    <!-- <button string="Print"
+                            name="print_report"
+                            type="object"
+                            class="oe_highlight" /> -->
+                    <button string="Cancel" class="oe_link" special="cancel" />
+                </footer>
+            </form>
+           </field>
+   </record>
+
+    <!--  Action of Hr doc Wizard-->   
+    <record id="action_hr_doc_wizard" model="ir.actions.act_window">
+        <field name="name">Hr Documentation Wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.doc.wiz</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

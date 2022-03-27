@@ -1,0 +1,21 @@
+<odoo>
+  
+
+    <record id="set_company_id_for_webkul_synced_products" model="ir.cron" forcecreate="True">
+        <field name="name">Ticket SLAs update state</field>
+        <field name="model_id" ref="nl_schedulers.model_hr_contract"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_set_company_in_webkul_synced_products()</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="active" eval="True"/>
+        <field name="nextcall" eval="(DateTime.now() + timedelta(days=1)).strftime('%Y-%m-%d 22:00:00')"/>
+    </record>
+
+    
+
+
+</odoo>

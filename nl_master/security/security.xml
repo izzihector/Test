@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.module.category" id="module_category_readonly">
+        <field name="name">Read-Only Access Rights</field>
+        <field name="sequence">102</field>
+    </record>
+
+    <!-- Group for read-only users -->
+    <record id="group_hr_employee_read_only" model="res.groups">
+        <field name="name">Employee - Read-only</field>
+        <field name="category_id" ref="nl_master.module_category_readonly"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_hr_recruitment_read_only" model="res.groups">
+        <field name="name">Recruitment - Read-only</field>
+        <field name="category_id" ref="nl_master.module_category_readonly"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_time_off_read_only" model="res.groups">
+        <field name="name">Time Off - Read-only</field>
+        <field name="category_id" ref="nl_master.module_category_readonly"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_payroll_read_only" model="res.groups">
+        <field name="name">Payroll - Read-only</field>
+        <field name="category_id" ref="nl_master.module_category_readonly"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_attendance_read_only" model="res.groups">
+        <field name="name">Attendance - Read-only</field>
+        <field name="category_id" ref="nl_master.module_category_readonly"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <!-- End Group Read-only -->
+
+</odoo>

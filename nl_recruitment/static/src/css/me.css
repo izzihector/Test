@@ -1,0 +1,27 @@
+.myclass .bg-success{
+  display: none !important;
+  
+}
+
+.myclass {
+              background-image: url(/nl_purchase/static/img/selected.jpg);
+                background-position: center;
+                background-size: contain;
+                background-repeat: no-repeat;
+                width: 10.5%;
+}
+
+.receipt_badge {
+background-image: url(/nl_purchase/static/img/receipt.jpeg);
+                background-position: center;
+                background-size: contain;
+                background-repeat: no-repeat;
+                width: 10.5%;
+                margin-right:3px;
+}
+
+.receipt_badge .bg-success{
+display: none !important;
+}
+
+

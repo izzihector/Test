@@ -1,0 +1,13 @@
+{
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "../../enterprise-14.0-updated"
+    },
+    {
+      "path": "../../odoo-14.0"
+    }
+  ]
+}

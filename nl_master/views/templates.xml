@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend" name="nl_master assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/nl_master/static/src/js/attachment_download.js"/>
+            <script type="text/javascript" src="/nl_master/static/src/js/form_handler.js"/>
+        </xpath>
+    </template>
+</odoo>

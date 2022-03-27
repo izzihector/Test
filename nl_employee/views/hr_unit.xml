@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    
+
+    <record id="view_unit_filter" model="ir.ui.view">
+        <field name="name">hr.unit.search</field>
+        <field name="model">hr.unit</field>
+        <field name="arch" type="xml">
+            <search string="Units">
+                <field name="name" string="Unit"/>
+                <field name="manager_id" />
+                <filter string="Unread Messages" name="message_needaction" domain="[('message_needaction','=',True)]"/>
+                <separator/>
+                <filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
+            </search>
+         </field>
+    </record>
+
+    <record id="hr_unit_view_kanban" model="ir.ui.view" >
+        <field name="name">hr.unit.kanban</field>
+        <field name="model">hr.unit</field>
+        <field name="arch" type="xml">
+            <kanban class="oe_background_grey o_kanban_dashboard o_hr_kanban" sample="1">
+                <field name="name"/>
+                <field name="manager_id"/>
+                <field name="color"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="#{!selection_mode ? kanban_color(record.color.raw_value) : ''}">
+                            <div t-attf-class="o_kanban_card_header">
+                                <div class="o_kanban_card_header_title">
+                                    <div class="o_primary"><field name="name"/></div>
+                                    <div class="o_secondary"><field name="company_id" groups="base.group_multi_company"/></div>
+                                </div>
+                                <div class="o_kanban_manage_button_section" t-if="!selection_mode">
+                                    <a class="o_kanban_manage_toggle_button" href="#"><i class="fa fa-ellipsis-v" role="img" aria-label="Manage" title="Manage"/></a>
+                                </div>
+                            </div>
+                            <div class="container o_kanban_card_content" t-if="!selection_mode">
+                                <div class="row o_kanban_card_upper_content">
+                                    <div class="col-4 o_kanban_primary_left">
+                                        <button class="btn btn-primary" name="%(act_employee_from_unit_kanban)d" type="action">Employees</button>
+                                    </div>
+                                    <div class="col-8 o_kanban_primary_right">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="o_kanban_card_manage_pane dropdown-menu" role="menu">
+                                <div class="o_kanban_card_manage_section">
+                                    <div role="menuitem" class="o_kanban_card_manage_section o_kanban_manage_reports">
+                                        <div class="o_kanban_card_manage_title">
+                                            <strong><span>Reporting</span></strong>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a t-if="widget.editable" role="menuitem" class="dropdown-item" type="edit">Configuration</a>
+                                <ul t-if="widget.editable" class="oe_kanban_colorpicker" data-field="color" role="menu"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    
+
+   
+
+    <record id="hr_unit_tree_view" model="ir.ui.view">
+        <field name="name">Unit Tree View</field>
+        <field name="model">hr.unit</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="department_id" />
+                <field name="company_id" invisible="1"/>
+            </tree>    
+        </field>
+    </record>
+
+    <record id="hr_unit_form_view" model="ir.ui.view">
+        <field name="name">Unit Form View</field>
+        <field name="model">hr.unit</field>
+        <field name="arch" type="xml">
+            <form string="Units">
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <field name="active" invisible="1"/>
+                    <group col="4">
+                        <field name="name"/>
+                        <field name="manager_id"/>
+                        <field name="department_id"/>
+                        <field name="company_id" invisible="1"/>
+                        
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hr_unit" model="ir.actions.act_window">
+        <field name="name">Units</field>
+        <field name="res_model">hr.unit</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="search_view_id" ref="view_unit_filter"/>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Create a new unit
+          </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="hr_main_menu_unit"
+        name="Units"
+        parent="hr.menu_hr_root"
+        sequence="7"
+        action="action_hr_unit"
+        groups="hr.group_hr_manager,nl_master.group_hr_employee_read_only"/>
+
+
+
+</odoo>

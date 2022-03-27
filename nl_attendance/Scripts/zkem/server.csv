@@ -1,0 +1,2 @@
+ServerIP,ServerPort,db,db_usr,db_pwd,biometrictimezone,biometricip,biometricport,url
+,8069,scahris-debug-mode-testing-4117160,hris@sca.org.af,admin,Asia/Kabul,172.30.51.56,4370,http://scahris-debug-mode-testing-4117160.dev.odoo.com

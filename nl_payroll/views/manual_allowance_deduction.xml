@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="manual_allowance_deduction_tree" model="ir.ui.view">
+        <field name="name">manual.allowance.deduction.tree</field>
+        <field name="model">manual.allowance.deduction</field>
+        <field name="arch" type="xml">
+           <tree string="Pending" editable="bottom">
+                <field name="current_user" invisible="1"/>
+                <field name="parent_state" invisible="1"/>
+               <field name="employee_id" required="1" options="{'no_create': True, 'no_create_edit': True, 'no_create_button': True, 'no_create_edit_icon': True}" />
+               <field name="department_id" />
+               <field name="unit_id" />
+               <field name="job_id"/>
+               <field name="payroll_group_id" />
+               <field name="contract_id_date_start" />
+               <field name="contract_id_date_end" />
+               <field name="salary_rule_id" />
+               <field name="amount" />
+               <field name="done" />
+               <field name="remarks" />
+               <button name="action_manual_Allowance" type="object" string="View" class="float-right btn-secondary"/>
+           </tree>
+        </field>
+     </record>
+
+
+      <record id="manual_allowance_deduction_form" model="ir.ui.view">
+        <field name="name">manual.allowance.deduction.form</field>
+        <field name="model">manual.allowance.deduction</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="employee_id" />
+                        <field name="master_batch_id" invisible="1"/>
+                        <field name="parent_state" invisible="1"/>
+                        <field name="department_id" />
+                        <field name="unit_id" />
+                        <field name="job_id" />
+                    </group>
+                    <group>
+                        <field name="contract_id_date_start" />
+                        <field name="contract_id_date_end" />
+                        <field name="salary_rule_id" />
+                        <field name="amount" />
+                        <field name="done" />
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="hr_doc_wizard_form_view_inherited" model="ir.ui.view">
+            <field name="name">hr.doc.wizard.form.view.inherited</field>
+            <field name="model">hr.doc.wiz</field>
+            <field name="inherit_id" ref="hr_doc.hr_doc_wizard_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//footer/button[hasclass('oe_link')]" position='before'>
+                        <button string="Print"
+                                name="print_report"
+                                type="object"
+                                class="oe_highlight" />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+

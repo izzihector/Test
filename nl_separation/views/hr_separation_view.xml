@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="hr_separation_view_kanban" model="ir.ui.view">
+            <field name="name">hr.separation.kanban</field>
+            <field name="model">hr.separation</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_small_column" default_group_by="state" records_draggable="false" sample="1">
+                    <field name="employee_id"/>
+                    <field name="job_id"/>
+                    <field name="office_id"/>
+                    <field name="state"/>
+                    <field name="relieve_date"/>
+                    <progressbar field="activity_state" colors='{"confirmed": "success", "in_progress": "warning", "cancel": "danger"}'/>
+                    <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                            <div class="o_dropdown_kanban dropdown" t-if="!selection_mode" groups="base.group_user">
+                                <a class="dropdown-toggle o-no-caret btn" role="button" data-toggle="dropdown" data-display="static" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                    <span class="fa fa-ellipsis-v"/>
+                                </a>
+                                <div class="dropdown-menu" role="menu">
+                                    <t t-if="widget.editable"><a role="menuitem" type="edit" class="dropdown-item">Edit Separation</a></t>
+                                    <t t-if="widget.deletable"><a role="menuitem" type="delete" class="dropdown-item">Delete</a></t>
+                                </div>
+                            </div>
+                            <div class="oe_kanban_content">
+                                <div class="o_hr_contract_state">
+                                    <strong class="o_kanban_record_title">
+                                        <field name="employee_id"/>
+                                    </strong>
+                                </div>
+                                <div class="text-muted o_kanban_record_subtitle o_hr_contract_job_id">
+                                    <field name="job_id"/>
+                                </div>
+                                <div class="text-muted o_kanban_record_subtitle o_hr_contract_job_id">
+                                    <field name="relieve_date"/>
+                                </div>
+                                <div class="oe_kanban_bottom_right">
+                                    <span class="float-right">
+                                        <field name="office_id"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="oe_clear"/>
+                        </div>
+                    </t>
+                    </templates>
+                </kanban>
+            </field>
+         </record>
+
+    <!-- Form view of HR Separation -->
+    <record id="view_hr_separation" model="ir.ui.view">
+        <field name="name">view.hr.separation</field>
+        <field name="model">hr.separation</field>
+        <field name="arch" type="xml">
+            <form string="Separation Form">
+                <header>
+                    <button name="start_clearance" string="Start Clearance" type="object" states="draft"/>
+                    <button name="finance_confirm_clearance" string="Confirm [Finance]" groups="nl_separation.group_account_manager" type="object"  attrs="{'invisible':['|',('finance_clearance','=',True),('state','!=','in_progress')]}"/>
+                    <button name="hr_confirm_clearnce" string="Confirm [HR]" groups="hr.group_hr_manager" type="object"  attrs="{'invisible':['|',('hr_clearance','=',True),('state','!=','in_progress')]}"/>
+                    <button name="administrative_confirm_clearance" groups="hr.group_hr_manager" string="Confirm [Administrative]" type="object" attrs="{'invisible':['|',('administrative_clearance','=',True),('state','!=','in_progress')]}" />
+                    <button name="it_confirm_clearance" string="Confirm [IT]" groups="nl_separation.group_it_unit" type="object" attrs="{'invisible':['|',('it_clearance','=',True),('state','!=','in_progress')]}"/>
+                    <button name="supervisor_confirm_clearance" groups="hr.group_hr_manager" string="Confirm [Supervisor]" type="object" attrs="{'invisible':['|',('supervisor_clearance','=',True),('state','!=','in_progress')]}"/>
+                    <button name="procurement_confirm_clearance" groups="nl_separation.group_purchase_manager" string="Confirm [Procurement]" type="object" attrs="{'invisible':['|',('procurement_clearance','=',True),('state','!=','in_progress')]}"/>
+                    <button name="inventory_confirm_clearance" groups="nl_separation.group_purchase_manager" string="Confirm [Inventory]" type="object" attrs="{'invisible':['|',('hr_inventory_clearance','=',True),('state','!=','in_progress')]}"/>
+                    <button name="library_confirm_clearance" groups="nl_separation.group_purchase_manager" string="Confirm [Library]" type="object" attrs="{'invisible':['|',('hr_library_clearance','=',True),('state','!=','in_progress')]}"/>
+
+                    <button name="confirm" string="Separate Employee" type="object"
+                        groups="hr.group_hr_user, hr.group_hr_manager" attrs="{'invisible':['|',('clearance_done','=', False),('state','!=','in_progress')]}"/>
+                    <button name="confirm_separation" string="Separate Employee" type="object"
+                        groups="hr.group_hr_user, hr.group_hr_manager" attrs="{'invisible':[('state','!=','in_progress')]}"/>
+                    <button name="action_cancel" string="Cancel" type="object"
+                        groups="hr.group_hr_user" states="draft,in_progress"/>
+                    <!-- <button name="print_employment_certificate" string="Experience Letter" groups="hr.group_hr_user" attrs="{'invisible':[('state','in',['draft','in_progress','cancel'])]}" type="object" class="oe_highlight"/> -->
+                    <!-- <button name="print_seperation_report" string="Separation Report" groups="hr.group_hr_user" attrs="{'invisible':[('state','in',('draft','in_progress','cancel'))]}" type="object" class="oe_highlight"/> -->
+                    <button name="print_termination_report" string="Termination Letter" groups="hr.group_hr_user" attrs="{'invisible': ['|',('employment_separation_type', '!=', 'termination'),('state','!=','confirmed')]}" type="object" class="oe_highlight"/>
+                    
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_left">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="employee_id" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}" required="1" options="{'no_create': True, 'no_create_edit':True}"/>
+                            <field name="manager_id" readonly="1"/>
+                            <field name="supervisor_clearance" invisible='1'/>
+                            <field name="procurement_clearance" invisible='1'/>
+                            <field name="hr_inventory_clearance" invisible='1'/>
+                            <field name="hr_library_clearance" invisible='1'/>
+                            <field name="father_name" readonly="1"/>
+                            <field name="job_id" readonly="1"/>
+                            <field name="gender" readonly="1"/>
+                            <field name="unit_id" readonly="1"/>
+                            <field name="project_id" readonly="1"/>
+                            <field name="department_id" readonly="1"/>
+                            <field name="office_id" readonly="1" />
+                            <field name="join_date" readonly="1" />
+                            <field name="finance_clearance" invisible="1"/>
+                            <field name="administrative_clearance" invisible="1"/>
+                            <field name="it_clearance" invisible="1"/>
+                            <field name="project_unit_clearnce" invisible="1"/>
+                            <field name="hr_clearance" invisible="1"/>
+                            <field name="clearance_done" readonly="1" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="resign_date" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}" required="1"/>
+                            <field name="notice_period" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}"/>
+                            <field name="relieve_date" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}"/>
+                            <field name="employment_separation_type" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}" required='1'/>
+                            <field name="reason" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}"/>
+                            <field name="exit_interview_form_id" invisible="1"/>
+                            <field name="blacklisted" attrs="{'invisible': [('employment_separation_type', '!=', 'termination')], 'readonly': [('state', '=', 'confirmed')]}"/>
+                        </group>
+                    </group>    
+                    <notebook>
+                        <page string="Supervisor / Unit Head" groups="hr.group_hr_manager,nl_separation.group_project_unit" >
+                            
+                                <field name="unit_head_comments" placeholder="Comment(s)" string="Handover completed" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}" />
+                        </page>
+
+                        <page string="Aministrative Unit" groups="hr.group_hr_manager,nl_separation.group_purchase_manager">
+                            <group colspan="4" col="4">
+                                <field name="office_key_returned" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}"  widget="radio" options="{'horizontal': true}" string="Key"/>
+                                <field name="mobile_phone_and_sim_card_returned" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}" widget="radio" options="{'horizontal': true}" string="Sim Card"/>
+                                <field name="mobile_returned" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}" widget="radio" options="{'horizontal': true}" string="Mobile"/>
+                                <field name="telephone_and_bill_cleared" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}" widget="radio" options="{'horizontal': true}" string="VHF"/>
+                                <field name="other_equipment" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}" widget="radio" options="{'horizontal': true}" string="Thuraya"/>
+                            </group>
+                            <field name="administrative_remark" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}" placeholder="Note down remarks if any."/>
+                        </page>
+
+                        <page string="IT Unit" groups="hr.group_hr_manager,nl_separation.group_it_unit">
+                            <group colspan="4" col="4">
+                                <field name="email_revoked" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}" widget="radio" options="{'horizontal': true}" string="Laptop"/>
+                                <field name="all_code_revoked" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}" widget="radio" options="{'horizontal': true}" string="Hard Disk(s) / Flash"/>
+                                <field name="domain_user_disabled_renamed_ip_phone_data_backup_complete" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}" widget="radio" options="{'horizontal': true}" string="Camera"/>
+                                <field name="access_suspension_from_doors_and_laptop_returned" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}"  widget="radio" options="{'horizontal': true}" string="Email and Electronic Data"/>
+                            </group>
+                            <field name="it_unit_remark" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}" placeholder="Note down remarks if any."/>
+                        </page>
+
+                        <page string="Procurement and Supply" groups="hr.group_hr_manager">
+                            <group>
+                                <field name="procurement_supply" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}" widget="radio" options="{'horizontal': true}" string="Procurement and Supply"/>
+                            </group>
+                            <field name="procurement_remark" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}" placeholder="Note down remarks if any."/>
+                        </page>
+
+                        <page string="Finance" groups="hr.group_hr_manager,nl_separation.group_account_manager">
+                            <group colspan="4" col="4">
+                                <field name="local_advance_cleared" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}"  widget="radio" options="{'horizontal': true}" string="Last Salary Paid"/>
+                                <field name="personal_telephone_bills_cleared" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}"  widget="radio" options="{'horizontal': true}" string="Last Pension Paid"/>
+                                <field name="guest_house_accommodation_bills_cleared" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}"  widget="radio" options="{'horizontal': true}" string="Loan"/>
+                                <field name="payroll_entitlement_paid" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}"  widget="radio" options="{'horizontal': true}"  string="Imprest Amount"/>
+                                <field name="any_other_entitlement_withheld"  attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}" widget="radio" options="{'horizontal': true}"/>
+                            </group>
+                            <field name="finance_remark" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}"  placeholder="Note down remarks if any."/>
+                        </page>
+
+                        <page string="Inventory In Charge" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}" groups="hr.group_hr_manager">
+                            <group>
+                                <field name="inventory_incharge" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}" widget="radio" options="{'horizontal': true}" string="Inventory In Charge"/>
+                            </group>
+                            <field name="inventory_remark" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}" placeholder="Note down remarks if any."/>
+                        </page>
+
+                        <page string="Library" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}" groups="hr.group_hr_manager">
+                            <group>
+                                <field name="library_clearance" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}" widget="radio" options="{'horizontal': true}" string="Library"/>
+                            </group>
+                            <field name="library_remark" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}" placeholder="Note down remarks if any."/>
+                        </page>
+                        
+                        <page string="HR" groups="hr.group_hr_manager">
+                            <group colspan="4" col="4">
+                                <field name="training_cost" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}" widget="radio" options="{'horizontal': true}" string="Training Cost"/>
+                                <field name="fee" widget="radio" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}" options="{'horizontal': true}" string="Fee"/>
+                                <field name="id_card_returned" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}"  widget="radio" options="{'horizontal': true}" string="ID Card"/>
+                                <field name="leave_balance" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}"  widget="radio" options="{'horizontal': true}" string="Leave Balance"/>
+                                <field name="exit_interview_form_filled" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}"  widget="radio" options="{'horizontal': true}" string="Exit Interview"/>
+                                <field name="payroll_related_actions_if_any" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}" widget="radio" options="{'horizontal': true}" string="Any Payroll related Action"/>
+                            </group>
+                            <field name="hr_remark" attrs="{'readonly': [('state', 'in', ['confirmed','cancel'])]}" placeholder="Note down remarks if any."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- This form view is shown only when employee leave the company-->
+    <record id="seprate_form_view_hr_separation" model="ir.ui.view">
+        <field name="name">view.hr.separation</field>
+        <field name="model">hr.separation</field>
+        <field name="arch" type="xml">
+            <form string="Separation Form">
+                <header>
+                    <button name="action_relieve_letter" string="Relieve Letter" attrs="{'invisible':[('state','in',('draft','confirmed'))]}" type="object" class="oe_highlight"/>
+                    <button name="action_experience_letter" string="Experience Letter" attrs="{'invisible':[('state','in',('draft','confirmed'))]}" class="oe_highlight" type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_left">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="employee_id" readonly="1"/>
+                            <field name="manager_id" readonly="1"/>
+                            <field name="join_date" readonly="1" />
+                            <field name="notice_period" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="job_id" readonly="1"/>
+                            <field name="department_id" readonly="1"/>
+                            <field name="resign_date" readonly="1"/>
+                            <field name="relieve_date" readonly="1"/>
+                        </group>
+                    </group>    
+                    <notebook>
+                        <page string="Remarks">
+                            <field name="reason" required="1" placeholder="Note down remarks if any."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree view of HR Separation -->
+    <record id="view_hr_separation_tree" model="ir.ui.view">
+        <field name="name">view.hr.separation.tree</field>
+        <field name="model">hr.separation</field>
+        <field name="arch" type="xml">
+            <tree string="Separation Form">
+                <field name="employee_id"/>
+                <field name="father_name"/>
+                <field name="job_id"/>
+                <field name="gender"/>
+                <field name="unit_id"/>
+                <field name="project_id"/>
+                <field name="department_id"/>
+                <field name="office_id"/>
+                <field name="join_date"/>
+                <field name="resign_date"/>
+                <field name="relieve_date"/>
+                <field name="employment_separation_type"/>
+                <field name="reason"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action View of HR Separation-->
+    <record id="action_hr_separation" model="ir.actions.act_window">
+        <field name="name">Separation</field>
+        <field name="res_model">hr.separation</field>
+        <field name="view_mode">kanban,tree,form,calendar</field>
+    </record>
+
+    <!-- calendar view of HR Separation-->
+    <record id="view_hr_separation_calendar" model="ir.ui.view">
+        <field name="name">Separation Form</field>
+        <field name="model">hr.separation</field>
+        <field name="arch" type="xml">
+            <calendar string="Separation Form" color="employee_id" date_start="resign_date" date_stop="relieve_date">
+                <field name="employee_id"/>
+                <field name="department_id"/>
+                <field name="join_date"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- HR Separation Search View -->
+    <record id="view_hr_separation_search" model="ir.ui.view">
+        <field name="name">view.hr.separation.search</field>
+        <field name="model">hr.separation</field>
+        <field name="arch" type="xml">
+            <search string="HR Separation">
+                <filter name="draft" string="Draft" domain="[('state','=','draft')]"/>
+                <filter name="approve" string="Approve" domain="[('state','=','approve')]"/>
+                <separator/>
+                <field name="employee_id" />
+                <field name="department_id" />
+                <group expand="0" string="Group By">
+                    <filter name="group_by_employee_id" string="Employee" context="{'group_by':'employee_id'}"/>
+                    <filter name="group_by_department_id" string="Department" context="{'group_by':'department_id'}"/>
+                    <filter name="group_by_job_id" string="Job" context="{'group_by':'job_id'}"/>
+                    <filter name="status" string="Status" context="{'group_by':'state'}"/>
+                </group>
+
+                <searchpanel>
+                       
+                        <field name="department_id" icon="fa-users" enable_counters="1"/>
+                      
+                    </searchpanel>
+            </search>
+        </field>
+    </record>
+
+
+    <!-- Form and Tree view for hr separation notification -->
+    <record id="hr_separation_notification_form_view" model="ir.ui.view">
+            <field name="name">hr.separation.notification.form</field>
+            <field name="model">hr.separation.notification</field>
+            <field name="arch" type="xml">
+                <form string="Separation Notification">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="supervisor"/> 
+                                <field name="administartive_unit"/> 
+                                <field name="it_unit"/> 
+                                <field name="provurement_supply"/> 
+                            </group>
+                            <group>
+                                <field name="finance" />
+                                <field name="inventory_in_charge"/> 
+                                <field name="library"/> 
+                                <field name="hr_unit"/> 
+                            </group>
+                        </group> 
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    <record id="hr_separation_notification_tree_view" model="ir.ui.view">
+      <field name="name">hr.separation.notification.view</field>
+      <field name="model">hr.separation.notification</field>
+      <field name="arch" type="xml">
+          <tree string="Separation Notification">
+            <field name="supervisor"/> 
+            <field name="administartive_unit"/> 
+            <field name="it_unit"/> 
+            <field name="provurement_supply"/>
+            <field name="finance" />
+            <field name="inventory_in_charge"/> 
+            <field name="library"/> 
+            <field name="hr_unit"/>  
+          </tree>
+      </field>
+    </record>
+
+    <record id="action_separation_notification" model="ir.actions.act_window">
+        <field name="name">Separation Notification</field>
+        <field name="res_model">hr.separation.notification</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create a new Separation
+        </p>
+        </field>
+    </record>
+
+
+    <record id="action_separation_type" model="ir.actions.act_window">
+        <field name="name">Separation Type</field>
+        <field name="res_model">hr.separation.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create a new Separation Type
+        </p>
+        </field>
+    </record>
+
+    <!-- Menu item for HR Separation -->
+    <menuitem id="menu_hr_separation" name="Separation" parent="hr.menu_hr_root" groups="nl_separation.group_separation"/>
+    <menuitem id="menu_hr_separation_action" parent="menu_hr_separation" action="action_hr_separation" groups="nl_separation.group_separation"/>
+
+    <menuitem
+            id="hr_separation_notification"
+            name="Separation"
+            parent="hr.menu_human_resources_configuration"
+            sequence="103"/>
+
+
+    <menuitem
+        id="hr_separation_notification_menu"
+        name="Separation"
+        action="action_separation_notification"
+        parent="hr_separation_notification"
+        sequence="1"/>
+
+    <menuitem
+        id="hr_separation_type_menu"
+        name="Separation Type"
+        action="action_separation_type"
+        parent="hr_separation_notification"
+        sequence="2"/>
+
+    <!-- employment history form view -->
+
+
+     <record id="employment_history_form_view" model="ir.ui.view">
+            <field name="name">employment.history.form</field>
+            <field name="model">employment.history</field>
+            <field name="arch" type="xml">
+                <form string="Employment History">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="separation_id"/> 
+                                <field name="date"/> 
+                            </group>
+                            <group>
+                                <field name="employment_separation_type" />
+                                <field name="blacklisted"/> 
+                            </group>
+                        </group> 
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+    <record id="nl_separation_view_employee_form" model="ir.ui.view">
+        <field name="name">hr.employee.form</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='personal_information']" position="after">
+                <page string="Employee History" name="employee_history"
+                    attrs="{'invisible': [('employee_history', '!=', True)]}">
+                    <group>
+                        <field name="employee_history" invisible="1"/> 
+                    </group>
+                    <field name="employee_history_ids" col="4" nolabel="1" widget="one2many_list" readonly="1">
+                        <tree>
+                            <field name="separation_id"/>
+                            <field name="employment_date" />
+                            <field name="date"/>
+                            <field name="employment_separation_type"/>
+                            <field name="blacklisted"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

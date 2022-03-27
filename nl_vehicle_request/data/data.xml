@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mail_vehicle_approval" model="mail.activity.type">
+        <field name="name">Vehicle Approval</field>
+        <field name="icon">fa-sun-o</field>
+        <field name="res_model_id" ref="nl_vehicle_request.model_employee_fleet"/>
+    </record>
+</odoo>

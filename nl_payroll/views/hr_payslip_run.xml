@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="view_hr_payslip_run_netlinks" model="ir.ui.view">
+        <field name="name">hr_payroll_payslip_run_netlinks</field>
+        <field name="model">hr.payslip.run</field>
+        <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form"/>
+        <field name="arch" type="xml">
+        	<xpath expr="//header/field[@name='state']" position="replace">
+        		<field name="state" widget="statusbar" statusbar_visible="draft,hr,finance,confirm,verify,done,cancel"/>
+            </xpath>
+            <xpath expr="//field[@name='credit_note']" position="before">
+        		<field name="office_id"/> 
+        		<field name="month" string="Month" attrs="{'readonly': [('state', 'not in', ['draft','hr'])]}"/> 
+        	</xpath>
+
+            <xpath expr="//field[@name='credit_note']" position="attributes">
+        		<attribute name="invisible">1</attribute>
+        	</xpath>
+
+            <xpath expr="//button[@name='action_open_payslips']" position="before">
+        		<button name="action_view_employee_pending" type="object" class="oe_stat_button" icon="fa-book">
+                    <field name="employee_pending_count" widget="statinfo" string="Pending" />
+                </button>
+        	</xpath>
+        </field>
+    </record>
+    <record id="nl_view_hr_payslip_form_mixins" model="ir.ui.view">
+        <field name="name">hr.payslip.form.mixins</field>
+        <field name="model">hr.payslip.run</field>
+        <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form"/>
+        <field name="arch" type="xml">
+           <xpath expr="//sheet" position="after">
+        		<div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+        	</xpath>
+
+            <xpath expr="//header" position="inside">
+                <button string="Submit" name="action_submit_to_finance" type="object" states="hr" class="btn btn-primary"/>
+                <button string="Set as Draft" name="action_set_as_draft" type="object" states="hr" class="btn btn-primary"/>
+        	</xpath>
+     
+        </field>
+    </record>
+</odoo>

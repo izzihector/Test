@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_doc_normal_user,hr_doc.normal.user,model_hr_app_doc,base.group_user,1,0,0,0
+access_hr_doc_normal_erp_manager,hr_doc.normal.erp_manager,model_hr_app_doc,base.group_erp_manager,1,1,1,1
+access_hr_app_content_line_normal_user,hr_app_content_line.normal.user,model_hr_app_content_line,base.group_user,1,0,0,0
+access_hr_app_content_line_normal_erp_manager,hr_app_content_line.normal.erp_manager,model_hr_app_content_line,base.group_erp_manager,1,1,1,1
+access_hr_doc_wiz,access_hr_doc_wiz,model_hr_doc_wiz,base.group_user,1,1,1,1

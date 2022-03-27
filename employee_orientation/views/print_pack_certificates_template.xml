@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="print_pack_template">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout" >
+                <div class="page" style="padding: 30px;">
+                    <div class="header">
+                        <table width="100%">
+                            <tr>
+                                <td style="float:left;text-align:left; margin-top:20px;">
+                                    <img t-att-src="'/nl_employee/static/description/sca.jpg'" alt="Logo" style="height:60px;" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <t t-foreach="data" t-as="o">
+                        <div style="page-break-after:always !important;">
+                            <style>
+                                .mainborder{border:1px solid black;
+                                            border-collapse:collapse;
+                                            font-size: 20px;
+                                            text-align:left;
+                                            padding:5px;
+                                            color:black;
+                                            }
+                                .paragraph{
+                                			font-size:20px;
+                                }
+                        	</style>
+                            <div class="container text-right">
+                                <p style="font-size:18px; margin-right:48px; margin-top:50px;">Date:
+                                    <t t-esc="o['date']"/>
+                                </p>
+                            </div>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <div style="margin-top:60px;">
+                                <h2 style="text-align:center; color: #1f76aa; font-size:40px;">
+                                Certificate of Participation
+                            </h2>
+                            </div>
+                            <br/>
+                            <br/>
+                            <div class="paragraph">
+                                <p>This certificate is awarded to
+                                    <strong>
+                                        <t t-esc="o['name']"/>
+                                    </strong> for certifying
+                                    <t t-esc="o['gender_sub']" /> participation in the training program
+                                    "
+                                    <strong t-esc="o['program_name']"></strong>"
+conducted by
+                                    <strong>
+                                        <t t-esc="o['company_name']"/>
+                                    </strong> from
+                                    <strong>
+                                        <t t-esc="o['date_from']"/>
+                                    </strong> to
+                                    <strong>
+                                        <t t-esc="o['date_to']" />
+                                    </strong>.
+                                </p>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                            </div>
+                            <div class="container">
+                                <div class="row paragraph" style="text-align:left;float:left">
+                                    <span t-esc="o['first_signatory']"/>
+                                    <br/>
+                                    <span t-esc="o['first_signatory_position']"/>
+                                </div>
+                                <div class="row paragraph" style="float:right">
+                                    <span t-esc="o['second_signatory']"/>
+                                    <br/>
+                                    <span t-esc="o['second_signatory_position']"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

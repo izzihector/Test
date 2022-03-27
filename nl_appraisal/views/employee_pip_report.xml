@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_print_pip_appraisal" model="ir.actions.report">
+        <field name="name">Print Performance Plans</field>
+        <field name="model">appraisal.pip</field>
+        <field name="binding_model_id" ref="model_appraisal_pip"/>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">nl_appraisal.report_appraisal_pip</field>
+        <field name="report_file">nl_appraisal.report_appraisal_pip</field>
+    </record>
+
+    <template id="report_appraisal_pip">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <t t-call="nl_appraisal.appraisal_main_template">
+                    <div class="page" style="padding: 0px">
+                        <style>
+                            .headr {
+                                background: #875a7b;
+                                font-weight: 500;
+                                color: white;
+                                font-size: 14px !important;
+                                border: none !important;
+                                border-right: 3px solid white !important;
+                            }
+                            .custom_font_size {
+                                font-size: 14px !important;
+                            }
+                            .odoo-cell-grey {
+                                background: #ececec;
+                                border: none !important;
+                                border-right: 3px solid #ffffff !important;
+                                border-bottom: 3px solid white !important;
+                            }
+                            .question-text {
+                                margin-top: 10px;
+                                padding: 10px 10px;
+                                margin-bottom: 10px;
+                                color: white;
+                                background: #875a7b;
+                                font-size: 14px !important;
+                            }
+                            .page-hint {
+                                font-size: 14px;
+                                color: #b4b5b7;
+                            }
+                            .border-bottom-white {
+                                border-bottom: 3px solid white !important
+                            }
+                        </style>
+                        <t t-foreach="docs" t-as="appraisal_pip">
+                            <t t-set="appraisal_pip" t-value="appraisal_pip.sudo()"/>
+                            
+                            <!-- Genral info -->
+                            <div class="mt-4 custom_font_size">
+                                <h3>General Information</h3>
+                                <div class="row bg-white mt-2">
+                                    <div class="col-3 headr border-grey border py-1 px-2 custom_font_size" >Employee Name:</div>
+                                    <div class="col-9 border-grey border py-1 px-2 odoo-cell-grey custom_font_size">
+                                        <t t-esc="appraisal_pip.employee_id.name"/>
+                                    </div>
+                                </div>
+                                <div class="row bg-white">
+                                    <div class="col-3 headr border-grey border py-1 px-2 custom_font_size">Position</div>
+                                    <div class="col-9 border-grey border py-1 px-2 odoo-cell-grey custom_font_size">
+                                        <t t-esc="appraisal_pip.job_id.name"/>
+                                    </div>
+                                </div>
+                                <div class="row bg-white">
+                                    <div class="col-3 headr border-grey border py-1 px-2 custom_font_size">Supervisor(s)</div>
+                                    <div class="col-9 border-grey border py-1 px-2 odoo-cell-grey custom_font_size">
+                                        <t t-esc="appraisal_pip.manager_id.name"/>
+                                    </div>
+                                </div>
+                                <div class="row bg-white">
+                                    <div class="col-3 headr border-grey border py-1 px-2 custom_font_size">Date of initial Meeting</div>
+                                    <div class="col-9 border-grey border py-1 px-2 odoo-cell-grey custom_font_size">
+                                        <t t-esc="appraisal_pip.initial_meeting_date"/>
+                                    </div>
+                                </div>
+                                <div class="row bg-white">
+                                    <div class="col-3 headr border-grey border py-1 px-2 custom_font_size">Name(s) of other attendee (s)</div>
+                                    <div class="col-9 border-grey border py-1 px-2 odoo-cell-grey custom_font_size"> 
+                                        <span t-foreach="appraisal_pip.other_attendees " t-as="other_att">
+                                            <t t-esc="other_att.name"/>, 
+                                        </span> 
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Objectives part -->
+                            <div class="mt-5 custom_font_size" t-if="appraisal_pip.target_ids">
+                                <div class="bg-white mt-2">
+                                    <div class="row">
+                                        <div class="col-3 border-grey border py-1 px-2 headr" >
+                                            <div class="font-weight-bold text-center mb-1">Target Area</div>
+                                            <div class="d-block text-center"><small style="font-size: 13px">Detail specific area where performance standards have not been met.</small></div>
+                                        </div>
+                                        <div class="col-3 border-grey border py-1 px-2 headr" >
+                                            <div class="font-weight-bold text-center mb-1">Performance Concern</div>
+                                            <div class="d-block text-center"><small style="font-size: 13px">Detail specific dates and examples of where the standards have not been met.</small></div>
+                                        </div>
+                                        <div class="col-3 border-grey border py-1 px-2 headr" >
+                                            <div class="font-weight-bold text-center mb-1">Agreed Improvement Action</div>
+                                            <div class="d-block text-center"><small style="font-size: 13px">Detail what is expected of the employee in terms of their performance i.e. what does ‘good’ look like.</small></div>
+                                        </div>
+                                        <div class="col-3 border-grey border py-1 px-2 headr" >
+                                            <div class="font-weight-bold text-center mb-1">Support</div>
+                                            <div class="d-block text-center"><small style="font-size: 13px">Detail what has been agreed in terms of support required to achieve the expected standard of performance</small></div>
+                                        </div>
+                                    </div>
+                                    <div class="row" t-foreach="appraisal_pip.target_ids" t-as="obj">
+                                        <div class="col-3 border-grey border odoo-cell-grey"><t t-esc="obj.name" /></div>
+                                        <div class="col-3 border-grey border odoo-cell-grey"><t t-esc="obj.performance_concern" /></div>
+                                        <div class="col-3 border-grey border odoo-cell-grey"><t t-esc="obj.agreed_improvement_action" /></div>
+                                        <div class="col-3 border-grey border odoo-cell-grey"><t t-esc="obj.support" /></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Reviews part -->
+                            <div class="mt-5 custom_font_size" v-if="appraisal_pip.review_ids">
+                                <div class="bg-white mt-2">
+                                    <div class="row">
+                                        <div class="col-1 border-grey border py-1 px-2 headr" ></div>
+                                        <div class="col-3 border-grey border py-1 px-2 headr" >
+                                            <div class="font-weight-bold text-center mb-1">Review Date</div>
+                                        </div>
+                                        <div class="col-6 border-grey border py-1 px-2 headr" >
+                                            <div class="font-weight-bold text-center mb-1">Review Notes</div>
+                                        </div>
+                                        <div class="col-2 border-grey border py-1 px-2 headr" >
+                                            <div class="font-weight-bold text-center mb-1">Creteria</div>
+                                        </div>
+                                    </div>
+                                    <t t-set="c_index" t-value="1"/>
+                                    <t t-set="ceteria_dict" t-value="{'met': 'Met', 'not_met': 'Not Met', 'partially_met': 'Partially Met'}"/>
+                                    <div class="row" t-foreach="appraisal_pip.review_ids" t-as="obj">
+                                        <div class="col-1 border-grey border odoo-cell-grey"><t t-esc="c_index"/></div>
+                                        <div class="col-3 border-grey border odoo-cell-grey"><t t-esc="obj.review_date" /></div>
+                                        <div class="col-6 border-grey border odoo-cell-grey"><t t-esc="obj.notes" /></div>
+                                        <div class="col-2 border-grey border odoo-cell-grey"><t t-esc="ceteria_dict.get(obj.result)" /></div>
+                                        <t t-set="c_index" t-value="c_index+1"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Signature -->
+                            <div class="mt-5 custom_font_size">
+                                <h5>This action has been agreed by:</h5>
+                                <div class="bg-white mt-2">
+                                    <div class="row">
+                                        <div class="col-3 border-grey border py-1 px-2 headr border-bottom-white" >Signed by</div>
+                                        <div class="col-3 border-grey border py-1 px-2  headr border-bottom-white" >Name</div>
+                                        <div class="col-3 border-grey border py-1 px-2  headr border-bottom-white" >Signature</div>
+                                        <div class="col-3 border-grey border py-1 px-2  headr border-bottom-white" >Date</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-3 border-grey border py-1 px-2 headr border-bottom-white" >Employee</div>
+                                        <div class="col-3 border-grey border py-1 px-2 odoo-cell-grey" ><t t-esc="appraisal_pip.employee_id.name" /></div>
+                                        <div class="col-3 border-grey border py-1 px-2 odoo-cell-grey" ></div>
+                                        <div class="col-3 border-grey border py-1 px-2 odoo-cell-grey" ><t t-esc="appraisal_pip.employee_sign_date" /></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-3 border-grey border py-1 px-2 headr border-bottom-white" >Supervisor</div>
+                                        <div class="col-3 border-grey border py-1 px-2 odoo-cell-grey" ><t t-esc="appraisal_pip.manager_id.name" /></div>
+                                        <div class="col-3 border-grey border py-1 px-2 odoo-cell-grey" ></div>
+                                        <div class="col-3 border-grey border py-1 px-2 odoo-cell-grey" ><t t-esc="appraisal_pip.manager_sign_date" /></div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    
+
+</odoo>

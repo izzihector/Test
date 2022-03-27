@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record model="ir.ui.view" id="hr_applicant_download_form">
+            <field name="name">hr.applicant.download.form</field>
+            <field name="model">hr.applicant.download</field>
+            <field name="groups_id" eval="[(4,ref('base.group_user'))]"/>
+            <field name="arch" type="xml">
+                <form string="Compose Email">
+                    <field name="job_announcement_id" invisible="1" />
+                    <field name="applicant_ids" domain="[('job_announcement_id', '=', job_announcement_id)]" >
+                        <tree create="false" edit="false">
+                            <field name="name" />
+                            <field name="partner_mobile" />
+                            <field name="email" />
+                            <field name="job_announcement_id" />
+                            <field name="application_date" />
+                            <field name="stage_id" />
+                        </tree>
+                    </field>
+                    <footer>
+                        <button string="Download"  name="download" type="object" class="btn-primary o_mail_send"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+    <record model="ir.actions.act_window" id="action_open_hr_applicant_download_view">
+        <field name="name">Download Applicants Attachments</field>
+        <field name="res_model">hr.applicant.download</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+     
+</odoo>

@@ -1,0 +1,15 @@
+<odoo>
+
+	<template id="certificate_header">
+        <div class="header">
+            <table width="100%">
+                <tr>
+                    <td style="float:left;text-align:left;">
+                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 45px;" alt="Logo"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </template>
+
+</odoo>

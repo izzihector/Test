@@ -1,0 +1,948 @@
+<odoo>
+    <template id="exit_interview" name="Create Reference">
+       <t t-call="website.layout">
+          <style>
+             /* Zebra striping */
+             tr:nth-of-type(odd) {
+             background: #eee;
+             }
+             th {
+             background: #333;
+             color: white;
+             font-weight: bold;
+             }
+             td, th {
+             padding: 6px;
+             border: 1px solid #ccc;
+             text-align: left;
+             }
+             /* 
+             Max width before this PARTICULAR table gets nasty
+             This query will take effect for any screen smaller than 760px
+             and also iPads specifically.
+             */
+             @media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+             .responsive-table-input-matrix {
+             display: block;
+             position: relative;
+             width: 100%;
+             }
+             .responsive-table-input-matrix:after {
+             clear: both;
+             content: "";
+             display: block;
+             font-size: 0;
+             height: 0;
+             visibility: hidden;
+             }
+             .responsive-table-input-matrix tbody {
+             display: block;
+             overflow-x: auto;
+             position: relative;
+             white-space: nowrap;
+             width: auto;
+             }
+             .responsive-table-input-matrix tbody tr {
+             display: inline-block;
+             vertical-align: top;
+             }
+             .responsive-table-input-matrix tbody tr td {
+             display: block;
+             text-align: center;
+             }
+             .responsive-table-input-matrix tbody tr td:first-child {
+             text-align: left;
+             }
+             .responsive-table-input-matrix thead {
+             display: block;
+             float: left;
+             margin-right: 10px;
+             }
+             .responsive-table-input-matrix thead:after {
+             clear: both;
+             content: "";
+             display: block;
+             font-size: 0;
+             height: 0;
+             visibility: hidden;
+             }
+             .responsive-table-input-matrix thead th:first-of-type {
+             height: 1.4em;
+             }
+             .responsive-table-input-matrix thead th {
+             display: block;
+             text-align: right;
+             }
+             .responsive-table-input-matrix thead th:first-child {
+             text-align: right;
+             }
+             }
+             footer{
+             display:none !important;
+             }
+             header{
+             display:none !important;
+             }
+             .o_menu_brand{
+             display:none !important;
+             }
+             #oe_main_menu_navbar{
+             display:none !important;
+             }
+             body {
+             
+             background-color:#e6e6e6 !important; 
+             }
+             body .o_connected_user {
+             padding-top 0px !important;
+             }
+             .check:before {
+             position: absolute;
+             display: block;
+             content: '';
+             width: 9px;
+             height: 9px;
+             border-radius: 50%;
+             -moz-border-radius: 50%;
+             -webkit-border-radius: 50%;
+             -o-border-radius: 50%;
+             -ms-border-radius: 50%;
+             top: 1px;
+             left: 1px;
+             margin: auto;
+             transition: background 0.25s linear;
+             -webkit-transition: background 0.25s linear;
+             }
+             .form-check-input {
+             width:13px;   
+             }
+             display-flex, .signup-content, .form-row, .form-radio, .select-icon, .select-icon i {
+             display: flex;
+             display: -webkit-flex; }
+             /* @extend list-type-ulli; */
+             list-type-ulli {
+             list-style-type: none;
+             margin: 0;
+             padding: 0; }
+             /* Montserrat-300 - latin */
+             @font-face {
+             font-family: 'Montserrat';
+             font-style: normal;
+             font-weight: 300;
+             src: url("../fonts/montserrat/Montserrat-Light.ttf");
+             /* IE9 Compat Modes */ }
+             @font-face {
+             font-family: 'Montserrat';
+             font-style: normal;
+             font-weight: 400;
+             src: url("../fonts/montserrat/Montserrat-Regular.ttf");
+             /* IE9 Compat Modes */ }
+             @font-face {
+             font-family: 'Montserrat';
+             font-style: italic;
+             font-weight: 400;
+             src: url("../fonts/montserrat/Montserrat-Italic.ttf");
+             /* IE9 Compat Modes */ }
+             @font-face {
+             font-family: 'Montserrat';
+             font-style: normal;
+             font-weight: 500;
+             src: url("../fonts/montserrat/Montserrat-Medium.ttf");
+             /* IE9 Compat Modes */ }
+             @font-face {
+             font-family: 'Montserrat';
+             font-style: normal;
+             font-weight: 600;
+             src: url("../fonts/montserrat/Montserrat-SemiBold.ttf");
+             /* IE9 Compat Modes */ }
+             @font-face {
+             font-family: 'Montserrat';
+             font-style: normal;
+             font-weight: 700;
+             src: url("../fonts/montserrat/Montserrat-Bold.ttf");
+             /* IE9 Compat Modes */ }
+             @font-face {
+             font-family: 'Montserrat';
+             font-style: italic;
+             font-weight: 700;
+             src: url("../fonts/montserrat/Montserrat-BoldItalic.ttf");
+             /* IE9 Compat Modes */ }
+             @font-face {
+             font-family: 'Montserrat';
+             font-style: italic;
+             font-weight: 900;
+             src: url("../fonts/montserrat/montserrat-v12-latin-900.ttf"), url("../fonts/montserrat/montserrat-v12-latin-900.eot") format("embedded-opentype"), url("../fonts/montserrat/montserrat-v12-latin-900.svg") format("woff2"), url("../fonts/montserrat/montserrat-v12-latin-900.woff") format("woff"), url("../fonts/montserrat/montserrat-v12-latin-900.woff2") format("truetype"); }
+             /* poppins-300 - latin */
+             @font-face {
+             font-family: 'Poppins';
+             font-style: normal;
+             font-weight: 300;
+             src: url("../fonts/poppins/poppins-v5-latin-300.eot");
+             /* IE9 Compat Modes */
+             src: local("Poppins Light"), local("Poppins-Light"), url("../fonts/poppins/poppins-v5-latin-300.eot?#iefix") format("embedded-opentype"), url("../fonts/poppins/poppins-v5-latin-300.woff2") format("woff2"), url("../fonts/poppins/poppins-v5-latin-300.woff") format("woff"), url("../fonts/poppins/poppins-v5-latin-300.ttf") format("truetype"), url("../fonts/poppins/poppins-v5-latin-300.svg#Poppins") format("svg");
+             /* Legacy iOS */ }
+             /* poppins-300italic - latin */
+             @font-face {
+             font-family: 'Poppins';
+             font-style: italic;
+             font-weight: 300;
+             src: url("../fonts/poppins/poppins-v5-latin-300italic.eot");
+             /* IE9 Compat Modes */
+             src: local("Poppins Light Italic"), local("Poppins-LightItalic"), url("../fonts/poppins/poppins-v5-latin-300italic.eot?#iefix") format("embedded-opentype"), url("../fonts/poppins/poppins-v5-latin-300italic.woff2") format("woff2"), url("../fonts/poppins/poppins-v5-latin-300italic.woff") format("woff"), url("../fonts/poppins/poppins-v5-latin-300italic.ttf") format("truetype"), url("../fonts/poppins/poppins-v5-latin-300italic.svg#Poppins") format("svg");
+             /* Legacy iOS */ }
+             /* poppins-regular - latin */
+             @font-face {
+             font-family: 'Poppins';
+             font-style: normal;
+             font-weight: 400;
+             src: url("../fonts/poppins/poppins-v5-latin-regular.eot");
+             /* IE9 Compat Modes */
+             src: local("Poppins Regular"), local("Poppins-Regular"), url("../fonts/poppins/poppins-v5-latin-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/poppins/poppins-v5-latin-regular.woff2") format("woff2"), url("../fonts/poppins/poppins-v5-latin-regular.woff") format("woff"), url("../fonts/poppins/poppins-v5-latin-regular.ttf") format("truetype"), url("../fonts/poppins/poppins-v5-latin-regular.svg#Poppins") format("svg");
+             /* Legacy iOS */ }
+             /* poppins-italic - latin */
+             @font-face {
+             font-family: 'Poppins';
+             font-style: italic;
+             font-weight: 400;
+             src: url("../fonts/poppins/poppins-v5-latin-italic.eot");
+             /* IE9 Compat Modes */
+             src: local("Poppins Italic"), local("Poppins-Italic"), url("../fonts/poppins/poppins-v5-latin-italic.eot?#iefix") format("embedded-opentype"), url("../fonts/poppins/poppins-v5-latin-italic.woff2") format("woff2"), url("../fonts/poppins/poppins-v5-latin-italic.woff") format("woff"), url("../fonts/poppins/poppins-v5-latin-italic.ttf") format("truetype"), url("../fonts/poppins/poppins-v5-latin-italic.svg#Poppins") format("svg");
+             /* Legacy iOS */ }
+             /* poppins-500 - latin */
+             @font-face {
+             font-family: 'Poppins';
+             font-style: normal;
+             font-weight: 500;
+             src: url("../fonts/poppins/poppins-v5-latin-500.eot");
+             /* IE9 Compat Modes */
+             src: local("Poppins Medium"), local("Poppins-Medium"), url("../fonts/poppins/poppins-v5-latin-500.eot?#iefix") format("embedded-opentype"), url("../fonts/poppins/poppins-v5-latin-500.woff2") format("woff2"), url("../fonts/poppins/poppins-v5-latin-500.woff") format("woff"), url("../fonts/poppins/poppins-v5-latin-500.ttf") format("truetype"), url("../fonts/poppins/poppins-v5-latin-500.svg#Poppins") format("svg");
+             /* Legacy iOS */ }
+             /* poppins-500italic - latin */
+             @font-face {
+             font-family: 'Poppins';
+             font-style: italic;
+             font-weight: 500;
+             src: url("../fonts/poppins/poppins-v5-latin-500italic.eot");
+             /* IE9 Compat Modes */
+             src: local("Poppins Medium Italic"), local("Poppins-MediumItalic"), url("../fonts/poppins/poppins-v5-latin-500italic.eot?#iefix") format("embedded-opentype"), url("../fonts/poppins/poppins-v5-latin-500italic.woff2") format("woff2"), url("../fonts/poppins/poppins-v5-latin-500italic.woff") format("woff"), url("../fonts/poppins/poppins-v5-latin-500italic.ttf") format("truetype"), url("../fonts/poppins/poppins-v5-latin-500italic.svg#Poppins") format("svg");
+             /* Legacy iOS */ }
+             /* poppins-600 - latin */
+             @font-face {
+             font-family: 'Poppins';
+             font-style: normal;
+             font-weight: 600;
+             src: url("../fonts/poppins/poppins-v5-latin-600.eot");
+             /* IE9 Compat Modes */
+             src: local("Poppins SemiBold"), local("Poppins-SemiBold"), url("../fonts/poppins/poppins-v5-latin-600.eot?#iefix") format("embedded-opentype"), url("../fonts/poppins/poppins-v5-latin-600.woff2") format("woff2"), url("../fonts/poppins/poppins-v5-latin-600.woff") format("woff"), url("../fonts/poppins/poppins-v5-latin-600.ttf") format("truetype"), url("../fonts/poppins/poppins-v5-latin-600.svg#Poppins") format("svg");
+             /* Legacy iOS */ }
+             /* poppins-700 - latin */
+             @font-face {
+             font-family: 'Poppins';
+             font-style: normal;
+             font-weight: 700;
+             src: url("../fonts/poppins/poppins-v5-latin-700.eot");
+             /* IE9 Compat Modes */
+             src: local("Poppins Bold"), local("Poppins-Bold"), url("../fonts/poppins/poppins-v5-latin-700.eot?#iefix") format("embedded-opentype"), url("../fonts/poppins/poppins-v5-latin-700.woff2") format("woff2"), url("../fonts/poppins/poppins-v5-latin-700.woff") format("woff"), url("../fonts/poppins/poppins-v5-latin-700.ttf") format("truetype"), url("../fonts/poppins/poppins-v5-latin-700.svg#Poppins") format("svg");
+             /* Legacy iOS */ }
+             /* poppins-700italic - latin */
+             @font-face {
+             font-family: 'Poppins';
+             font-style: italic;
+             font-weight: 700;
+             src: url("../fonts/poppins/poppins-v5-latin-700italic.eot");
+             /* IE9 Compat Modes */
+             src: local("Poppins Bold Italic"), local("Poppins-BoldItalic"), url("../fonts/poppins/poppins-v5-latin-700italic.eot?#iefix") format("embedded-opentype"), url("../fonts/poppins/poppins-v5-latin-700italic.woff2") format("woff2"), url("../fonts/poppins/poppins-v5-latin-700italic.woff") format("woff"), url("../fonts/poppins/poppins-v5-latin-700italic.ttf") format("truetype"), url("../fonts/poppins/poppins-v5-latin-700italic.svg#Poppins") format("svg");
+             /* Legacy iOS */ }
+             /* poppins-800 - latin */
+             @font-face {
+             font-family: 'Poppins';
+             font-style: normal;
+             font-weight: 800;
+             src: url("../fonts/poppins/poppins-v5-latin-800.eot");
+             /* IE9 Compat Modes */
+             src: local("Poppins ExtraBold"), local("Poppins-ExtraBold"), url("../fonts/poppins/poppins-v5-latin-800.eot?#iefix") format("embedded-opentype"), url("../fonts/poppins/poppins-v5-latin-800.woff2") format("woff2"), url("../fonts/poppins/poppins-v5-latin-800.woff") format("woff"), url("../fonts/poppins/poppins-v5-latin-800.ttf") format("truetype"), url("../fonts/poppins/poppins-v5-latin-800.svg#Poppins") format("svg");
+             /* Legacy iOS */ }
+             /* poppins-800italic - latin */
+             @font-face {
+             font-family: 'Poppins';
+             font-style: italic;
+             font-weight: 800;
+             src: url("../fonts/poppins/poppins-v5-latin-800italic.eot");
+             /* IE9 Compat Modes */
+             src: local("Poppins ExtraBold Italic"), local("Poppins-ExtraBoldItalic"), url("../fonts/poppins/poppins-v5-latin-800italic.eot?#iefix") format("embedded-opentype"), url("../fonts/poppins/poppins-v5-latin-800italic.woff2") format("woff2"), url("../fonts/poppins/poppins-v5-latin-800italic.woff") format("woff"), url("../fonts/poppins/poppins-v5-latin-800italic.ttf") format("truetype"), url("../fonts/poppins/poppins-v5-latin-800italic.svg#Poppins") format("svg");
+             /* Legacy iOS */ }
+             /* poppins-900 - latin */
+             @font-face {
+             font-family: 'Poppins';
+             font-style: normal;
+             font-weight: 900;
+             src: url("../fonts/poppins/poppins-v5-latin-900.eot");
+             /* IE9 Compat Modes */
+             src: local("Poppins Black"), local("Poppins-Black"), url("../fonts/poppins/poppins-v5-latin-900.eot?#iefix") format("embedded-opentype"), url("../fonts/poppins/poppins-v5-latin-900.woff2") format("woff2"), url("../fonts/poppins/poppins-v5-latin-900.woff") format("woff"), url("../fonts/poppins/poppins-v5-latin-900.ttf") format("truetype"), url("../fonts/poppins/poppins-v5-latin-900.svg#Poppins") format("svg");
+             /* Legacy iOS */ }
+             a:focus, a:active {
+             text-decoration: none;
+             outline: none;
+             transition: all 300ms ease 0s;
+             -moz-transition: all 300ms ease 0s;
+             -webkit-transition: all 300ms ease 0s;
+             -o-transition: all 300ms ease 0s;
+             -ms-transition: all 300ms ease 0s; }
+             input, select, textarea {
+             outline: none;
+             appearance: unset !important;
+             -moz-appearance: unset !important;
+             -webkit-appearance: unset !important;
+             -o-appearance: unset !important;
+             -ms-appearance: unset !important; }
+             input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+             appearance: none !important;
+             -moz-appearance: none !important;
+             -webkit-appearance: none !important;
+             -o-appearance: none !important;
+             -ms-appearance: none !important;
+             margin: 0; }
+             input:focus, select:focus, textarea:focus {
+             outline: none;
+             box-shadow: none !important;
+             -moz-box-shadow: none !important;
+             -webkit-box-shadow: none !important;
+             -o-box-shadow: none !important;
+             -ms-box-shadow: none !important; }
+             input[type=checkbox] {
+             appearance: checkbox !important;
+             -moz-appearance: checkbox !important;
+             -webkit-appearance: checkbox !important;
+             -o-appearance: checkbox !important;
+             -ms-appearance: checkbox !important; }
+             input[type=radio] {
+             appearance: radio !important;
+             -moz-appearance: radio !important;
+             -webkit-appearance: radio !important;
+             -o-appearance: radio !important;
+             -ms-appearance: radio !important; }
+             img {
+             max-width: 100%;
+             height: auto; }
+             figure {
+             margin: 0; }
+             input[type=number] {
+             -moz-appearance: textfield !important;
+             appearance: none !important;
+             -webkit-appearance: none !important; }
+             input:-webkit-autofill {
+             box-shadow: 0 0 0 30px transparent inset;
+             -moz-box-shadow: 0 0 0 30px transparent inset;
+             -webkit-box-shadow: 0 0 0 30px transparent inset;
+             -o-box-shadow: 0 0 0 30px transparent inset;
+             -ms-box-shadow: 0 0 0 30px transparent inset; }
+             h2 {
+             line-height: 1.66;
+             margin: 0;
+             padding: 0;
+             font-weight: 700;
+             color: #222;
+             font-family: 'Montserrat';
+             font-size: 20px;
+             text-transform: uppercase;
+             margin-bottom: 32px; }
+             .clear {
+             clear: both; }
+             body {
+             font-size: 13px;
+             line-height: 1.8;
+             color: #222;
+             font-weight: 400;
+             background: #282828;
+             }
+             .container {
+             width: 1400px;
+             position: relative;
+             margin: 50px auto;
+             background: #fff; }
+             .signup-img, .signup-form {
+             width: 50%; }
+             .signup-img {
+             margin-bottom: -7px; }
+             .register-form {
+             padding: 40px 22px 51px 27px }
+             .form-row {
+             margin: 25px -15px; }
+             .form-row .form-group {
+             width: 50%;
+             padding: 0 15px; }
+             .form-group {
+             margin-bottom: 23px;
+             position: relative; }
+             input, select {
+             display: block;
+             width: 100%;
+             border: 1px solid #ebebeb;
+             padding: 11px 20px;
+             box-sizing: border-box;
+             font-family: 'Montserrat';
+             font-weight: 500;
+             font-size: 13px; }
+             input:focus, select:focus {
+             border: 1px solid #ff6801; }
+             label {
+             font-size: 14px;
+             font-weight: bold;
+             font-family: 'Montserrat';
+             margin-bottom: 2px;
+             display: block; }
+             .form-radio {
+             margin-bottom: 18px; }
+             .form-radio input {
+             width: auto;
+             display: inline-block; }
+             .radio-label {
+             padding-right: 72px; }
+             .form-radio-item {
+             position: relative;
+             margin-right: 45px; }
+             .form-radio-item label {
+             font-weight: 500;
+             font-size: 13px;
+             padding-left: 25px;
+             position: relative;
+             z-index: 9;
+             display: block;
+             cursor: pointer; }
+             .check {
+             display: inline-block;
+             position: absolute;
+             border: 1px solid #ebebeb;
+             border-radius: 50%;
+             -moz-border-radius: 50%;
+             -webkit-border-radius: 50%;
+             -o-border-radius: 50%;
+             -ms-border-radius: 50%;
+             height: 13px;
+             width: 13px;
+             top: 4px;
+             left: 0px;
+             z-index: 5;
+             transition: border .25s linear;
+             -webkit-transition: border .25s linear; }
+             .check:before {
+             position: absolute;
+             display: block;
+             content: '';
+             width: 9px;
+             height: 9px;
+             border-radius: 50%;
+             -moz-border-radius: 50%;
+             -webkit-border-radius: 50%;
+             -o-border-radius: 50%;
+             -ms-border-radius: 50%;
+             top: 1px;
+             left: 1px;
+             margin: auto;
+             transition: background 0.25s linear;
+             -webkit-transition: background 0.25s linear; }
+             input[type=radio] {
+             position: absolute;
+             visibility: hidden; }
+             input[type=radio]:checked ~ .check {
+             border: 1px solid #ff6801; }
+             input[type=radio]:checked ~ .check::before {
+             background: #ff6801; }
+             .form-select {
+             position: relative; }
+             select {
+             appearance: none !important;
+             -moz-appearance: none !important;
+             -webkit-appearance: none !important;
+             -o-appearance: none !important;
+             -ms-appearance: none !important;
+             position: relative;
+             background: 0 0;
+             z-index: 10;
+             cursor: pointer; }
+             .select-icon {
+             z-index: 0;
+             position: absolute;
+             top: 0;
+             right: 0;
+             bottom: 0;
+             justify-content: center;
+             -moz-justify-content: center;
+             -webkit-justify-content: center;
+             -o-justify-content: center;
+             -ms-justify-content: center;
+             align-items: center;
+             -moz-align-items: center;
+             -webkit-align-items: center;
+             -o-align-items: center;
+             -ms-align-items: center; }
+             .select-icon i {
+             justify-content: center;
+             -moz-justify-content: center;
+             -webkit-justify-content: center;
+             -o-justify-content: center;
+             -ms-justify-content: center;
+             align-items: center;
+             -moz-align-items: center;
+             -webkit-align-items: center;
+             -o-align-items: center;
+             -ms-align-items: center;
+             width: 40px;
+             height: 20px;
+             font-size: 18px;
+             color: #999; }
+             .form-submit {
+             text-align: right;
+             padding-top: 27px; }
+             .submit {
+             width: 140px;
+             height: 40px;
+             display: inline-block;
+             font-family: 'Poppins';
+             font-weight: 400;
+             font-size: 13px;
+             padding: 10px;
+             border: none;
+             cursor: pointer; }
+             #reset {
+             background: #f8f8f8;
+             color: #999;
+             margin-right: 8px; }
+             #reset:hover {
+             background: #ff6801;
+             color: #fff; }
+             #submit {
+             background: #ff6801;
+             color: #fff; }
+             #submit:hover {
+             background-color: #cd5300; }
+             @media screen and (max-width: 992px) {
+             .container {
+             width: calc(100% - 40px);
+             max-width: 100%; }
+             .signup-content {
+             flex-direction: column;
+             -moz-flex-direction: column;
+             -webkit-flex-direction: column;
+             -o-flex-direction: column;
+             -ms-flex-direction: column; }
+             .signup-img, .signup-form {
+             width: 100%; } }
+             @media screen and (max-width: 768px) {
+             .register-form {
+             padding: 50px 40px 50px 40px; } }
+             @media screen and (max-width: 575px) {
+             .form-row {
+             flex-direction: column;
+             
+             -moz-flex-direction: column;
+             -webkit-flex-direction: column;
+             -o-flex-direction: column;
+             -ms-flex-direction: column;
+             margin: 0px; }
+             .form-row .form-group {
+             width: 100%;
+            
+             padding: 0px; }
+             .radio-label {
+             padding-right: 22px; }
+             .form-radio-item {
+             margin-right: 25px; } }
+             @media screen and (max-width: 480px) {
+             .form-radio {
+             flex-direction: column;
+             -moz-flex-direction: column;
+             -webkit-flex-direction: column;
+             -o-flex-direction: column;
+             -ms-flex-direction: column; }
+             .submit {
+             width: 100%; }
+             #reset {
+             margin-right: 0px;
+             margin-bottom: 10px; } }
+          </style>
+       <div class="container">
+        <div class="signup-content">
+            <div class="signup-form" style="width:100%;">
+               <form method="POST" role="form" action="/interview/submit" class="register-form">
+                  <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                  <img t-att-src="'/nl_employee/static/description/sca.jpg'" alt="Logo" style="opacity:0; height:0; width:0;"/>
+                  <img t-att-src="'/nl_employee/static/description/sca.jpg'" alt="Logo" style="float:left;height:60px;"/><br/><br/><br/><br/>
+                  <h5 class="text-center" style="text-align:center;font-size:20px;"><b>Human Resource Management<br/>Confidential Exit Interview</b></h5>
+                  <div class="form-row">
+                     <div class="form-group">
+                        <label for="name">Employee Name :</label>
+                        <input type="text" name="name" t-att-value="employee_id.name" readonly="1" id="name" />
+                     </div>
+                     <div class="form-group">
+                        <label for="father_name">Job Title :</label>
+                        <input type="text" t-att-value="employee_id.job_id.name" name="father_name" readonly="1" id="father_name" />
+                     </div>
+                  </div>
+                  <label for="">The reason(s) that you are leaving your position in (Swedish Committee for Afghanistan) is/are:  (note all that apply)</label>
+                  <div class="form-row">
+                     <div class="form-group">
+                        <div class="form-check">
+                           <input class="form-check-input" name="leaving_reason" multiple="multiple" type="checkbox" value="Better employment elsewhere" id="1"/>
+                           <label class="form-check-label" for="2">
+                              Better employment elsewhere
+                           </label>
+                        </div>
+                        <div class="form-check">
+                           <input class="form-check-input" name="leaving_reason" multiple="multiple" type="checkbox" value="Difficulty with work &amp; family balance" id="2" />
+                           <label class="form-check-label" for="flexCheckChecked">
+                              Difficulty with work &amp; family balance
+                           </label>
+                        </div>
+                        <div class="form-check">
+                           <input class="form-check-input" name="leaving_reason" multiple="multiple" type="checkbox" value="Limited career advancement opportunities" id="3" />
+                           <label class="form-check-label" for="flexCheckChecked">
+                              Limited career advancement opportunities
+                           </label>
+                        </div>
+                        <div class="form-check">
+                           <input class="form-check-input" name="leaving_reason" type="checkbox" value="Pay/Compensation issues" id="4" />
+                           <label class="form-check-label" for="flexCheckChecked">
+                              Pay/Compensation issues
+                           </label>
+                        </div>
+                        <div class="form-check">
+                           <input class="form-check-input" name="leaving_reason" type="checkbox" value="Benefits/entitlements issues" id="5" />
+                           <label class="form-check-label" for="flexCheckChecked">
+                              Benefits/entitlements issues
+                           </label>
+                        </div>
+                        <div class="form-check">
+                           <input class="form-check-input" name="leaving_reason" type="checkbox" value="Dissatisfied with job duties" id="6" />
+                           <label class="form-check-label" for="flexCheckChecked">
+                              Dissatisfied with job duties
+                           </label>
+                        </div>
+                        <div class="form-check">
+                           <input class="form-check-input" name="leaving_reason" type="checkbox" value="Dissatisfied with working conditions" id="7" />
+                           <label class="form-check-label" for="flexCheckChecked">
+                              Dissatisfied with working conditions
+                           </label>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <div class="form-check">
+                           <input class="form-check-input" name="leaving_reason" type="checkbox" value="Supervision issues" id="8" />
+                           <label class="form-check-label" for="flexCheckChecked">
+                              Supervision issues
+                           </label>
+                        </div>
+                        <div class="form-check">
+                           <input class="form-check-input" name="leaving_reason" type="checkbox" value="Concerned about own security." id="9" />
+                           <label class="form-check-label" for="flexCheckChecked">
+                              Concerned about own security.
+                           </label>
+                        </div>
+                        <div class="form-check">
+                           <input class="form-check-input" name="leaving_reason" type="checkbox" value="Continuation of higher education" id="10" />
+                           <label class="form-check-label" for="flexCheckChecked">
+                              Continuation of higher education
+                           </label>
+                        </div>
+                        
+                     </div>
+                  </div>
+                  
+                  <div class="form-row">
+                     <label for="pincode">5 = Very Good, 4 = Good, 3 = Fair, 2 = Disappointing, 1 = Poor</label>
+                     <table class="responsive-table-input-matrix" style="width:100%; marign-top:30px;">
+                        <thead>
+                           <tr>
+                              <th>No</th>
+                              <th>Questions</th>
+                              <th style="text-align:center;">1</th>
+                              <th style="text-align:center;">2</th>
+                              <th style="text-align:center;">3</th>
+                              <th style="text-align:center;">4</th>
+                              <th style="text-align:center;">5</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr>
+                              <td width="1%">1</td>
+                              <td style="width:737px;">How would you rate SCA as a place of work</td>
+                              <td><input name="place_of_work" value="1" type="checkbox"/></td>
+                              <td><input name="place_of_work" value="2" type="checkbox"/></td>
+                              <td><input name="place_of_work" value="3" type="checkbox"/></td>
+                              <td><input name="place_of_work" value="4" type="checkbox"/></td>
+                              <td><input name="place_of_work" value="5" type="checkbox"/></td>
+                           </tr>
+                           <tr>
+                              <td width="1%">2</td>
+                              <td>Working conditions, office, transportation, guesthouse, and other physical facilities were</td>
+                              <td><input name="working_condition" value="1" type="checkbox"/></td>
+                              <td><input name="working_condition" value="2" type="checkbox"/></td>
+                              <td><input name="working_condition" value="3" type="checkbox"/></td>
+                              <td><input name="working_condition" value="4" type="checkbox"/></td>
+                              <td><input name="working_condition" value="5" type="checkbox"/></td>
+                           </tr>
+                           <tr>
+                              <td width="1%">3</td>
+                              <td>Your relationship with your supervisor was</td>
+                              <td><input name="supervisor_relationship" value="1" type="checkbox"/></td>
+                              <td><input name="supervisor_relationship" value="2" type="checkbox"/></td>
+                              <td><input name="supervisor_relationship" value="3" type="checkbox"/></td>
+                              <td><input name="supervisor_relationship" value="4" type="checkbox"/></td>
+                              <td><input name="supervisor_relationship" value="5" type="checkbox"/></td>
+                           </tr>
+                           <tr>
+                              <td width="1%">4</td>
+                              <td>Your understanding of your Job description (duties, responsibilities, and performance standards) was  </td>
+                              <td><input name="understand_job" value="1" type="checkbox"/></td>
+                              <td><input name="understand_job" value="2" type="checkbox"/></td>
+                              <td><input name="understand_job" value="3" type="checkbox"/></td>
+                              <td><input name="understand_job" value="4" type="checkbox"/></td>
+                              <td><input name="understand_job" value="5" type="checkbox"/></td>
+                           </tr>
+                          
+                           <tr>
+                              <td width="1%">5</td>
+                              <td>The level of involvement in setting your work goals and objectives with your supervisor was  </td>
+                              <td><input name="goals_and_objectives" value="1" type="checkbox"/></td>
+                              <td><input name="goals_and_objectives" value="2" type="checkbox"/></td>
+                              <td><input name="goals_and_objectives" value="3" type="checkbox"/></td>
+                              <td><input name="goals_and_objectives" value="4" type="checkbox"/></td>
+                              <td><input name="goals_and_objectives" value="5" type="checkbox"/></td>
+                           </tr>
+                           <tr>
+                              <td width="1%">6</td>
+                              <td>The extent to which you are informed ahead of time regarding changes to your work was</td>
+                              <td><input name="ahead_of_time" value="1" type="checkbox"/></td>
+                              <td><input name="ahead_of_time" value="2" type="checkbox"/></td>
+                              <td><input name="ahead_of_time" value="3" type="checkbox"/></td>
+                              <td><input name="ahead_of_time" value="4" type="checkbox"/></td>
+                              <td><input name="ahead_of_time" value="5" type="checkbox"/></td>
+                           </tr>
+
+                           <tr>
+                              <td width="1%">7</td>
+                              <td>When you did a job well, the recognition you received was</td>
+                              <td><input name="well_done_recognition" value="1" type="checkbox"/></td>
+                              <td><input name="well_done_recognition" value="2" type="checkbox"/></td>
+                              <td><input name="well_done_recognition" value="3" type="checkbox"/></td>
+                              <td><input name="well_done_recognition" value="4" type="checkbox"/></td>
+                              <td><input name="well_done_recognition" value="5" type="checkbox"/></td>
+                           </tr>
+
+                           <tr>
+                              <td width="1%">8</td>
+                              <td>The extent to which constructive feedback was given to help you grow and improve your performance was</td>
+                              <td><input name="constructive_feedback" value="1" type="checkbox"/></td>
+                              <td><input name="constructive_feedback" value="2" type="checkbox"/></td>
+                              <td><input name="constructive_feedback" value="3" type="checkbox"/></td>
+                              <td><input name="constructive_feedback" value="4" type="checkbox"/></td>
+                              <td><input name="constructive_feedback" value="5" type="checkbox"/></td>
+                           </tr>
+
+                           <tr>
+                              <td width="1%">9</td>
+                              <td>Your supervisor’s willingness to listen to your problems and help you when you had questions and challenges was  </td>
+                              <td><input name="problem_solving" value="1" type="checkbox"/></td>
+                              <td><input name="problem_solving" value="2" type="checkbox"/></td>
+                              <td><input name="problem_solving" value="3" type="checkbox"/></td>
+                              <td><input name="problem_solving" value="4" type="checkbox"/></td>
+                               <td><input name="problem_solving" value="5" type="checkbox"/></td>
+                           </tr>
+
+                           <tr>
+                              <td width="1%">10</td>
+                              <td>The respect and confidence you had in your supervisor was </td>
+                              <td><input name="respect" value="1" type="checkbox"/></td>
+                              <td><input name="respect" value="2" type="checkbox"/></td>
+                              <td><input name="respect" value="3" type="checkbox"/></td>
+                              <td><input name="respect" value="4" type="checkbox"/></td>
+                               <td><input name="respect" value="5" type="checkbox"/></td>
+                           </tr>
+                           <tr>
+                              <td width="1%">11</td>
+                              <td>Management willingness to address staff concerns was</td>
+                              <td><input name="staff_concern" value="1" type="checkbox"/></td>
+                              <td><input name="staff_concern" value="2" type="checkbox"/></td>
+                              <td><input name="staff_concern" value="3" type="checkbox"/></td>
+                              <td><input name="staff_concern" value="4" type="checkbox"/></td>
+                              <td><input name="staff_concern" value="5" type="checkbox"/></td>
+                           </tr>
+                           <tr>
+                              <td width="1%">12</td>
+                              <td>The effort expended to keep you as an employee was</td>
+                              <td><input name="effort_keep" value="1" type="checkbox"/></td>
+                              <td><input name="effort_keep" value="2" type="checkbox"/></td>
+                              <td><input name="effort_keep" value="3" type="checkbox"/></td>
+                              <td><input name="effort_keep" value="4" type="checkbox"/></td>
+                              <td><input name="effort_keep" value="5" type="checkbox"/></td>
+                           </tr>
+
+                           <tr>
+                              <td width="1%">13</td>
+                              <td>The level of concern for employees here in __________/SCA is</td>
+                              <td><input name="level_of_concern" value="1" type="checkbox"/></td>
+                              <td><input name="level_of_concern" value="2" type="checkbox"/></td>
+                              <td><input name="level_of_concern" value="3" type="checkbox"/></td>
+                              <td><input name="level_of_concern" value="4" type="checkbox"/></td>
+                              <td><input name="level_of_concern" value="5" type="checkbox"/></td>
+                           </tr>
+
+                           <tr>
+                              <td width="1%">14</td>
+                              <td>Compared to other international organizations in Afghanistan, the benefit package was</td>
+                              <td><input name="compare" value="1" type="checkbox"/></td>
+                              <td><input name="compare" value="2" type="checkbox"/></td>
+                              <td><input name="compare" value="3" type="checkbox"/></td>
+                              <td><input name="compare" value="4" type="checkbox"/></td>
+                              <td><input name="compare" value="5" type="checkbox"/></td>
+                           </tr>
+                           <tr>
+                              <td width="1%">15</td>
+                              <td>The pay you received was</td>
+                              <td><input name="pay" value="1" type="checkbox"/></td>
+                              <td><input name="pay" value="2" type="checkbox"/></td>
+                              <td><input name="pay" value="3" type="checkbox"/></td>
+                              <td><input name="pay" value="4" type="checkbox"/></td>
+                              <td><input name="pay" value="5" type="checkbox"/></td>
+                           </tr>
+                           <tr>
+                              <td width="1%">16</td>
+                              <td>You regarded your chances for promotion and increased pay as </td>
+                              <td><input name="increment" value="1" type="checkbox"/></td>
+                              <td><input name="increment" value="2" type="checkbox"/></td>
+                              <td><input name="increment" value="3" type="checkbox"/></td>
+                              <td><input name="increment" value="4" type="checkbox"/></td>
+                              <td><input name="increment" value="5" type="checkbox"/></td>
+                           </tr>
+                           <tr>
+                              <td width="1%">17</td>
+                              <td>To what extent were the training and development opportunities offered by SCA relevant and appropriate to your work. </td>
+                              <td><input name="development" value="1" type="checkbox"/></td>
+                              <td><input name="development" value="2" type="checkbox"/></td>
+                              <td><input name="development" value="3" type="checkbox"/></td>
+                              <td><input name="development" value="4" type="checkbox"/></td>
+                              <td><input name="development" value="5" type="checkbox"/></td>
+                           </tr>
+                           <tr>
+                              <td width="1%">18</td>
+                              <td>The culture of SCA as a Learning and progressive organization is </td>
+                              <td><input name="culture" value="1" type="checkbox"/></td>
+                              <td><input name="culture" value="2" type="checkbox"/></td>
+                              <td><input name="culture" value="3" type="checkbox"/></td>
+                              <td><input name="culture" value="4" type="checkbox"/></td>
+                              <td><input name="culture" value="5" type="checkbox"/></td>
+                           </tr>
+
+                           <tr>
+                              <td width="1%">19</td>
+                              <td>The level of cooperation among employees in your section/unit was                    </td>
+                              <td><input name="cooperation" value="1" type="checkbox"/></td>
+                              <td><input name="cooperation" value="2" type="checkbox"/></td>
+                              <td><input name="cooperation" value="3" type="checkbox"/></td>
+                              <td><input name="cooperation" value="4" type="checkbox"/></td>
+                              <td><input name="cooperation" value="5" type="checkbox"/></td>
+                           </tr>
+
+                           <tr>
+                              <td width="1%">20</td>
+                              <td>The guidance and instruction you received from the HRM Unit was                                        </td>
+                              <td><input name="guidance_hr" value="1" type="checkbox"/></td>
+                              <td><input name="guidance_hr" value="2" type="checkbox"/></td>
+                              <td><input name="guidance_hr" value="3" type="checkbox"/></td>
+                              <td><input name="guidance_hr" value="4" type="checkbox"/></td>
+                              <td><input name="guidance_hr" value="5" type="checkbox"/></td>
+                           </tr>
+
+                           <tr>
+                              <td width="1%">21</td>
+                              <td>The guidance and instruction you received from the Finance Unit was                                                         </td>
+                              <td><input name="guidance_finance" value="1" type="checkbox"/></td>
+                              <td><input name="guidance_finance" value="2" type="checkbox"/></td>
+                              <td><input name="guidance_finance" value="3" type="checkbox"/></td>
+                              <td><input name="guidance_finance" value="4" type="checkbox"/></td>
+                              <td><input name="guidance_finance" value="5" type="checkbox"/></td>
+                           </tr>
+
+                           <tr>
+                              <td width="1%">22</td>
+                              <td>The guidance and instruction you received from the Admin Unit was                                                                        </td>
+                              <td><input name="guidance_admin" value="1" type="checkbox"/></td>
+                              <td><input name="guidance_admin" value="2" type="checkbox"/></td>
+                              <td><input name="guidance_admin" value="3" type="checkbox"/></td>
+                              <td><input name="guidance_admin" value="4" type="checkbox"/></td>
+                              <td><input name="guidance_admin" value="5" type="checkbox"/></td>
+                           </tr>
+                           <tr>
+                              <td width="1%">23</td>
+                              <td>The guidance and instruction you received from the Procurement &amp; Supply Unit was                                                                         </td>
+                              <td><input name="guidance_procurement" value="1" type="checkbox"/></td>
+                              <td><input name="guidance_procurement" value="2" type="checkbox"/></td>
+                              <td><input name="guidance_procurement" value="3" type="checkbox"/></td>
+                              <td><input name="guidance_procurement" value="4" type="checkbox"/></td>
+                              <td><input name="guidance_procurement" value="5" type="checkbox"/></td>
+                           </tr>
+
+                           <tr>
+                              <td width="1%">24</td>
+                              <td>The cooperation and advice you received from the TR &amp; ER Unit was                                                                      </td>
+                              <td><input name="guidance_tr" value="1" type="checkbox"/></td>
+                              <td><input name="guidance_tr" value="2" type="checkbox"/></td>
+                              <td><input name="guidance_tr" value="3" type="checkbox"/></td>
+                              <td><input name="guidance_tr" value="4" type="checkbox"/></td>
+                              <td><input name="guidance_tr" value="5" type="checkbox"/></td>
+                           </tr>
+                          
+                        </tbody>
+                     </table>
+                  </div>
+                 
+                 <div class="form-row " style="flex-direction:column;">
+                  <label for="specific_expereinces">Please write any specific experiences that stood out (positive or negative) in relation to table above.   </label>
+                  <textarea style="padding: 10px; border:0.5px solid #d9d9d9;" type="text" name="specific_expereinces" id="specific_expereinces"/>
+                 </div>
+
+                 <div class="form-row" style="flex-direction:column;">
+                  <label for="conditions">Under what conditions would you have stayed?</label>
+                  <textarea style="padding: 10px; border:0.5px solid #d9d9d9;" type="text" name="conditions" id="conditions"/>
+                 </div>
+
+                 <div class="form-row" style="flex-direction:column;">
+                  <label for="one_thing">What one thing would you have changed in SCA?</label>
+                  <textarea style="padding: 10px; border:0.5px solid #d9d9d9;" type="text" name="one_thing" id="one_thing"/>
+                 </div>
+
+                 <div class="form-row" style="flex-direction:column;">
+                  <label for="lose_employee">How can SCA avoid losing good employees in the future?</label>
+                  <textarea style="padding: 10px; border:0.5px solid #d9d9d9" type="text" name="lose_employee" id="lose_employee"/>
+                 </div>
+
+                 <div class="form-row" style="flex-direction:column;">
+                  <label for="reconsider_working">Would you consider working with SCA in future?</label>
+                  <textarea style="padding: 10px; border:0.5px solid #d9d9d9" type="text" name="reconsider_working" id="reconsider_working"/>
+                 </div>
+
+                 <div class="form-row" style="flex-direction:column;">
+                  <label for="other_comments">Any other Comments:</label>
+                  <textarea style="padding: 10px; border:0.5px solid #d9d9d9" type="text" name="other_comments" id="other_comments"/>
+                 </div>
+                 
+
+                  <div class="form-submit">
+                     <input type="hidden" name="token" t-att-value="token" id="token_id"
+                                       class="form-control" placeholder="e.g. John Doe" invisible="1"/>
+                     <input type="" value="Reset All" class="submit" name="reset" id="reset" />
+                     <button type="submit" class="btn btn-primary pull-left">Submit</button>
+                  </div>
+               </form>
+            </div>
+         </div>
+       </div>
+          
+       </t>
+    </template>
+    <template id="my_assets_id_2" name="website assets for my module" inherit_id="web.assets_frontend">
+    <xpath expr="." position="inside">
+    <script type="text/javascript" src="/nl_separation/static/js/main.js"/>    
+    </xpath>   
+    </template>
+    </odoo>

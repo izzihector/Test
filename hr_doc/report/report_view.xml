@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <report
+    	id="report_app" 
+    	string="Document"
+    	model="hr.applicant"
+        report_type="qweb-pdf"
+        name="hr_doc.report_document"
+        file="hr_doc.report_document"
+        menu="False"
+    />
+
+    <report
+    	id="action_report_preview"
+        model="hr.app.doc"
+        name="hr_doc.preview_report"
+        string="Preview Report"
+        report_type="qweb-pdf"
+    />
+
+</odoo>

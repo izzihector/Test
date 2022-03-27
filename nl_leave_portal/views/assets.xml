@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="leave_portal_assets_frontend" 
+              inherit_id="website.assets_frontend" name="Leave Portal Assets">
+      <xpath expr="." position="inside">
+          <script type="text/javascript" 
+                  src="/nl_leave_portal/static/src/js/leave_portal.js"></script>
+      </xpath>
+    </template>
+</odoo>

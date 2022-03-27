@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--  Data for Recommendation Letter-->
+    <record id="recom_letter1" model="hr.app.content.line">
+        <field name="text">TO WHOMSOEVER IT MAT CONCERN </field>
+    </record>
+    <record id="recom_letter2" model="hr.app.content.line">
+        <field name="title">Subject:</field>
+    </record>
+    <record id="recom_letter3" model="hr.app.content.line">
+        <field name="text">It is our pleasure to recommend ${object.employee_id and object.employee_id.name or '' } . Her performance working as a ${object.job_id and object.job_id.name or ''} for ${object.employee_id.company_id and object.employee_id.company_id.name or ''} proved that she will be a valuable addition to any organisation.</field>
+    </record>
+    <record id="recom_letter4" model="hr.app.content.line">
+        <field name="text">She performed all her tasks competently and with commitment and enthusiasm. She has demonstrated the ability to work under pressure and to plan and organize successfully to meet tight deadlines. Her close attention to details has resulted in meticulous and accurate work. Her strong interpersonal and communication skills have allowed her to develop good working relationships with both her colleagues and management.</field>
+    </record>
+    <record id="recom_letter5" model="hr.app.content.line">
+        <field name="text">${object.employee_id and object.employee_id.name or ''} was a great asset to this company and we highly recommend her. I am sure you will find her equally impressive.</field>
+    </record>
+    <record id="hr_recom_data" model="hr.app.doc">
+        <field name="name">Recommendation Letter</field>
+        <field name="subject"/>
+        <field name="company_id" ref="base.main_company"></field>
+        <field name="content_ids" eval="[(4, ref('recom_letter1')),
+                                         (4, ref('recom_letter2')),
+                                         (4, ref('recom_letter3')),
+                                         (4, ref('recom_letter4')),
+                                         (4, ref('recom_letter5'))
+                                         ]"/>  
+    </record>
+
+    <!-- Data for Experience Letter -->
+    <record id="exp_letter1" model="hr.app.content.line">
+        <field name="text"> TO WHOMSOEVER IT MAT CONCERN </field>
+    </record>
+    <record id="exp_letter2" model="hr.app.content.line">
+        <field name="text">This is to certify that ${object.employee_id and object.employee_id.name or ''} has joined our organization as a ${object.job_id and object.job_id.name or ''} from ${object.join_date or ''} to ${object.relieve_date or ' '} </field>
+    </record>
+   <record id="exp_letter_body1" model="hr.app.content.line">
+        <field name="text">During his/her tenure with us we found he/she is sincere, hard working and he/she bears a good moral conduct. He/She will be a good asset for any organisation. He/She has carried out all duties entrusted to her/his willingly, effectively and to our entire satisfaction.
+        </field>
+    </record>
+    <record id="exp_letter_body2" model="hr.app.content.line">
+        <field name="text">We also certify that your full and final settlement of account has been cleared with the organization.</field>
+    </record>
+    <record id="exp_letter_body3" model="hr.app.content.line">
+        <field name="text">We wish his/her all the very best for his/her future endeavors.  </field>
+    </record>
+    <record id="hr_sep_exp_data" model="hr.app.doc">
+        <field name="name">Experience Letter</field>
+        <field name="company_id" ref="base.main_company"></field>
+        <field name="content_ids" eval="[(4, ref('exp_letter1')),
+                                         (4, ref('exp_letter2')),
+                                         (4, ref('exp_letter_body1')),
+                                         (4, ref('exp_letter_body2')),
+                                         (4, ref('exp_letter_body3'))]"/>  
+    </record> 
+
+</odoo>

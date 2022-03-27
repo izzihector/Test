@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+     
+    <record id="hr_cost_center_tree_view" model="ir.ui.view">
+        <field name="name">Cost Center Tree View</field>
+        <field name="model">cost.center</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+            </tree>    
+        </field>
+    </record>
+
+    <record id="hr_cost_center_form_view" model="ir.ui.view">
+        <field name="name">Cost Center Form View</field>
+        <field name="model">cost.center</field>
+        <field name="arch" type="xml">
+            <form string="Cost Center">
+                <sheet>
+                    <group>  
+                        <group>
+                        <field name="name"/>
+                        </group>
+                        <group></group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_donor_code_tree_view" model="ir.ui.view">
+        <field name="name">Donor Code Tree View</field>
+        <field name="model">donor.code</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+            </tree>    
+        </field>
+    </record>
+
+    <record id="hr_donor_code_form_view" model="ir.ui.view">
+        <field name="name">Donor Code Form View</field>
+        <field name="model">donor.code</field>
+        <field name="arch" type="xml">
+            <form string="Donor Code">
+                <sheet>
+                    <group>  
+                        <group>
+                        <field name="name"/>
+                        </group>
+                        <group></group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+ 
+
+    <record id="action_cost_center" model="ir.actions.act_window">
+            <field name="name">Cost Center</field>
+            <field name="res_model">cost.center</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Create a new cost center
+              </p>
+            </field>
+        </record>
+    
+    <menuitem
+        id="hr_main_menu_cost_center"
+        name="Cost Center"
+        parent="hr.menu_human_resources_configuration"
+        sequence="7"
+        action="action_cost_center"
+        groups="hr.group_hr_manager,nl_master.group_hr_employee_read_only"/>
+
+
+    <record id="action_donor_code" model="ir.actions.act_window">
+        <field name="name">Donor Code</field>
+        <field name="res_model">donor.code</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            Create a new donor code
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="hr_main_menu_donor_code"
+        name="Donor Code"
+        parent="hr.menu_human_resources_configuration"
+        sequence="7"
+        action="action_donor_code"
+        groups="hr.group_hr_manager,nl_master.group_hr_employee_read_only"/>
+        
+</odoo>

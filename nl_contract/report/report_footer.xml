@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<template id="report_footer_custom" >
+			<t t-name="custom_footer">
+				<div class ="footer o_standard_footer" style="padding-top: 30px !important;">
+					<t t-if="o and 'company_id' in o">
+						<t t-set="company" t-value="o.company_id"></t>
+					</t>
+					<t t-if="not o or not 'company_id' in o">
+						<t t-set="company" t-value="res_company"></t>
+					</t>
+					<div class="row"><hr/>
+						<div class="col-xs-2">
+                            <span class="page" />
+                            /
+                            <span class="topage" />
+                        </div>
+					</div>
+				</div>
+    		</t>
+		</template>
+	</data>
+</odoo>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="view_employee_probation_appraisal_form" model="ir.ui.view">
+        <field name="name">hr.probation.appraisal</field>
+        <field name="model">probation.appraisal</field>
+        <field name="arch" type="xml">
+            <form string="Probation Appraisal" create="false" edit="false">
+                <header>
+                    <button name="create_pip" string="Initiate PIP" states="done" type="object" class="oe_highlight" groups="nl_appraisal.group_appraiser" />
+                    <button name="view_appraisal" string="View Appraisal" attrs="{'invisible': [('state', 'in', ('draft', 'cancel'))]}" type="object" class="oe_highlight"/>
+                    <button name="move_to_cancel" string="Cancel Appraisal" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}" groups="nl_appraisal.group_appraisal_admin"/>
+                    <button name="move_to_draft" string="Reset to Draft" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', ('probation_period', 'objective_setting', 'cancel'))]}" groups="nl_appraisal.group_appraisal_admin"/>
+                    <button name="start_probation" string="Start Probation" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}" groups="nl_appraisal.group_appraisal_admin"/>
+                    <button name="move_to_self_assessment" string="Move to Self Assessment" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'probation_period')]}" groups="nl_appraisal.group_appraisal_admin"/>
+                    <field name="state" widget="statusbar" />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="action_open_pips" icon="fa-bar-chart-o" type="object">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value">PIPs</span>
+                                <span class="o_stat_text"><field name="pip_id_count" readonly="1"/></span>
+                            </div>
+                        </button>
+                    </div>
+                   <group class="px-4">
+                         <group string="Employee Information">
+                            <field name="employee_id"/>
+                            <field name="job_id" />
+                            <field name="department_id"/>
+                        </group>
+                        <group string="Supervisor Information">
+                            <field name="manager_id"/>
+                            <field name="manager_job_id" />
+                        </group>
+                        <group string="Probation Appraisal Period">
+                            <field name="start_date" string="From"/> 
+                            <field name="end_date" string="To"/>
+                        </group>
+                   </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+</odoo>

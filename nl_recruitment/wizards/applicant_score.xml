@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="applicant_score_form_view" model="ir.ui.view">
+        <field name="name">applicant.score.form.view</field>
+        <field name="model">hr.applicant.score.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Applicant Score">
+                <group> 
+                    <field name="shortlisting_score" />
+                    <field name="score_category" force_save='1'/>
+                    <field name="applicant_id" force_save='1' invisible="1"/>
+                    <field name="user_id" force_save='1' invisible="1"/>
+                </group>
+                <footer>
+                    <button name="save_score" class="btn-primary" type="object" string="Save"/>
+                    <button string="Cancel" class="oe_highlight" special="cancel" />
+                </footer>
+            </form>
+        </field>
+      </record>
+</odoo>

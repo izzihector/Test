@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<template id="employee_certificate_template">
+			<t t-call="web.html_container">
+            	<t t-foreach="employee" t-as="o">
+            		<t t-call="nl_employee.certificate_main_info">
+	            		<div class="page" style="padding: 30px;">
+	            			<style>
+                                .mainborder{border:1px solid black;
+                                            border-collapse:collapse;
+                                            font-size: 20px;
+                                            text-align:left;
+                                            padding:5px;
+                                            color:black;
+                                            }
+                                .paragraph{
+                                			font-size:20px;
+                                			padding:5px;
+                                }
+                        	</style>
+	            			<div class="row">
+	            				<p style="float:right; font-size:18px; margin-right:48px; margin-top:50px;">Date: <span t-esc="o['date']"/> </p>
+	            			</div><br/><br/><br/><br/>
+	            			<div class="row" style="margin-top:60px;">
+	            				<h2 style="text-align:center;"><u>TO WHOM IT MAY CONCERN</u></h2>
+	            			</div>
+
+	            			<div class="paragraph">
+	            				<p>This is to certify that <t t-if="o['gender']=='male'">Mr.</t><t t-if="o['gender']=='female'">Ms.</t> <span style="font-weight:bold;" t-esc="o['name']"/><t t-if="o['gender']=='male'"> S/O </t><t t-if="o['gender']=='female'"> D/O </t>Mr. <span style="font-weight:bold;" t-esc="o['father_name']"/> is/was an employee of Swedish Committee for Afghanistan. During <t t-if="o['gender']=='male'">his</t><t t-if="o['gender']=='female'">her</t> tenure with SCA we find <t t-if="o['gender']=='male'">him</t><t t-if="o['gender']=='female'">her</t> an active and competent employee in executing <t t-if="o['gender']=='male'">his</t><t t-if="o['gender']=='female'">her</t> duties and responsibilities.
+	            				</p><br/>
+	            				<p>Details of <t t-if="o['gender']=='male'">his</t><t t-if="o['gender']=='female'">her</t> contract(s) is as follows:</p>
+	            			</div><br/>
+	            			<table class="mainborder" width="80%" style="margin-left:80px;">
+	            				<tr>
+	            					<th class="mainborder">Position Title</th>		
+	            					<th class="mainborder">From</th>
+	            					<th class="mainborder">To</th>
+	            				</tr>
+	            				<t t-foreach="certificate" t-as="c">
+								<t t-if="c['state'] in ['open','foreshorten','in_separation']">
+									<tr>
+										<td class="mainborder"><span t-esc="c['position']"/></td>
+										<td class="mainborder"><span t-esc="c['date_start']"/></td>
+										<td class="mainborder"><span t-if="c['state']=='open'"><span/>Present</span>
+																<span t-if="c['state']=='in_separation'">
+																	<t t-if="c['separation_date']">
+																		<span t-esc="c['separation_date']"/>
+																	</t>
+
+																	<t t-else="">
+																		<span t-esc="c['date_end']"/>
+																	</t>
+
+																</span>
+																<span t-if="c['state']=='foreshorten'"><span t-esc="c['foreshorten_cancellation_date']"/></span>
+										</td>
+									</tr>
+								</t>
+	            				</t>
+	            			</table><br/><br/>
+	            			<div class="paragraph">
+	            				<p>This certificate is issued based on the request of the employee and should not bind Swedish Committee for Afghanistan to any Financial and Legal consequences.<br/><br/>
+
+								Should you need any further information, please do not hesitate to contact us.
+								</p><hr/><br/><br/>
+								<p>Best regards, </p>
+	            			</div>
+					
+							<div class="row paragraph" style="text-align:left;float:left">
+								<span t-esc="o['first_signatory']"/> <br/>
+										<span t-esc="o['first_signatory_position']"/>
+							</div> 
+
+							<div class="row paragraph" style="float:right">
+								<span t-esc="o['second_signatory']"/> <br/>
+										<span t-esc="o['second_signatory_position']"/>
+							</div> 
+	            		</div>
+            		</t>
+            	</t>			
+			</t>
+		</template>
+	</data>
+</odoo>
+
+
+

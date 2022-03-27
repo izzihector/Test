@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<template id="employee_certificate_template">
+			<t t-call="web.html_container">
+            	<t t-foreach="docs" t-as="o">
+            		<t t-call="nl_separation.certificate_main_info">
+	            		<div class="page" style="padding: 30px;">
+	            			<style>
+                                .paragraph{
+                                			font-size:20px;
+                                			padding:15px;
+                                }
+                        	</style>
+	            			<div class="row">
+	            				<p style="float:right; font-size:18px; margin-right:48px; margin-top:50px;">Date: <span t-esc="o.create_date.strftime('%b %d, %Y')"/> </p>
+	            			</div><br/><br/><br/><br/>
+	            			<div class="row" style="margin-top:60px;">
+	            				<h2 style="text-align:center;">TO WHOM IT MAY CONCERN</h2>
+	            			</div><br/><br/>
+            				<p style="padding:15px;" class="paragraph">This is to certify that <t t-if="o.employee_id.gender=='male'">Mr.</t><t t-if="o.employee_id.gender=='female'">Ms.</t> <span style="font-weight:bold;" t-esc="o.employee_id.name"/><t t-if="o.employee_id.gender=='male'"> S/O </t><t t-if="o.employee_id.gender=='female'"> D/O </t>Mr. <span style="font-weight:bold;" t-esc="o.employee_id.father_name"/> has worked with Aga Khan Health Service, Afghanistan as <b><span t-field="o.employee_id.job_title"/></b> from <span t-esc="o.join_date.strftime('%b %d, %Y')"/> to <span t-esc="o.relieve_date.strftime('%b %d, %Y')"/> at <span t-esc="o.job_id.name"/>, <span t-esc="o.job_id.name"/> .
+            				</p>
+	            			<p class="paragraph">We wish every success in his future and career ahead.</p>
+	            			<table  width="100%" class="paragraph">
+			                    <tr>
+			                        <td width="50%" class="paragraph" style="text-align:left;padding:15px;">
+			                            <div>sincerely,<br/><br/><br/><b><span t-field="o.company_id.head_of_hr"/></b><br/>Head of Human Resources<br/>Aga Khan Health Service, Afghanistan </div>
+			                        </td>
+			                    </tr>
+			                </table>
+	            		</div>
+            		</t>
+            	</t>			
+			</t>
+		</template>
+
+	</data>
+</odoo>

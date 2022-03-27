@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+ <!-- Data of relieve Agreement letter -->
+    <record id="hr_relieve_data_line1" model="hr.app.content.line">
+        <field name="text">Dear ${object.employee_id and object.employee_id.name or '' },</field>
+    </record>
+
+    <record id="hr_relieve_data_line2" model="hr.app.content.line">
+        <field name="title">Subject</field>
+        <field name="text">The Resignation agreement between ${object.employee_id.company_id and object.employee_id.company_id.name or ''} and yourself.</field>
+    </record>
+
+    <record id="hr_relieve_data_line3" model="hr.app.content.line">
+        <field name="sequence">1</field>
+        <field name="title">Resignation</field>
+        <field name="text">Your last day of work with the Company and your employment resignation date will be ${object.relieve_date or ''}</field>
+    </record>
+
+    <record id="hr_relieve_data_line4" model="hr.app.content.line">
+        <field name="sequence">2</field>
+        <field name="title">Other Compensation or Benefits</field>
+        <field name="text">You acknowledge that, you will not receive any additional compensation or benefits after the Resignation Date.</field>
+    </record>
+
+    <record id="hr_relieve_data_line5" model="hr.app.content.line">
+        <field name="sequence">3</field>
+        <field name="title">Return of Company Property</field>
+        <field name="text">By the Resignation Date, you agree to return  to the Company all Company documents (and all copies thereof) and other Company property that you have had in your possession at any time, but not limited to, Company files, notes, records, business plans and forecasts, financial information, specifications, computer-recorded information, tangible property any materials or confidential information of the Company (and all reproductions thereof).</field>
+    </record>
+
+    <record id="hr_relieve_data_line6" model="hr.app.content.line">
+        <field name="sequence">4</field>
+        <field name="title">Proprietary Information Obligations</field>
+        <field name="text">Both during and after your employment you acknowledge your continuing obligations under your Proprietary Information and Inventions Agreement not to use or disclose any confidential or proprietary information of the Company without prior written authorization from a duly authorized representative of the Company.</field>
+    </record>
+
+    <record id="hr_relieve_data_line7" model="hr.app.content.line">
+        <field name="sequence">5</field>
+        <field name="title">Non-disparagement</field>
+        <field name="text">Both you and the Company agree not to disparage the other party, and the other party's officers, directors, employees, shareholders and agents, in any manner likely to be harmful to them or their business, business reputation or personal reputation. provided that both you and the Company will respond accurately and fully to any question, inquiry or request for information when required by legal process. The communication regarding your resignation of employment shall be subject to both parties reasonable approval.</field>
+    </record>
+
+    <record id="hr_relieve_data_line8" model="hr.app.content.line">
+        <field name="sequence">6</field>
+        <field name="title">Non-solicitation</field>
+        <field name="text">You agree that you will not directly or indirectly solicit, entice, induce, or encourage any employee, consultant, or independent contractor of the Company to terminate his or her relationship with the Company in order to become an employee, consultant, or independent contractor to or for any other person or entity.</field>
+    </record>
+
+    <record id="hr_relieve_data_line9" model="hr.app.content.line">
+        <field name="sequence">7</field>
+        <field name="title">Assistance with Areas of Responsibilities</field>
+        <field name="text"> Without requiring additional compensation, you hereby agree to provide reasonable assistance to the Company with questions concerning areas of responsibilities with which you were familiar during your employment, to the extent that the Company believes such assistance is useful.</field>
+    </record>
+
+    <record id="hr_relieve_data_line10" model="hr.app.content.line">
+        <field name="sequence">8</field>
+        <field name="title">Release</field>
+        <field name="text">In exchange for the payments and other consideration under this Agreement to which you would not otherwise be entitled, you hereby release, acquit and forever discharge the Company, officers, directors, agents, servants, employees, attorneys, shareholders, successors,
+
+assigns and affiliates, of and from any and all claims, liabilities, demands, causes of action, costs, expenses, attorneys fees, damages, indemnities and obligations of every kind and nature, in law, equity, or otherwise, known and unknown, suspected and unsuspected, disclosed and undisclosed, arising out of or in any way related to agreements, events, acts or conduct at any time prior to and including the execution date of this Agreement, including but not limited to: all such claims and demands directly or indirectly arising out of or in any way connected with your employment with the Company or the termination of that employment; claims or demands related to salary, bonuses, commissions, or any other ownership interests in the Company, expense reimbursements, or any other form of compensation; wrongful discharge; discrimination; harassment; fraud; defamation; emotional distress; and breach of the implied covenant of good faith and fair dealing.</field>
+    </record>
+
+    <record id="hr_relieve_data_line11" model="hr.app.content.line">
+        <field name="sequence">9</field>
+        <field name="text">You acknowledge that you are knowingly and voluntarily waiving and releasing any rights you may have under the Serpent rules, as amended. You also acknowledge that the consideration given for the waiver and release in the preceding paragraph hereof is in addition to anything of value to which you were already entitled. You further acknowledge that you have been advised by this writing, as required by the Serpent, that: your waiver and release do not apply to any rights or claims that may arise after the execution date of this Agreement</field>
+    </record>
+    <record id="hr_relieve_data_line12" model="hr.app.content.line">
+            <field name="text">You acknowledge that you will not be reapplying for any post at Serpentcs for the period of minimum one year from the date you signed this document.    </field>
+    </record> 
+    <record id="hr_relieve_data_line13" model="hr.app.content.line">
+        <field name="text">I wish you good luck in your future endeavors.</field>
+    </record>
+    <record id="hr_relieve_data_line14" model="hr.app.content.line">
+        <field name="text">I read, understood, acknowledged and agreed to the terms and conditions set above approved by signatory below.</field>
+    </record>
+    <record id="hr_relieve_data_line15" model="hr.app.content.line">
+        <field name="text">Authorized Signatory                                      Receiver's Signature  
+                                ${object.employee_id.company_id and object.employee_id.company_id.name or ''}</field>
+    </record>    
+    <record id="hr_relieve_data" model="hr.app.doc">
+        <field name="name">Relieve Agreement Letter</field>
+        <field name="company_id" ref="base.main_company"></field>
+        <field name="subject"/>
+        <field name="content_ids" eval="[(4, ref('hr_relieve_data_line1')),
+                                        (4, ref('hr_relieve_data_line2')),
+                                        (4, ref('hr_relieve_data_line3')),
+                                        (4, ref('hr_relieve_data_line4')),
+                                        (4, ref('hr_relieve_data_line5')),
+                                        (4, ref('hr_relieve_data_line6')),
+                                        (4, ref('hr_relieve_data_line7')),
+                                        (4, ref('hr_relieve_data_line8')),
+                                        (4, ref('hr_relieve_data_line9')),
+                                        (4, ref('hr_relieve_data_line10')),
+                                        (4, ref('hr_relieve_data_line11')),
+                                        (4, ref('hr_relieve_data_line12')),
+                                        (4, ref('hr_relieve_data_line13')),
+                                        (4, ref('hr_relieve_data_line14')),
+                                        (4, ref('hr_relieve_data_line15')),
+                                        ]"/>  
+    </record>
+</odoo>

@@ -1,0 +1,37 @@
+<odoo>
+    
+
+    <record id="employee_appraisal_objectives_form" model="ir.ui.view">
+        <field name="name">employee.appraisal.objectives.form</field>
+        <field name="model">employee.appraisal.objectives</field>
+        <field name="arch" type="xml">
+            <form string="Appraisal Objective">
+                <sheet>
+                    <group>
+                        <div class="oe_title">
+                            <h1 class="d-flex"> <field name="name" /></h1>
+                        </div>
+                    </group>
+                    <group string="General Information">
+                        <field name="employee_feedback" />
+                        <field name="manager_feedback" />
+                        <field name="rating" />
+                    </group>
+                    <group string="Next Review Period">
+                        <field name="expected_outcome" />
+                        <field name="creteria" />
+                    </group>
+
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+      </record>
+
+
+
+</odoo>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="excel_report_action_view" model="ir.ui.view">
+        <field name="name">employee.excel.report</field>
+        <field name="model">employee.excel.report</field>
+        <field name="arch" type="xml">
+            <form string="Employee Excel Report">
+                <group>
+                  <group>
+                      <field name="employee_status" options="{'horizontal': true}" />
+                      <field name="office_ids" widget='many2many_tags' options="{'no_create': True,'no_create_edit':True,'no_open':True}"/>
+                  </group>
+                  <group>
+                      <field name="employmee_type" />
+                  </group>
+                  <group attrs="{'invisible': [('employee_status', 'not in', ['False', 'all'])]}">
+                      <field name="all" />
+                  </group>
+                  <group>
+                      <field name="employment_date" />
+                      <field name="start_date" attrs="{'invisible':[('employment_date','=',False)]}"/>
+                      <field name="end_date" attrs="{'invisible':[('employment_date','=',False)]}"/>
+                  </group>
+                  
+                </group>
+                <footer>
+                    <button name="generate_report" class="btn-primary" type="object" string="Generate"/>
+                    <button name="cancel" string="Cancel" special="cancel" class="oe_link"/>
+                </footer>
+            </form>
+        </field>
+      </record>
+
+      <record model="ir.actions.act_window" id="excel_report_action">
+        <field name="name">Generate Excel Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">employee.excel.report</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="nl_employee.excel_report_action_view"/>
+        <field name="target">new</field>
+      </record>
+
+      <menuitem
+        id="menu_hr_employee_excel_report"
+        name="Generate Excel Report"
+        parent='hr.hr_menu_hr_reports'
+        action="excel_report_action"
+        sequence="100"/>
+
+</odoo>

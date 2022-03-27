@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<!-- Stage Form View -->
+    <record model="ir.ui.view" id="hr_recruitment_stage_form_inherited">
+        <field name="name">hr.recruitment.stage.form</field>
+        <field name="model">hr.recruitment.stage</field>
+        <field name="inherit_id" ref="hr_recruitment.hr_recruitment_stage_form"/>
+        <field name="arch" type="xml">
+        	<xpath expr="//field[@name='job_ids']" position="after">
+        		<field name="state_mode"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherited Menus for Read-Only Group -->
+    <record id="hr_recruitment.menu_hr_recruitment_degree" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('nl_master.group_hr_recruitment_read_only'))]"/>
+    </record>
+
+    <record id="hr_recruitment.menu_hr_recruitment_global_settings" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('nl_master.group_hr_recruitment_read_only'))]"/>
+    </record>
+</odoo>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Link In main page -->
+    <template id="my_attendance_link" name="My_attendance" inherit_id="portal.portal_my_home" priority="20">
+      <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+         <t t-if="show_my_attendance" t-call="portal.portal_docs_entry">
+            <t t-set="title">My Attendance</t>
+            <t t-set="url" t-value="'/my/attendance/'" />
+         </t>
+      </xpath>
+    </template>
+
+    <!-- List of attendance -->
+    <template id="portal_attendance_details" name="My Attendance">
+      <t t-call="portal.portal_layout">
+         <t t-set="breadcrumbs_searchbar" t-value="True" />
+         <t t-call="portal.portal_searchbar">
+            <t t-set="title">My Attendance</t>
+         </t>
+         <div t-if="not attendance" class="alert alert-warning mt8" role="alert">
+            No Attendance.
+         </div>
+         <t t-if="attendance" t-call="portal.portal_table">
+            <t t-foreach="attendance" t-as="att_groups">
+               <thead>
+                  <tr t-attf-class="{{'thead-light' if not groupby == 'none' else ''}}">
+                     <th>Check In</th>
+                     <th>Check Out</th>
+                     <th>Work Hours</th>
+                  </tr>
+               </thead>
+               <tbody>
+                     <tr t-foreach="att_groups" t-as="att">
+                        <td><span t-field="att.check_in" /></td>
+                        <td><span t-field="att.check_out" /></td>
+                        <td><span t-field="att.worked_hours" t-options='{"widget": "float", "precision": 2}' /></td>
+                     </tr>
+               </tbody>
+            </t>
+         </t>
+      </t>
+    </template>
+
+</odoo>

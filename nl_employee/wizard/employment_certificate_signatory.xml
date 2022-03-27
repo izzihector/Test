@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="employment_certificate_signatory_wizard_view" model="ir.ui.view">
+        <field name="name">employment.certificate.signatory</field>
+        <field name="model">employment.certificate.signatory</field>
+        <field name="arch" type="xml">
+            <form string="Employment Certificate Signatory">
+                <field name="employee_id" invisible='1'/>
+                <group> 
+                    <field name="first_signatory" required='1'/>
+                    <field name="second_signatory" />
+                </group>
+                <footer>
+                    <button name="print_employment_certificate" class="btn-primary" type="object" string="Print"/>
+                    <button string="Cancel" class="oe_highlight" special="cancel" />
+                </footer>
+            </form>
+        </field>
+      </record>
+
+    <record model="ir.actions.act_window" id="action_employment_certificate_signatory_wizard">
+            <field name="name">Employment Certificate Signatory Wizard</field>
+            <field name="res_model">employment.certificate.signatory</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_id" ref="employment_certificate_signatory_wizard_view"></field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+</odoo>

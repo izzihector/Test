@@ -1,0 +1,855 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_employee_checklist_form" model="ir.ui.view">
+            <field name="name">hr.employee.form</field>
+            <field name="model">hr.employee</field>
+            <field name="priority">100</field>
+            <field name="arch" type="xml">
+                <form string="Employee Checklist">
+                    <sheet>
+                        <group>
+                            <group>
+                                <span />
+                            </group>
+                            <group>
+                                <span />
+                                <field name="check_marked" widget="percentpie" nolabel="1" force_save="1"/>
+                            </group>
+                            <group string="Information &amp; Communication Technology (ICT)">
+                                <field name="entry_checklist" widget="many2many_checkboxes" nolabel="1" domain="[('category','=','ict')]" force_save="1"/>
+                            </group>
+                            <group string="Security Unit (SU)">
+                                <field name="security_checklist" widget="many2many_checkboxes" nolabel="1" domain="[('category','=','su')]" force_save="1"/>
+                            </group>
+                            <group string="Service Support Unit (SSU)">
+                                <field name="service_support_checklist" widget="many2many_checkboxes" nolabel="1" domain="[('category','=','ssu')]" force_save="1"/>
+                            </group>
+                            <group string="Logistic">
+                                <field name="logistic_checklist" widget="many2many_checkboxes" nolabel="1" domain="[('category','=','logistic')]" force_save="1"/>
+                            </group>
+                            <group string="Human Resources (HR)">
+                                <field name="hr_checklist" widget="many2many_checkboxes" nolabel="1" domain="[('category','=','hr')]" force_save="1"/>
+                            </group>
+                        </group>
+                        <div class="oe_clear"/>
+                    </sheet>
+                    <div class="o_attachment_preview"/>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+    <record id="view_employee_personal_checklist_form" model="ir.ui.view">
+        <field name="name">hr.employee.form</field>
+        <field name="model">hr.employee</field>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <form string="Employee Personal Checklist">
+                <sheet>
+                    <group>
+                        <group>
+                            <span />
+                        </group>
+                        <group>
+                            <span />
+                            <field name="personal_checklist_check_marked" widget="percentpie" nolabel="1" force_save="1"/>
+                        </group>
+                        <group string="Personal Profile">
+                            <field name="personal_file_checklist" widget="many2many_checkboxes" nolabel="1" domain="[('category','=','personal_profile')]" force_save="1"/>
+                        </group>
+                        <group string="Learning and Development">
+                            <field name="learning_checklist" widget="many2many_checkboxes" nolabel="1" domain="[('category','=','learning_development')]" force_save="1"/>
+                        </group>
+                        <group string="Recruitment &amp; Selection">
+                            <field name="recruitment_checklist" widget="many2many_checkboxes" nolabel="1" domain="[('category','=','recruitment')]" force_save="1"/>
+                        </group>
+                        <group string="Disciplinary">
+                            <field name="diciplinary_checklist" widget="many2many_checkboxes" nolabel="1" domain="[('category','=','disciplinary')]" force_save="1"/>
+                        </group>
+                        <group string="HR Administration">
+                            <field name="hr_administration_checklist" widget="many2many_checkboxes" nolabel="1" domain="[('category','=','hr_administration')]" force_save="1"/>
+                        </group>
+                        <group string="Exits and Separation">
+                            <field name="exits_and_separation_checklist" widget="many2many_checkboxes" nolabel="1" domain="[('category','=','exits_and_separation')]" force_save="1"/>
+                        </group>
+                    </group>
+                    <div class="oe_clear"/>
+                </sheet>
+                <div class="o_attachment_preview"/>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hr_employee_checklist_form" model="ir.actions.act_window">
+        <field name="name">Employee Checklist</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('view_employee_checklist_form')})]"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            Create Employee checklist
+            </p>
+        </field>
+    </record>
+
+    <record id="action_hr_employee_personal_checklist_form" model="ir.actions.act_window">
+        <field name="name">Employee Personal Checklist</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('view_employee_personal_checklist_form')})]"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            Create Employee Personal Checklist
+            </p>
+        </field>
+    </record>
+
+
+    <menuitem id="menu_resource_calendar_employee"
+        parent="hr.menu_human_resources_configuration"
+        action="resource.action_resource_calendar_form"
+        />
+    <!-- form view for Employee Document -->
+    <record id="form_view_employee_document" model="ir.ui.view">
+        <field name="name">employee.document.form.view</field>
+        <field name="model">employee.document</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="name" filename="file_name"/>
+                <field name="file_name" invisible="1"/>
+                <field name="emp_id"/>
+            </form>    
+        </field>
+    </record>
+    
+    <record id="tree_view_employee_document" model="ir.ui.view">
+        <field name="name">employee.document.form.view</field>
+        <field name="model">employee.document</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" filename="file_name"/>
+                <field name="file_name"/>
+            </tree>    
+        </field>
+    </record>
+    <record id="action_employee_document" model="ir.actions.act_window">
+        <field name="name">Employee Document</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">employee.document</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="tree_view_employee_document"/>
+        <field name="context">{'default_emp_id': active_id}</field>
+        <field name="domain">[('emp_id', '=', active_id)]</field>
+    </record>
+
+        <record id="hr.view_employee_tree" model="ir.ui.view">
+            <field name="name">hr.employee.tree</field>
+            <field name="model">hr.employee</field>
+            <field name="arch" type="xml">
+                <tree string="Employees" multi_edit="1" sample="1">
+                    <field name="idc_no" />
+                    <field name="name" string="Name" readonly="1"/>
+                    <field name="father_name" readonly="1"/>
+                    <field name="work_location" invisible="1"/>
+                    <field name="job_id" string="Designation"/>
+                    <field name="company_id" groups="base.group_multi_company" readonly="1"/>
+                    <field name="gender"/>
+                    <field name="unit_id"/>
+                    <field name="project_id"/>
+                    <field name="department_id"/>
+                    <field name="office_id" />
+                    <field name="join_date" />
+                    <field name="employee_type"/>
+                    <field name="employment_type" />
+                    <field name="employee_grade" />
+                    <!-- <field name="check_marked" widget="progressbar"/> -->
+                </tree>
+            </field>
+        </record>
+
+    <!-- <record id="payroll_hr_employee_view_form_extended" model="ir.ui.view">
+        <field name="name">payroll.hr.employee.view.form.extended</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr_payroll.payroll_hr_employee_view_form"/>
+        <field name="arch" type="xml">
+                <xpath expr="//field[@name='registration_number']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+        </field>
+    </record> -->
+
+    <record id="nl_view_employee_form" model="ir.ui.view">
+        <field name="name">hr.employee.form</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button name="%(nl_employee.action_employee_document)d"
+                    class="oe_stat_button"
+                    icon="fa-file"
+                    type="action"
+                    string="Document">
+                </button>
+                <button name="open_hr_employee_checklist"
+                    class="oe_stat_button"
+                    icon="fa-flag-checkered"
+                    type="object"
+                    string="Onboarding">
+                </button>
+                <button name="open_hr_employee_personal_checklist"
+                    class="oe_stat_button"
+                    icon="fa-list-alt"
+                    type="object"
+                    string="HR Checklist">
+                </button>
+            </div>
+
+            <xpath expr="//div[hasclass('oe_title')]" position="after">
+                <h2>
+                    <field name="idc_no" placeholder="ID Card No" readonly='1'/>
+                    <field name="bank_account_id" invisible="1"/>
+                    <field name="address_home_id" invisible="1"/>
+                </h2>
+            </xpath>
+
+            <xpath expr="//header/button[1]" position="before">
+                <button string="Return Employee" type="object" name="unarchive_employee" attrs="{'invisible':[('active','!=',False)]}"/>
+                <button string="Employment Certificate" type="object" class="btn-primary" name="print_employment_certificate" />
+            </xpath>
+
+            <xpath expr="//div[hasclass('oe_title')]" position="replace">
+                <div class="oe_title">
+                    <h1 class="d-flex">
+                        <field name="name" placeholder="Employee's Name" required="True"/>
+                       
+                        <a title="Chat" icon="fa-comments" href="#" class="ml8 o_employee_chat_btn" invisible="not context.get('chat_icon')" attrs="{'invisible': [('user_id','=', False)]}" role="button"><i class="fa fa-comments"/></a>
+                    </h1>
+                    <h1 class="d-flex">
+                        <field name="name_in_dari" placeholder="نام"/>
+                    </h1> 
+                    <h2>
+                        <field name="job_title" placeholder="Job Position" options="{'no_create': True, 'no_create_edit':True}"/>
+                    </h2>
+                    <field name="category_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" placeholder="Tags"  groups="hr.group_hr_manager"/>
+                </div>
+            </xpath>
+
+            
+            <xpath expr="//field[@name='job_title']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//sheet/group[1]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='address_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='hr_settings']" position="replace">
+                <page name="hr_settings" string="HR Settings" groups="hr.group_hr_manager">
+                    <group>
+                        <group string='Status' name="active_group">
+                            <field name="user_id" string="Related User"/>
+                            <field name="job_id" options="{'no_create_edit':True,'no_create':True,'no_open':True}"/>
+                        </group>
+                        <group string="Attendance" name="identification_group">
+                            <field name="pin" string="PIN Code"/>
+                            <label for="barcode"/>
+                            <div class="o_row">
+                                <field name="barcode"/>
+                                <button string="Generate" class="btn btn-link" type="object" name="generate_random_barcode" attrs="{'invisible': [('barcode', '!=', False)]}"/>
+                                <button name="%(hr.hr_employee_print_badge)d" string="Print Badge" class="btn btn-link" type="action" attrs="{'invisible': [('barcode', '=', False)]}"/>
+                            </div>
+                        </group>
+                    </group>
+                </page>
+
+            </xpath>
+
+            
+
+            <xpath expr="//div[@id='o_work_employee_main']//group[1]" position="attributes">
+                <attribute name="string">Contact Information</attribute>
+            </xpath>
+            
+            
+            <!-- <xpath expr="//form/sheet/group[1]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath> -->
+
+            <xpath expr="//div[@id='o_work_employee_main']//group[2]" position="attributes">
+                <attribute name="string">Position</attribute>
+            </xpath>
+            <xpath expr="//div[@id='o_work_employee_main']" position="replace">
+                <div id="o_work_employee_main">
+                <group string="Employement Information">
+                    <field name="employee_type" required="1"/>
+                    <field name="join_date" readonly="1"/>
+                    <field name="is_returnee" invisible='1' />
+                    <field name="rejoin_date" readonly='1' attrs="{'invisible':[('is_returnee','!=',True)]}"/>
+                    <field name="staff_type"/>
+                    <field name="job_id" string="Job Title" options="{'no_create_edit':True,'no_create':True,'no_open':True}"/>
+                    <field name="project_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                    <field name="unit_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                    <field name="department_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                    <field name="is_local"/>
+                    <field name="parent_id" string="Manager/Supervisor" options="{'no_create': True, 'no_create_edit':True}"/>
+                    <field name="second_manager_id" string="2nd Manager/Supervisor" options="{'no_create': True, 'no_create_edit':True}"/>
+                    <field name="leave_responsible_substitue" groups="hr_holidays.group_hr_holidays_manager"  options="{'no_create': True, 'no_create_edit':True}"/>
+                    <field name="resource_calendar_id" required="1" string="Working Time"/>
+                    <field name="leave_manager_id" string="Leave Approver"/>
+                    <field name="id_received_date" />
+                    <field name="fingerprint_id" />
+
+                </group>
+                <group name="managers" style="opacity:0;" string="Approvers" class="hide-group-if-empty">
+                    <!-- is overridden in other hr related modules -->
+                </group>
+
+                <group string="Work Address">
+                    <field name="office_id" options="{'no_create': True,'no_create_edit':True,'no_open':True}" required='1'/>
+                    <field name="province_id" options="{'no_create': True,'no_create_edit':True,'no_open':True}"/>
+                    <field name="work_location" string="Work Location"/>
+                </group>
+
+                <group string="Contact Information">
+                    <field name="mobile_phone" widget="phone"/>
+                    <field name="work_email" widget="email" required="0"/>
+                    <field name="work_phone" string="Extension" widget="phone"/>
+
+                </group>
+            </div>
+                
+            </xpath>
+            
+
+            <xpath expr="//page[@name='personal_information']" position="after">
+                <page name="contract_information" string="Salary Information" groups="hr.group_hr_manager,hr.group_hr_user,nl_master.group_hr_employee_read_only">
+                    <group string="Salary Information" groups="hr.group_hr_manager,hr.group_hr_user,nl_master.group_hr_employee_read_only" readonly='1'>
+                        <field name="employee_salary" groups="hr.group_hr_manager,hr.group_hr_user,nl_master.group_hr_employee_read_only"  readonly='1'/>
+                        <field name="employee_grade" groups="hr.group_hr_manager,hr.group_hr_user,nl_master.group_hr_employee_read_only"  readonly='1'/>
+                        <field name="employee_step" groups="hr.group_hr_manager,hr.group_hr_user,nl_master.group_hr_employee_read_only"  readonly='1'/>
+                        <separator/>
+                        <field name="last_promotion_date" groups="hr.group_hr_manager,hr.group_hr_user,nl_master.group_hr_employee_read_only" readonly='1'/>
+                        <field name="previous_salary" groups="hr.group_hr_manager,hr.group_hr_user,nl_master.group_hr_employee_read_only" readonly='1'/>
+                        <field name="previous_grade" groups="hr.group_hr_manager,hr.group_hr_user,nl_master.group_hr_employee_read_only"  readonly='1'/>
+                        <field name="previous_step" groups="hr.group_hr_manager,hr.group_hr_user,nl_master.group_hr_employee_read_only"  readonly='1'/>
+                    </group>
+
+                </page>
+                
+            </xpath>
+            <xpath expr="//page[@name='personal_information']" position="replace">
+            <page name="personal_information" string="Personal Information">
+                <group>
+                    <group string="Citizenship &amp; Other Info">
+                        <field name="country_id" options='{"no_open": True, "no_create": True}'/>
+                        <field name="identification_id" groups="hr.group_hr_user,nl_master.group_hr_employee_read_only"
+                            string="NIC No"/>
+                        <field name="passport_id" groups="hr.group_hr_user,nl_master.group_hr_employee_read_only"/>
+                        <field name="passport_expiry_date"/>
+                      
+                    </group>
+
+                    <group string="Personal Information">
+                        <field name="birthday"/>
+                        <field name="age"/>
+                        <field name="place_of_birth" groups="hr.group_hr_user,nl_master.group_hr_employee_read_only"/>
+                        <field name="personal_province_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                        <field name="district_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                        <field name="village" />
+                        <field name="gender"/>
+                        <field name="blood_group_type"/>
+                        <field name="marital"/>
+                        <field name="children"/>
+                        <field name="employee_language" invisible='1'/>
+                    </group>
+                    <group string="Family Information">
+                        <field name="father_name"/>
+                        <field name="father_name_in_dari"/>
+                        <field name="grand_father_name"/>
+                        <field name="mother_name"/>
+                       
+                    </group>
+                    <group string="Contact Information">
+                        <field name="personal_mobile"/>
+                        <field name="personal_email"/>
+                        <field name="skype"/>
+                        <field name="current_address"/>
+                        <field name="permanent_address"/>
+                    </group>
+
+                    <group string="Payment Methods">
+                        <field name="payment_type"/>
+                        <field name="bank_id" options="{'no_create': True, 'no_create_edit':True}" attrs="{'invisible': [('payment_type', '!=', 'bank')]}"/>    
+                        <field name="bank_account" attrs="{'invisible': [('payment_type', '!=', 'bank')]}"/>  
+                        
+                        <field name="tin_no" string="TIN"/>
+                        <field name="statistic_number" string="Statistic Number"/>
+                        <field name="cost_center" string="Cost Center" options="{'no_create': True, 'no_create_edit':True}"/>
+                        <field name="donor_code" string="Donor Code" options="{'no_create': True, 'no_create_edit':True}"/>
+                        <field name="payroll_group_id" string="Payroll Group" />
+                        
+                        
+                    </group>
+
+                    <group string="Education Information">
+                        <field name="education_level" readonly='1' attrs="{'invisible': [('is_illiterate', '!=', False)]}"/>
+                        <field name="education_name" readonly='1' attrs="{'invisible': [('is_illiterate', '!=', False)]}"/>
+                        <field name="education_start_date" readonly='1' attrs="{'invisible': [('is_illiterate', '!=', False)]}"/>
+                        <field name="education_end_date" readonly='1' attrs="{'invisible': [('is_illiterate', '!=', False)]}"/>
+                        <field name="education_institution" readonly='1' attrs="{'invisible': [('is_illiterate', '!=', False)]}"/>
+                        <field name="illiteracy_value" readonly='1' attrs="{'invisible': [('is_illiterate', '!=', True)]}" force_save="1"/>
+                        <separator/>
+                        <field name="is_illiterate" />
+                    </group>
+
+                </group>
+
+                <separator string="Next of Kin" col="4" colspan="4"/>
+                <field name="emergency_contacts_ids" nolabel="1">
+                    <tree editable="bottom">
+                        <field name="name"/>
+                        <field name="relationship"/>
+                        <field name="number" string="Phone Number"/>
+                         <field name="address"/>
+                         <field name="description" />
+                        
+                    </tree>
+                </field>
+
+             
+
+                <separator string="Contact Persons" col="4" colspan="4"/>
+                <field name="contact_person_ids" nolabel="1">
+                    <tree editable="bottom">
+                        <field name="name"/>
+                        <field name="email" />
+                        <field name="phone_number" string="Phone Number"/>
+                        <field name="address" />
+                    </tree>
+                </field>
+
+                <separator string="References" col="4" colspan="4"/>
+                <field name="references_ids" nolabel="1">
+                    <tree editable="bottom">
+                        <field name="name"/>
+                        <field name="job_title"/>
+                        <field name="organization"/>
+                        <field name="contact_number"/>
+                        <field name="email"/>
+                        <field name="reference_document" widget="binary"/>
+                        <field name="checked"/>
+                        <button name="send_email_to_reference" class="btn btn-primary" type="object" string="Send Email" />
+                    </tree>
+
+
+                    
+                </field>
+
+                <group colspan="4" col="4">
+                    <field name="completed_police_clearance"/>
+                    <field name="completed_pikaz_clearance"/>
+                </group>
+                <separator string="Work Permit" attrs="{'invisible': [('completed_police_clearance', '!=', True)]}"/>
+                <field name="police_clearance_ids" attrs="{'invisible': [('completed_police_clearance', '!=', True)]}">
+                    <tree editable="top">
+                        <field name="file_name" invisible="1"/>
+                        <field name="name" filename="file_name"/>
+                    </tree>
+                </field>
+                <separator string="Medical Checkup" attrs="{'invisible': [('completed_pikaz_clearance', '!=', True)]}"/>
+                <field name="pikaz_clearance_ids" attrs="{'invisible': [('completed_pikaz_clearance', '!=', True)]}">
+                    <tree editable="top">
+                        <field name="file_name" invisible="1"/>
+                        <field name="type" />
+                        <field name="name" filename="file_name" widget="binary"/>
+                        <field name="checked" />
+                    </tree>
+                </field>
+            </page>
+
+         
+            </xpath>
+        </field>
+    </record>
+
+    <record id="nl_hr_kanban_view_employees" model="ir.ui.view">
+        <field name="name">hr.employee.kanban</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
+        <field name="priority">10</field>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('o_kanban_record_headings')]/span" position="after">
+                <span t-if="record.department_id.raw_value" class="o_kanban_record_subtitle">
+                    <i class="mr-2 fa fa-building-o"></i><field name="department_id"/> / <field name="unit_id"/>
+                </span>
+                
+            </xpath>
+            <xpath expr="//ul" position="after">
+                <span t-if="record.idc_no.raw_value" class="o_kanban_record_subtitle">
+                    <i class="mr-2 fa fa-id-card"></i><field name="idc_no"/>
+                </span>
+                
+            </xpath>
+            <xpath expr="//field[@name='work_email']" position="before">
+                <i class="mr-2 fa fa-envelope"></i>
+            </xpath>
+            <xpath expr="//field[@name='work_phone']" position="before">
+                <i class="mr-2 fa fa-phone"></i>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="emp_references_tree">
+        <field name="name">emp.references.tree</field>
+        <field name="model">employee.references</field>
+        <field name="arch" type="xml">
+            <tree string="Reference">
+                <field name="name"/>
+                <field name="job_title"/>
+                <field name="contact_number"/>
+                <field name="email"/>
+                <field name="checked"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="emp_references_form">
+        <field name="name">emp.references.form</field>
+        <field name="model">employee.references</field>
+        <field name="arch" type="xml">
+            <form string="Reference">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="job_title"/>
+                        <field name="contact_number"/>
+                        <field name="email"/>
+                        <field name="checked"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="emp_beneficiary_tree">
+        <field name="name">emp.beneficiary.tree</field>
+        <field name="model">beneficiary.contacts</field>
+        <field name="arch" type="xml">
+            <tree string="Reference">
+                <field name="name"/>
+                <field name="relationship"/>
+                <field name="tazkira_number"/>
+                <field name="number"/>
+                <field name="address"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="emp_beneficiary_form">
+        <field name="name">emp.beneficiary.form</field>
+        <field name="model">beneficiary.contacts</field>
+        <field name="arch" type="xml">
+            <form string="Reference">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="relationship"/>
+                        <field name="tazkira_number"/>
+                        <field name="number"/>
+                        <field name="address"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.sequence" id="seq_hr_employee">
+        <field name="name">Employee Sequence </field>
+        <field name="code">employee.id_card</field>
+        <field name="prefix"></field>
+        <field name="padding">6</field>
+        <field name="company_id" eval="False" />
+    </record>
+
+    <record id="completed_police_clearance_form" model="ir.ui.view">
+        <field name="name">Work Permit</field>
+        <field name="model">completed.police.clearance</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="name" filename="file_name"/>
+                <field name="file_name" invisible="1"/>
+            </form>    
+        </field>
+    </record>
+
+    <record id="completed_pikaz_clearance_form" model="ir.ui.view">
+        <field name="name">Medical Checkup</field>
+        <field name="model">completed.pikaz.clearance</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="name" filename="file_name"/>
+                <field name="file_name" invisible="1"/>
+            </form>    
+        </field>
+    </record>
+
+    
+    
+    <record id="view_employee_filter_extended" model="ir.ui.view">
+            <field name="name">hr.employee.search</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_filter"/>
+            <field name="arch" type="xml">
+                 <xpath expr="//field[@name='department_id']" position="after">
+                    <field name="unit_id" icon="fa-building" enable_counters="1"/>
+                    <field name="province_id" icon="fa-map-marker" enable_counters="1"/>
+                 </xpath>
+                <xpath expr="//field[@name='name']" position="replace">
+                     <field name="name" string="Employee" filter_domain="['|',('name', 'ilike', self), ('idc_no','=',self)]"/>
+                </xpath>
+                <xpath expr="//field[@name='job_id']" position="after">
+                     <field name="office_id" string="Office"/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                     <field name="father_name" string="Father Name"/>
+                </xpath>
+                <xpath expr="//filter[@name='group_job']" position="after">
+                     <filter name="group_office" string="Office" domain="[]" context="{'group_by': 'office_id'}"/>
+                </xpath>
+            </field>
+    </record>
+
+    <record id="action_time_off_balance_extended" model="ir.actions.server">
+        <field name="name">Time off Balance</field>
+        <field name="model_id" ref="nl_employee.model_employee_leave_balance"/>
+        <field name="binding_model_id" ref="hr.model_hr_employee"/>
+        <field name="state">code</field>
+        <field name="code">
+        action = model.action_time_off_balance_extended()
+        </field>
+    </record>
+    
+    <record id="action_time_off_leave_report_extended" model="ir.actions.server">
+        <field name="name">Employees Leave Balance</field>
+        <field name="model_id" ref="nl_employee.model_employee_leave_balance"/>
+        <field name="binding_model_id" ref="hr_holidays.model_hr_leave"/>
+        <field name="state">code</field>
+        <field name="code">
+        action = model.action_time_off_balance_extended_all()
+        </field>
+    </record>
+
+    <record id="hr_leave_balance_tree" model="ir.ui.view">
+        <field name="name">report.hr.holidays.report.leave_all.tree</field>
+        <field name="model">employee.leave.balance</field>
+        <field name="priority" eval="2"/>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0" delete="0">
+                <field name="employee_id" />
+                <field name="leave_type" />
+                <field name="total_allocation" string="Total Allocations"/>
+                <field name="total_leave" string="Total Time off"/>
+                <field name="total_balance"/>
+                <field name="util_percentage" widget="percentage"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="hr_leave_balance_emp_tree" model="ir.ui.view">
+        <field name="name">report.hr.holidays.emp.report.leave_all.tree</field>
+        <field name="model">employee.leave.balance</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0" delete="0">
+                <field name="employee_id" />
+                <field name="leave_type" />
+                <field name="unit_id"/>
+                <field name="department_id"/>
+                <field name="office_id"/>
+                <field name="job_id"/>
+                <field name="total_allocation" string="Total Allocations"/>
+                <field name="total_leave" string="Total Time off"/>
+                <field name="total_balance"/>
+                <field name="util_percentage"  widget="percentage"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- search view Employee Leave Balance -->
+     <record id="employee_leave_balance_search" model="ir.ui.view">
+        <field name="name">employee.leave.balance.search</field>
+        <field name="model">employee.leave.balance</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="employee_id" />
+                <field name="leave_type" />
+                <field name="department_id" />
+                <field name="office_id" />
+                <filter string="Annual Leave" name="annual_leave" domain="[('leave_type', 'ilike', 'annual')]"/>
+                <filter string="Sick Leave" name="sick_leave" domain="[('leave_type', 'ilike', 'sick')]"/>
+                <filter string="Emergency Leave" name="emergency_leave" domain="[('leave_type', 'ilike', 'emergency')]"/>
+                <filter string="Hajj Leave" name="emergency_leave" domain="[('leave_type', 'ilike', 'hajj')]"/>
+                <filter string="Maternity Leave" name="emergency_leave" domain="[('leave_type', 'ilike', 'maternity')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_employee" string="Employee" context="{'group_by':'employee_id'}"/>
+                    <filter name="group_department" string="Department" context="{'group_by':'department_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record> 
+
+
+   
+
+    <record id="open_view_employee_list_my_field_project_staff" model="ir.actions.act_window">
+        <field name="name">Employees</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
+        <field name="domain">[('employee_type','=','field')]</field>
+        <field name="context">{'chat_icon': True}</field>
+        <field name="view_id" eval="False"/>
+        <field name="search_view_id" ref="hr.view_employee_filter"/>
+        <field name="help" type="html">
+         <p class="o_view_nocontent_smiling_face">
+           Add a new employee
+         </p><p>
+           With just a quick glance on the Odoo employee screen, you
+           can easily find all the information you need for each person;
+           contact data, job position, availability, etc.
+         </p>
+        </field>
+    </record>
+
+    <record id="open_view_employee_list_my_regular" model="ir.actions.act_window">
+        <field name="name">Employees</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
+        <field name="domain">[('employee_type','=','regular')]</field>
+        <field name="context">{'chat_icon': True}</field>
+        <field name="view_id" eval="False"/>
+        <field name="search_view_id" ref="hr.view_employee_filter"/>
+        <field name="help" type="html">
+         <p class="o_view_nocontent_smiling_face">
+           Add a new employee
+         </p><p>
+           With just a quick glance on the Odoo employee screen, you
+           can easily find all the information you need for each person;
+           contact data, job position, availability, etc.
+         </p>
+        </field>
+    </record>
+
+    <record id="act_employee_from_unit_kanban" model="ir.actions.act_window">
+        <field name="name">Employees</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">kanban,form,tree</field>
+        <field name="domain">[('unit_id','=',active_id)]</field>
+        <field name="search_view_id" ref="hr.view_employee_filter"/>
+        <field name="context">{
+            "searchpanel_default_unit_id": active_id,
+            "default_unit_id": active_id}
+        </field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Add a new employee
+          </p><p>
+            With just a quick glance on the Odoo employee screen, you
+            can easily find all the information you need for each person;
+            contact data, job position, availability, etc.
+          </p>
+        </field>
+    </record>
+
+    <record id="hr_employee_view_search" model="ir.ui.view">
+        <field name="name">hr.employee.view.search</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_filter"/>
+        <field name="groups_id" eval="[(4, ref('hr.group_hr_manager'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='province_id']" position="replace">
+                <field name="office_id" icon="fa-users"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record model="ir.actions.act_url" id="action_my_payslips">
+        <field name="name">My Payslips</field>
+        <field name="url">/my/payslips/list</field>
+        <field name="target">new</field>
+
+    </record>
+
+    <!-- Inherited Menus For Read-Only Group -->
+    <record id="hr.menu_hr_employee_payroll" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('nl_master.group_hr_employee_read_only'))]"/>
+    </record>
+
+    <record id="hr.menu_hr_department_kanban" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('nl_master.group_hr_employee_read_only'))]"/>
+    </record>
+
+    <record id="hr.menu_hr_reporting_timesheet" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('nl_master.group_hr_employee_read_only'))]"/>
+    </record>
+
+    <record id="hr.menu_human_resources_configuration" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('nl_master.group_hr_employee_read_only'))]"/>
+    </record>
+
+    <record id="hr.menu_config_plan" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('nl_master.group_hr_employee_read_only'))]"/>
+    </record>
+
+    <record id="hr.menu_config_plan_types" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('nl_master.group_hr_employee_read_only'))]"/>
+    </record>
+
+    <record id="hr.menu_config_plan_plan" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('nl_master.group_hr_employee_read_only'))]"/>
+    </record>
+
+    <record id="hr_skills.hr_skill_type_menu" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('nl_master.group_hr_employee_read_only'))]"/>
+    </record>
+
+    <record id="hr_skills.menu_human_resources_configuration_resume" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('nl_master.group_hr_employee_read_only'))]"/>
+    </record>
+
+    <record id="hr_skills.hr_resume_line_type_menu" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('nl_master.group_hr_employee_read_only'))]"/>
+    </record>
+
+    <record id="menu_hr_employee_user_all" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('nl_master.group_hr_employee_read_only'))]"/>
+    </record>
+
+    <record id="menu_hr_employee_user_field" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('nl_master.group_hr_employee_read_only'))]"/>
+    </record>
+
+    <record id="menu_hr_employee_user_regular" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('nl_master.group_hr_employee_read_only'))]"/>
+    </record>
+
+    <!-- End Inherited Menu -->
+
+    <menuitem parent="hr.menu_hr_root" id="menu_my_payslips" action="action_my_payslips"/>
+    
+    <menuitem id="leave_employee_report" groups="hr.group_hr_manager,nl_master.group_hr_employee_read_only" name="Leave Balance Report" parent="hr_holidays.menu_hr_holidays_report"
+    action="action_time_off_leave_report_extended" sequence="5"/>
+
+</odoo>

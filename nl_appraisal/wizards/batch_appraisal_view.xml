@@ -1,0 +1,50 @@
+<odoo>
+
+    <record id="employee_batch_appraisal_view" model="ir.ui.view">
+        <field name="name">employee.batch.appraisal.view</field>
+        <field name="model">employee.batch.appraisal</field>
+        <field name="arch" type="xml">
+            <form string="Batch Appraisal">
+                <group class="o_group_col_12">
+                    <group>
+                        <field name="office_ids" widget='many2many_tags'/>
+                        <field name="appraisal_type" />
+                    </group>
+                    <group>
+                        <field name="unit_ids" widget='many2many_tags'/>
+                    </group>
+                </group> 
+                <group>
+                    <group>
+                        <field name="review_period_start_date"/>
+                    </group>
+                    <group>
+                         <field name="review_period_end_date"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="create_appraisals" class="btn-primary" type="object" string="Validate"/>
+                    <button name="cancel" string="Cancel" special="cancel" class="oe_link"/>
+                </footer>
+            </form>
+        </field>
+      </record>
+
+
+    <record model="ir.actions.act_window" id="batch_employee_appraisal_action">
+        <field name="name">Batch Performance Appraisal</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">employee.batch.appraisal</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem
+        id="menu_nl_appraisal_batch"
+        name="Batch Appraisal"
+        action="batch_employee_appraisal_action"
+        parent="nl_appraisal.menu_nl_appraisal_main"
+        sequence="20"/>
+
+
+</odoo>

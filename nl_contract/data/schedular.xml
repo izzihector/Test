@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record id="days_prior_to_contract_expiry_scheduler" model="ir.cron">
+        <field name="name">HR Contract: update state netlinks</field>
+        <field name="model_id" ref="model_hr_contract"/>
+        <field name="type">ir.actions.server</field>
+        <field name="state">code</field>
+        <field name="code">model.contract_expiry()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="True"/>
+        <field name="doall" eval="False"/>
+    </record>
+</odoo>

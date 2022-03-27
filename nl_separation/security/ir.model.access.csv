@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_separation_emp,hr.separation,model_hr_separation,base.group_user,1,1,1,0
+access_hr_separation_manager,hr.separation,nl_separation.model_hr_separation,hr.group_hr_manager,1,1,1,1
+access_hr_separation_user,hr.separation,nl_separation.model_hr_separation,hr.group_hr_user,1,1,1,1
+
+access_employment_history,access_employment_history,model_employment_history,base.group_user,1,1,1,1
+access_exit_interview_form,access_exit_interview_form,model_exit_interview_form,hr.group_hr_manager,1,1,1,0
+access_exit_interview_form_user,access_exit_interview_form,model_exit_interview_form,hr.group_hr_user,1,1,1,0
+access_hr_separation_type,access_hr_separation_type,model_hr_separation_type,hr.group_hr_manager,1,1,1,1
+access_hr_separation_type_user,access_hr_separation_type,model_hr_separation_type,hr.group_hr_user,1,0,0,0
+access_hr_separation_notification,access_hr_separation_notification,model_hr_separation_notification,hr.group_hr_manager,1,1,1,1
+access_hr_separation_notification_user,access_hr_separation_notification,model_hr_separation_notification,hr.group_hr_user,1,0,0,0

@@ -1,0 +1,2630 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<report 
+        id="action_print_contracts"
+        model="hr.contract"
+        string="Print Contract"
+        report_type="qweb-pdf"
+        name="nl_contract.contracts_template"
+        file="nl_contract.contracts_template"
+        menu="False"
+        print_report_name="(object.print_contract_name())"
+    />
+
+	<record id="paperformat_contracts" model="report.paperformat">
+		<field name="name">Contract Details Paper Format</field>
+		<field name="default" eval="True" />
+		<field name="format">A4</field>
+		<field name="orientation">Portrait</field>
+		<field name="margin_top">15</field>
+		<field name="margin_bottom">10</field>
+		<field name="margin_left">10</field>
+		<field name="margin_right">10</field>
+		<field name="header_line" eval="False" />
+		<field name="header_spacing">20</field>
+		<field name="dpi">150</field>
+	</record>
+	<record id="action_print_contracts" model="ir.actions.report">
+		<field name="paperformat_id" ref="nl_contract.paperformat_contracts"/>
+	</record>
+	<template id="external_layout">
+		<!-- Multicompany -->
+		<t t-if="not o and doc">
+			<t t-set="o" t-value="doc"/></t>
+		<t t-if="o and 'company_id' in o">
+			<t t-set="company" t-value="o.company_id"></t>
+		</t>
+		<t t-if="not o or not 'company_id' in o">
+			<t t-set="company" t-value="res_company"></t>
+		</t>
+		<t t-raw="0" />
+		
+	</template>
+
+	<template id="contract_template">
+		<t t-call="nl_contract.external_layout"/>
+		<t t-call="web.basic_layout">
+			<style>
+				@font-face {
+                    font-family: 'georgia';
+					font-family: 'arial';
+                       src: url(/nl_contract/static/src/fonts/georgia.ttf);
+					   src: url(/nl_contract/static/src/fonts/arial-ce.ttf);
+                      }
+					  .emp_info {
+						padding-left:25px;
+					 }
+                
+					 p{
+						 font-size:26px;
+                 font-family: 'georgia' !important;
+					 }
+					 .contract-details{
+						 margin-left:25px;
+						 margin-right:25px;
+					 }
+					 .identifier{
+						font-size:26px;
+                        font-family: 'georgia' !important;
+						font-weigth:bolder;
+
+					}
+					.identifier-data{
+						font-size:26px;
+                         font-family: 'georgia' !important;
+						font-weigth:bold;
+						
+
+					}
+					.employee-info{
+						margin-left:15px;
+					}	
+					li{
+                 font-family: 'georgia' !important;
+						font-size:26px;
+					}
+			</style>
+			   
+				<div style="width:100%;">	
+						
+						<t t-if="o.state in ['draft','to_approve','cancel','rejected']">
+							<div class="watermark" style="margin-top:800px;position:absolute;opacity:0.12;font-size:3em;width:100%;text-align:center;z-index:1000;color:grey;">
+								<p style="font-size:250px"><span t-esc="dict(o._fields['state'].selection).get(o.state)"/></p>
+							</div>
+						</t>
+						<span style="opacity:0;">ss</span>
+						<img t-att-src="'/nl_contract/static/description/sca.png'" alt="Logo"/>
+	
+					<br/>
+					<br/>
+                    <br />
+					<h2 style="color:#006983; margin-top:10px;font-family:'arial';" class="text-center">EMPLOYEMENT CONTRACT</h2>
+
+					<br />
+
+					<div class="contract-details">
+						<p class="margin-top:15px;">
+							This contract is agreed and signed between the employee and the Swedish Committee for Afghanistan (SCA) based on the following:
+						</p>
+						<br></br>
+						<div class="employee-info">
+							
+                            <table>
+                            <tr>
+                                <td>
+                                    <strong> <span class="identifier">Name:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info">
+                                    <span class="identifier-data" t-esc="o.employee_id.name"></span>
+                                </td>
+                                    
+                            </tr>
+                                
+                            <tr>
+                                <td style="width:300px">
+                                    <strong> <span class="identifier">Father's Name:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info">
+                                   <span class="identifier-data" t-esc="o.employee_id.father_name"></span>
+                                </td>
+                                    
+                            </tr>
+                                
+                             <tr>
+                                <td>
+                                    <strong> <span class="identifier">Job Title:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                  <span class="identifier-data" t-esc="o.job_id.name"></span>
+                                </td>
+                                    
+                            </tr>
+                                
+                            <tr>
+                                <td>
+                                    <strong> <span class="identifier">Unit:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                 <span class="identifier-data" t-esc="o.unit_id.name"></span>
+                                </td>
+                                    
+                            </tr>
+                                
+                             <tr>
+                                <td>
+                                    <strong> <span class="identifier">Duty Station:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                <span class="identifier-data" t-esc="o.employee_id.office_id.name"></span>
+                                </td>
+                                    
+                            </tr>
+                               
+                            </table>
+                           
+							
+							
+                            
+						</div>
+						
+						<br></br>
+						<hr style="height:1px;border:none;color:#333;background-color:#333;" />
+                        <br></br>
+                        
+                        <div class="employee-info">
+                             <table>
+                             <tr>
+                                <td>
+                                    <strong> <span class="identifier">Contract Term:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                               <span class="identifier-data" >Open Ended</span>
+                                </td>
+                                    
+                            </tr>
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Grade of Position:</span></strong>
+                                </td>
+                                <td> </td>
+								<td class="emp_info"> 
+                              <span class="identifier-data" t-esc="o.salary_grade.name"></span>
+                                </td>
+                                    
+                            </tr>
+                            
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Step (Implementation):</span></strong>
+                                </td>
+                                <td> </td>
+								<td class="emp_info"> 
+                            <span class="identifier-data" t-esc="o.salary_step.name"></span>
+                                </td>
+                                    
+                            </tr>
+                            
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Basic Salary:</span></strong>
+                                </td>
+                                <td> </td>
+								<td class="emp_info"> 
+                                  <span class="identifier-data" t-esc="o.wage" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'></span>
+                                </td>
+                                    
+                            </tr>
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Allowance:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                 <span class="identifier-data" t-esc="o.allowance" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'></span>
+                                </td>
+                                    
+                            </tr>
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Gross Salary:</span></strong>
+                                </td>
+                                <td> </td>
+								<td class="emp_info"> 
+                                	<span class="identifier-data" t-esc="o.allowance + o.wage" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'></span>
+                                </td>
+                                    
+                            </tr>
+                            
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Pension:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                	<span class="identifier-data" t-esc="o.pension_amount" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'></span>
+                                </td>
+                                    
+                            </tr>
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Employement Start Date:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                <span class="identifier-data" t-esc="o.first_contract_date"></span>
+                                </td>
+                                    
+                            </tr>
+                             <tr>
+							 	<t t-if="o.is_first_contract == False">
+									<td>
+										<strong><span class="identifier">Contract Change Date</span></strong>
+									</td>
+									<td> </td>
+									<td class="emp_info"> 
+									
+									<span class="identifier-data" t-esc="o.date_start"></span>
+									</td>
+								</t>
+                                    
+                            </tr>
+                            
+                        </table>
+                        </div>
+
+                        <br></br>
+                         <br></br>
+
+						 <strong><h3>Terms and Conditions</h3></strong>
+
+						<div class="employee-info" style="margin-top:25px;">
+							<ul>
+								<t t-foreach="o.general_term_ids" t-as="term">
+									<li t-esc="term.name"></li>
+								</t>
+							</ul>
+						</div>
+
+						<div class="employee-info">
+							<span class="identifier"><span t-esc="o.create_date.strftime('%d-%B-%Y')"></span> </span>
+							
+						</div>
+						<br></br>
+						<br></br>
+					
+							<div class="d-flex" style="width:100%;flex-direction:row;justify-content:space-between;">
+								<div class="employee-info">
+									<span class="identifier">For SCA:</span>
+									<br></br>
+									<br></br>
+									<br></br>
+		
+		
+		
+									<span>.................................................................</span>
+									<br></br>
+									<br></br>
+									<span class="identifier">Name:</span> <span class="identifier-data" t-esc="o.contract_signatory.name"></span>
+									<br></br>
+									<span class="identifier">Title:</span> <span class="identifier-data" t-esc="o.contract_signatory.employee_id.job_id.name"></span>
+			
+								</div>
+								<div class="employee-info" style="opacity:0;">
+									<span class="identifier">Employee:</span>
+									<br></br>
+									<br></br>
+									<br></br>
+		
+		
+		
+									<span>.............................................................</span>
+									<br></br>
+									<br></br>
+									
+	
+									
+	
+												
+								</div>
+								<div class="employee-info" style="margin-left:400px;">
+									<span class="identifier">Employee:</span>
+									<br></br>
+									<br></br>
+									<br></br>
+		
+		
+		
+									<span>...................................................................</span>
+									<br></br>
+									<br></br>
+									<span class="identifier">Name:</span> <span class="identifier-data" t-esc="o.employee_id.name"></span>
+
+												
+								</div>
+							</div>
+
+					
+							
+								
+								
+						
+							
+					
+
+						
+					</div>
+
+					<div class="text-right">
+						<span>Version Aug, 2019</span>
+					</div>
+					
+				</div>
+			
+		</t>
+	</template>
+
+
+
+
+	<template id="contract_template_project_staff">
+		<t t-call="nl_contract.external_layout"/>
+		<t t-call="web.basic_layout">
+			<style>
+				@font-face {
+                    font-family: 'georgia';
+					font-family: 'arial';
+                       src: url(/nl_contract/static/src/fonts/georgia.ttf);
+					   src: url(/nl_contract/static/src/fonts/arial-ce.ttf);
+                      }
+					  .emp_info {
+						padding-left:25px;
+					 }
+                
+					 p{
+						 font-size:26px;
+                 font-family: 'georgia' !important;
+					 }
+					 .contract-details{
+						 margin-left:25px;
+						 margin-right:25px;
+					 }
+					 .identifier{
+						font-size:26px;
+                        font-family: 'georgia' !important;
+						font-weigth:bolder;
+
+					}
+					.identifier-data{
+						font-size:26px;
+                         font-family: 'georgia' !important;
+						font-weigth:bold;
+						
+
+					}
+					.employee-info{
+						margin-left:15px;
+					}	
+					li{
+                 font-family: 'georgia' !important;
+						font-size:26px;
+					}
+			</style>
+				<div style="width:100%;">	
+						
+						<t t-if="o.state in ['draft','to_approve','cancel','rejected']">
+							<div class="watermark" style="margin-top:800px;position:absolute;opacity:0.12;font-size:3em;width:100%;text-align:center;z-index:1000;color:grey;">
+								<p style="font-size:250px"><span t-esc="dict(o._fields['state'].selection).get(o.state)"/></p>
+							</div>
+						</t>
+						<span style="opacity:0;">ss</span>
+						<img t-att-src="'/nl_contract/static/description/sca.png'" alt="Logo"/>
+						<p style="float:right;">Annex Recr 15</p>
+					<br/>
+					<br/>
+                    <br />
+					<h2 style="color:#006983; margin-top:10px;font-family:'arial';" class="text-center">EMPLOYEMENT CONTRACT</h2>
+
+					<br />
+
+					<div class="contract-details">
+						<p class="margin-top:15px;">
+							This contract is agreed and signed between the employee and the Swedish Committee for Afghanistan (SCA) based on the following:
+						</p>
+						<br></br>
+						<div class="employee-info">
+                            <table>
+                            <tr>
+                                <td>
+                                    <strong> <span class="identifier">Name:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info">
+                                    <span class="identifier-data" t-esc="o.employee_id.name"></span>
+                                </td>
+                                    
+                            </tr>
+                                
+                            <tr>
+                                <td style="width:300px">
+                                    <strong> <span class="identifier">Father's Name:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info">
+                                   <span class="identifier-data" t-esc="o.employee_id.father_name"></span>
+                                </td>
+                                    
+                            </tr>
+                                
+                             <tr>
+                                <td>
+                                    <strong> <span class="identifier">Job Title:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                  <span class="identifier-data" t-esc="o.job_id.name"></span>
+                                </td>
+                                    
+                            </tr>
+                                
+                            <tr>
+                                <td>
+                                    <strong> <span class="identifier">Unit:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                 <span class="identifier-data" t-esc="o.unit_id.name"></span>
+                                </td>
+                                    
+                            </tr>
+                                
+                             <tr>
+                                <td>
+                                    <strong> <span class="identifier">Duty Station:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                <span class="identifier-data" t-esc="o.employee_id.office_id.name"></span>
+                                </td>
+                                    
+                            </tr>
+                               
+                            </table>
+                           
+							
+							
+                            
+						</div>
+						
+						<br></br>
+						<hr style="height:1px;border:none;color:#333;background-color:#333;" />
+                        <br></br>
+                        
+                        <div class="employee-info">
+                             <table>
+                             <tr>
+                                <td>
+                                    <strong> <span class="identifier">Contract Term:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                               <span class="identifier-data" >Project Based</span>
+                                </td>
+                                    
+                            </tr>
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Grade of Position:</span></strong>
+                                </td>
+                                <td> </td>
+								<td class="emp_info"> 
+                              <span class="identifier-data" t-esc="o.salary_grade.name"></span>
+                                </td>
+                                    
+                            </tr>
+                            
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Step (Implementation):</span></strong>
+                                </td>
+                                <td> </td>
+								<td class="emp_info"> 
+                            <span class="identifier-data" t-esc="o.salary_step.name"></span>
+                                </td>
+                                    
+                            </tr>
+                            
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Basic Salary:</span></strong>
+                                </td>
+                                <td> </td>
+								<td class="emp_info"> 
+                                  <span class="identifier-data" t-esc="o.wage" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'></span>
+                                </td>
+                                    
+                            </tr>
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Allowance:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                 <span class="identifier-data" t-esc="o.allowance" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'></span>
+                                </td>
+                                    
+                            </tr>
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Gross Salary:</span></strong>
+                                </td>
+                                <td> </td>
+								<td class="emp_info"> 
+                                	<span class="identifier-data" t-esc="o.allowance + o.wage" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'></span>
+                                </td>
+                                    
+                            </tr>
+                            
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Employement Start Date:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                <span class="identifier-data" t-esc="o.first_contract_date"></span>
+                                </td>
+                                    
+                            </tr>
+                             <tr>
+							 	<t t-if="o.is_first_contract == False">
+									<td>
+										<strong><span class="identifier">Contract Change Date</span></strong>
+									</td>
+									<td> </td>
+									<td class="emp_info"> 
+									
+									<span class="identifier-data" t-esc="o.date_start"></span>
+									</td>
+								</t>
+                                    
+                            </tr>
+
+							<tr>
+                                <td>
+                                    <strong><span class="identifier">Employment End Date:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                <span class="identifier-data" t-esc="o.date_end or ''"></span>
+                                </td>
+                                    
+                            </tr>
+                            
+                        </table>
+                        </div>
+
+                        <br></br>
+                         <br></br>
+
+						 <strong><h3>Terms and Conditions</h3></strong>
+
+						 <div class="employee-info" style="margin-top:25px;">
+							<ul>
+								<t t-foreach="o.general_term_ids" t-as="term">
+									<li t-esc="term.name"></li>
+								</t>
+							</ul>
+						</div>
+
+						<div class="employee-info">
+							<span class="identifier" t-esc="o.create_date.strftime('%d-%B-%Y')"></span>
+							
+						</div>
+						<br></br>
+						<br></br>
+					
+							<div class="d-flex" style="width:100%;flex-direction:row;justify-content:space-between;">
+								<div class="employee-info">
+									<span class="identifier">For SCA:</span>
+									<br></br>
+									<br></br>
+									<br></br>
+		
+		
+		
+									<span>.................................................................</span>
+									<br></br>
+									<br></br>
+									<span class="identifier">Name:</span> <span class="identifier-data" t-esc="o.contract_signatory.name"></span>
+									<br></br>
+									<span class="identifier">Title:</span> <span class="identifier-data" t-esc="o.contract_signatory.employee_id.job_id.name"></span>
+			
+								</div>
+								<div class="employee-info" style="opacity:0;">
+									<span class="identifier">Employee:</span>
+									<br></br>
+									<br></br>
+									<br></br>
+		
+		
+		
+									<span>.............................................................</span>
+									<br></br>
+									<br></br>
+									
+	
+									
+	
+												
+								</div>
+								<div class="employee-info" style="margin-left:400px;">
+									<span class="identifier">Employee:</span>
+									<br></br>
+									<br></br>
+									<br></br>
+		
+		
+		
+									<span>...................................................................</span>
+									<br></br>
+									<br></br>
+									<span class="identifier">Name:</span> <span class="identifier-data" t-esc="o.employee_id.name"></span>
+
+												
+								</div>
+							</div>
+
+					
+							
+								
+								
+						
+							
+					
+
+						
+					</div>
+
+					<div class="text-right">
+						<span>Version Aug, 2019</span>
+					</div>
+					
+				</div>
+			
+		</t>
+	</template>
+
+
+
+
+
+	<template id="contract_template_fixed_term_one_year">
+		<t t-call="nl_contract.external_layout"/>
+		<t t-call="web.basic_layout">
+			<style>
+				@font-face {
+                    font-family: 'georgia';
+					font-family: 'arial';
+                       src: url(/nl_contract/static/src/fonts/georgia.ttf);
+					   src: url(/nl_contract/static/src/fonts/arial-ce.ttf);
+                      }
+					  .emp_info {
+						padding-left:25px;
+					 }
+                
+					 p{
+						 font-size:26px;
+                 font-family: 'georgia' !important;
+					 }
+					 .contract-details{
+						 margin-left:25px;
+						 margin-right:25px;
+					 }
+					 .identifier{
+						font-size:26px;
+                        font-family: 'georgia' !important;
+						font-weigth:bolder;
+
+					}
+					.identifier-data{
+						font-size:26px;
+                         font-family: 'georgia' !important;
+						font-weigth:bold;
+						
+
+					}
+					.employee-info{
+						margin-left:15px;
+					}	
+					li{
+                 font-family: 'georgia' !important;
+						font-size:26px;
+					}
+			</style>
+				<div style="width:100%;">	
+						
+						<t t-if="o.state in ['draft','to_approve','cancel','rejected']">
+							<div class="watermark" style="margin-top:800px;position:absolute;opacity:0.12;font-size:3em;width:100%;text-align:center;z-index:1000;color:grey;">
+								<p style="font-size:250px"><span t-esc="dict(o._fields['state'].selection).get(o.state)"/></p>
+							</div>
+						</t>
+						<span style="opacity:0;">ss</span>
+						<img t-att-src="'/nl_contract/static/description/sca.png'" alt="Logo"/>
+						<p style="float:right;">Annex Recr 15</p>
+				
+					<br/>
+					<br/>
+                    <br />
+					<h2 style="color:#006983; margin-top:10px;font-family:'arial';" class="text-center">EMPLOYEMENT CONTRACT</h2>
+
+					<br />
+
+					<div class="contract-details">
+						<p class="margin-top:15px;">
+							This contract is agreed and signed between the employee and the Swedish Committee for Afghanistan (SCA) based on the following:
+						</p>
+						<br></br>
+						<div class="employee-info">
+                            <table>
+                            <tr>
+                                <td>
+                                    <strong> <span class="identifier">Name:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info">
+                                    <span class="identifier-data" t-esc="o.employee_id.name"></span>
+                                </td>
+                                    
+                            </tr>
+                                
+                            <tr>
+                                <td style="width:300px">
+                                    <strong> <span class="identifier">Father's Name:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info">
+                                   <span class="identifier-data" t-esc="o.employee_id.father_name"></span>
+                                </td>
+                                    
+                            </tr>
+                                
+                             <tr>
+                                <td>
+                                    <strong> <span class="identifier">Job Title:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                  <span class="identifier-data" t-esc="o.job_id.name"></span>
+                                </td>
+                                    
+                            </tr>
+                                
+                            <tr>
+                                <td>
+                                    <strong> <span class="identifier">Unit:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                 <span class="identifier-data" t-esc="o.unit_id.name"></span>
+                                </td>
+                                    
+                            </tr>
+                                
+                             <tr>
+                                <td>
+                                    <strong> <span class="identifier">Duty Station:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                <span class="identifier-data" t-esc="o.employee_id.office_id.name"></span>
+                                </td>
+                                    
+                            </tr>
+                               
+                            </table>
+                           
+							
+							
+                            
+						</div>
+						
+						<br></br>
+						<hr style="height:1px;border:none;color:#333;background-color:#333;" />
+                        <br></br>
+                        
+                        <div class="employee-info">
+                             <table>
+                             <tr>
+                                <td>
+                                    <strong> <span class="identifier">Contract Term:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                               <span class="identifier-data" >Fixed Term</span>
+                                </td>
+                                    
+                            </tr>
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Grade of Position:</span></strong>
+                                </td>
+                                <td> </td>
+								<td class="emp_info"> 
+                              <span class="identifier-data" t-esc="o.salary_grade.name"></span>
+                                </td>
+                                    
+                            </tr>
+                            
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Step (Implementation):</span></strong>
+                                </td>
+                                <td> </td>
+								<td class="emp_info"> 
+                            <span class="identifier-data" t-esc="o.salary_step.name"></span>
+                                </td>
+                                    
+                            </tr>
+                            
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Basic Salary:</span></strong>
+                                </td>
+                                <td> </td>
+								<td class="emp_info"> 
+                                  <span class="identifier-data" t-esc="o.wage" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'></span>
+                                </td>
+                                    
+                            </tr>
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier" >Allowance:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                 <span class="identifier-data" t-esc="o.allowance" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}' ></span>
+                                </td>
+                                    
+                            </tr>
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Gross Salary:</span></strong>
+                                </td>
+                                <td> </td>
+								<td class="emp_info"> 
+                                	<span class="identifier-data" t-esc="o.allowance + o.wage" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'></span>
+                                </td>
+                                    
+                            </tr>
+                            
+                             
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Employement Start Date:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                <span class="identifier-data" t-esc="o.first_contract_date"></span>
+                                </td>
+                                    
+                            </tr>
+                             <tr>
+							 	<t t-if="o.is_first_contract == False">
+									<td>
+										<strong><span class="identifier">Contract Change Date</span></strong>
+									</td>
+									<td> </td>
+									<td class="emp_info"> 
+									
+									<span class="identifier-data" t-esc="o.date_start"></span>
+									</td>
+								</t>
+                                    
+                            </tr>
+							<tr>
+                                <td>
+                                    <strong><span class="identifier">Contract End Date</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                <span class="identifier-data" t-esc="o.date_end or ''"></span>
+                                </td>
+                                    
+                            </tr>
+                            
+                        </table>
+                        </div>
+
+                        <br></br>
+                         <br></br>
+
+						 <strong><h3>Terms and Conditions</h3></strong>
+
+						 <div class="employee-info" style="margin-top:25px;">
+							<ul>
+								<t t-foreach="o.general_term_ids" t-as="term">
+									<li t-esc="term.name"></li>
+								</t>
+							</ul>
+						</div>
+
+						<div class="employee-info">
+							<span class="identifier" t-esc="o.create_date.strftime('%d-%B-%Y')"></span>
+							
+						</div>
+						<br></br>
+						<br></br>
+					
+							<div class="d-flex" style="width:100%;flex-direction:row;justify-content:space-between;">
+								<div class="employee-info">
+									<span class="identifier">For SCA:</span>
+									<br></br>
+									<br></br>
+									<br></br>
+		
+		
+		
+									<span>.................................................................</span>
+									<br></br>
+									<br></br>
+									<span class="identifier">Name:</span> <span class="identifier-data" t-esc="o.contract_signatory.name"></span>
+									<br></br>
+									<span class="identifier">Title:</span> <span class="identifier-data" t-esc="o.contract_signatory.employee_id.job_id.name"></span>
+			
+								</div>
+								<div class="employee-info" style="opacity:0;">
+									<span class="identifier">Employee:</span>
+									<br></br>
+									<br></br>
+									<br></br>
+		
+		
+		
+									<span>.............................................................</span>
+									<br></br>
+									<br></br>
+									
+	
+									
+	
+												
+								</div>
+								<div class="employee-info" style="margin-left:400px;">
+									<span class="identifier">Employee:</span>
+									<br></br>
+									<br></br>
+									<br></br>
+		
+		
+		
+									<span>...................................................................</span>
+									<br></br>
+									<br></br>
+									<span class="identifier">Name:</span> <span class="identifier-data" t-esc="o.employee_id.name"></span>
+
+												
+								</div>
+							</div>
+
+						
+					</div>
+
+					<div class="text-right">
+						<span>Version Aug, 2019</span>
+					</div>
+					
+				</div>
+			
+		</t>
+	</template>
+
+
+	
+
+	<template id="contract_template_casual_contract">
+		<t t-call="nl_contract.external_layout"/>
+		<t t-call="web.basic_layout">
+			<style>
+				@font-face {
+                    font-family: 'georgia';
+					font-family: 'arial';
+                       src: url(/nl_contract/static/src/fonts/georgia.ttf);
+					   src: url(/nl_contract/static/src/fonts/arial-ce.ttf);
+                      }
+					  .emp_info {
+						padding-left:25px;
+					 }
+                
+					 p{
+						 font-size:26px;
+                 font-family: 'georgia' !important;
+					 }
+					 .contract-details{
+						 margin-left:25px;
+						 margin-right:25px;
+					 }
+					 .identifier{
+						font-size:26px;
+                        font-family: 'georgia' !important;
+						font-weigth:bolder;
+
+					}
+					.identifier-data{
+						font-size:26px;
+                         font-family: 'georgia' !important;
+						font-weigth:bold;
+						
+
+					}
+					.border{
+						border:1.4px solid black !important;
+						padding:5px;
+					}
+					.employee-info{
+						margin-left:15px;
+					}	
+					li{
+                 font-family: 'georgia' !important;
+						font-size:26px;
+					}
+			</style>
+				<div style="width:100%;">	
+						
+						<t t-if="o.state in ['draft','to_approve','cancel','rejected']">
+							<div class="watermark" style="margin-top:800px;position:absolute;opacity:0.12;font-size:3em;width:100%;text-align:center;z-index:1000;color:grey;">
+								<p style="font-size:250px"><span t-esc="dict(o._fields['state'].selection).get(o.state)"/></p>
+							</div>
+						</t>
+						<span style="opacity:0;">ss</span>
+						<img t-att-src="'/nl_contract/static/description/sca.png'" alt="Logo"/>
+						<p style="float:right;">Annex 7</p>
+					<br/>
+					<br/>
+                    <br />
+					<h2 style="color:#006983; margin-top:10px;font-family:'arial';" class="text-center">CASUAL AND SERVICE CONTRACT</h2>
+					<h3 class="text-center">(Applies to contracts duration of up to 6 months or any other short term engagement)</h3>
+					<br />
+
+					<div class="contract-details">
+						<p class="margin-top:15px;">
+							This contract is agreed and signed between the employee and the Swedish Committee for Afghanistan (SCA) based on the following:
+						</p>
+						<br></br>
+						<div style="width:100%;">
+							<table style="width: 100%;" cellpadding="2">
+								<tbody>
+									<tr  class="border">
+										<td class="border"><strong> <span class="identifier">Name:</span></strong></td>
+										<td class="border"><span class="identifier-data" t-esc="o.employee_id.name"></span></td>
+									</tr>
+									<tr  class="border">
+										<td class="border"><strong> <span class="identifier">Father's Name:</span></strong></td>
+										<td class="border"><span class="identifier-data" t-esc="o.employee_id.father_name"></span></td>
+									</tr>
+									<tr  class="border">
+										<td class="border"><strong> <span class="identifier">Job Title:</span></strong></td>
+										<td class="border"><span class="identifier-data" t-esc="o.employee_id.job_id.name"></span></td>
+									</tr>
+									<tr  class="border">
+										<td class="border"><strong> <span class="identifier">Unit:</span></strong></td>
+										<td class="border"><span class="identifier-data" t-esc="o.unit_id.name"></span></td>
+									</tr>
+									<tr  class="border">
+										<td class="border"><strong> <span class="identifier">Project:</span></strong></td>
+										<td class="border"><span class="identifier-data" t-esc="o.project_contract_id.name"></span></td>
+									</tr>
+									<tr  class="border">
+										<td class="border"><strong> <span class="identifier">Duty Station/Location:</span></strong></td>
+										<td class="border"><span class="identifier-data" t-esc="o.employee_id.office_id.name"></span></td>
+									</tr>
+									<tr  class="border">
+										<td class="border"><strong> <span class="identifier">Contract Start Date:</span></strong></td>
+										<td class="border"><span class="identifier-data" t-esc="o.date_start"></span></td>
+									</tr>
+									<tr  class="border">
+										<td class="border"><strong> <span class="identifier">Contract End Date:</span></strong></td>
+										<td class="border"><span class="identifier-data" t-esc="o.date_end or ''"></span></td>
+									</tr>
+									<tr  class="border">
+										<td class="border"><strong> <span class="identifier">Duration of contract(months/days/weeks)</span></strong></td>
+										<td class="border"><span class="identifier-data" t-esc="o.calculate_contract_duration" ></span>
+										<span class="identifier-data">month(s)</span></td>
+									</tr>
+									<tr  class="border">
+										<td class="border"><strong> <span class="identifier">Grade / Step</span></strong></td>
+										<td class="border"><span class="identifier-data" t-esc="o.grade_and_step"></span></td>
+									</tr>
+								</tbody>
+							</table>
+                                
+                           
+                               
+                           
+                           
+							
+							
+                            
+						</div>
+						
+						<br></br>
+						<br></br>
+						
+						<strong><h3>Terms and Conditions</h3></strong>
+                       
+
+						<div class="employee-info" style="margin-top:25px;">
+							<ul>
+								<t t-foreach="o.general_term_ids" t-as="term">
+									<t t-if="'The following are the main tasks' not in term.name">
+										<li t-esc="term.name"></li>
+									</t>
+									<t t-else="">
+										<li>
+											<ol style="padding-left:100px">
+												<t t-foreach="o.task_ids" t-as="task">
+													<li>
+														<span t-esc="task.name"></span>
+													</li>
+												</t>
+											</ol>
+										</li>
+									</t>
+								</t>
+								
+							</ul>
+
+						</div>
+
+						<div class="employee-info">
+							<span class="identifier" t-esc="o.create_date.strftime('%d-%B-%Y')"></span>
+							
+						</div>
+						<br></br>
+						<br></br>
+					
+							<div class="d-flex" style="width:100%;flex-direction:row;justify-content:space-between;">
+								<div class="employee-info">
+									<span class="identifier">For SCA:</span>
+									<br></br>
+									<br></br>
+									<br></br>
+		
+		
+		
+									<span>.................................................................</span>
+									<br></br>
+									<br></br>
+									<span class="identifier">Name:</span> <span class="identifier-data" t-esc="o.contract_signatory.name"></span>
+									<br></br>
+									<span class="identifier">Title:</span> <span class="identifier-data" t-esc="o.contract_signatory.employee_id.job_id.name"></span>
+			
+								</div>
+								<div class="employee-info" style="opacity:0;">
+									<span class="identifier">Employee: <span t-esc="o.employee_id.name"/></span>
+									<br></br>
+									<br></br>
+									<br></br>
+		
+		
+		
+									<span>.............................................................</span>
+									<br></br>
+									<br></br>
+									
+	
+									
+	
+												
+								</div>
+								<div class="employee-info" style="margin-left:400px;">
+									<span class="identifier">Employee:</span>
+									<br></br>
+									<br></br>
+									<br></br>
+		
+		
+		
+									<span>...................................................................</span>
+									<br></br>
+									<br></br>
+									<span class="identifier">Name:</span> <span class="identifier-data" t-esc="o.employee_id.name"></span>
+
+												
+								</div>
+							</div>
+
+						
+					</div>
+
+					<div class="text-right">
+						<span>Version July, 2021</span>
+					</div>
+					
+				</div>
+			
+		</t>
+	</template>
+
+	<template id="contract_template_project_based">
+		<t t-call="nl_contract.external_layout"/>
+		<t t-call="web.basic_layout">
+			<style>
+				@font-face {
+                    font-family: 'georgia';
+					font-family: 'arial';
+                       src: url(/nl_contract/static/src/fonts/georgia.ttf);
+					   src: url(/nl_contract/static/src/fonts/arial-ce.ttf);
+                      }
+					  .emp_info {
+						padding-left:25px;
+					 }
+                
+					 p{
+						 font-size:26px;
+                 font-family: 'georgia' !important;
+					 }
+					 .contract-details{
+						 margin-left:25px;
+						 margin-right:25px;
+					 }
+					 .identifier{
+						font-size:26px;
+                        font-family: 'georgia' !important;
+						font-weigth:bolder;
+
+					}
+					.identifier-data{
+						font-size:26px;
+                         font-family: 'georgia' !important;
+						font-weigth:bold;
+						
+
+					}
+					.employee-info{
+						margin-left:15px;
+					}	
+					li{
+                 font-family: 'georgia' !important;
+						font-size:26px;
+					}
+			</style>
+				<div style="width:100%;">	
+						
+						<t t-if="o.state in ['draft','to_approve','cancel','rejected']">
+							<div class="watermark" style="margin-top:800px;position:absolute;opacity:0.12;font-size:3em;width:100%;text-align:center;z-index:1000;color:grey;">
+								<p style="font-size:250px"><span t-esc="dict(o._fields['state'].selection).get(o.state)"/></p>
+							</div>
+						</t>
+						<span style="opacity:0;">ss</span>
+						<img t-att-src="'/nl_contract/static/description/sca.png'" alt="Logo"/>
+				
+					<br/>
+					<br/>
+                    <br />
+					<h2 style="color:#006983; margin-top:10px;font-family:'arial';" class="text-center">EMPLOYEMENT CONTRACT</h2>
+
+					<br />
+
+					<div class="contract-details">
+						<p class="margin-top:15px;">
+							This contract is agreed and signed between the employee and the Swedish Committee for Afghanistan (SCA) based on the following:
+						</p>
+						<br></br>
+						<div class="employee-info">
+                            <table>
+                            <tr>
+                                <td>
+                                    <strong> <span class="identifier">Name:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info">
+                                    <span class="identifier-data" t-esc="o.employee_id.name"></span>
+                                </td>
+                                    
+                            </tr>
+                                
+                            <tr>
+                                <td>
+                                    <strong> <span class="identifier">Father's Name:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info">
+                                   <span class="identifier-data" t-esc="o.employee_id.father_name"></span>
+                                </td>
+                                    
+                            </tr>
+                                
+                             <tr>
+                                <td>
+                                    <strong> <span class="identifier">Job Title:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                  <span class="identifier-data" t-esc="o.job_id.name"></span>
+                                </td>
+                                    
+                            </tr>
+                                
+                            <tr>
+                                <td>
+                                    <strong> <span class="identifier">Unit:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                 <span class="identifier-data" t-esc="o.unit_id.name"></span>
+                                </td>
+                                    
+                            </tr>
+                                
+                             <tr>
+                                <td>
+                                    <strong> <span class="identifier">Duty Station:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                <span class="identifier-data" t-esc="o.employee_id.office_id.name"></span>
+                                </td>
+                                    
+                            </tr>
+                               
+                            </table>
+                           
+							
+							
+                            
+						</div>
+						
+						<br></br>
+						<hr style="height:1px;border:none;color:#333;background-color:#333;" />
+                        <br></br>
+                        
+                        <div class="employee-info">
+                             <table>
+                             <tr>
+                                <td>
+                                    <strong> <span class="identifier">Contract Term:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                               <span class="identifier-data" >Project Staff</span>
+                                </td>
+                                    
+                            </tr>
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Grade of Position:</span></strong>
+                                </td>
+                                <td> </td>
+								<td class="emp_info"> 
+                              <span class="identifier-data" t-esc="o.salary_grade.name"></span>
+                                </td>
+                                    
+                            </tr>
+                            
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Step (Implementation):</span></strong>
+                                </td>
+                                <td> </td>
+								<td class="emp_info"> 
+                            <span class="identifier-data" t-esc="o.salary_step.name"></span>
+                                </td>
+                                    
+                            </tr>
+                            
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Basic Salary:</span></strong>
+                                </td>
+                                <td> </td>
+								<td class="emp_info"> 
+                                  <span class="identifier-data" t-esc="o.wage" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'></span>
+                                </td>
+                                    
+                            </tr>
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier" >Allowance:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                 <span class="identifier-data" t-esc="o.allowance" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}' ></span>
+                                </td>
+                                    
+                            </tr>
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Gross Salary:</span></strong>
+                                </td>
+                                <td> </td>
+								<td class="emp_info"> 
+                                	<span class="identifier-data" t-esc="o.allowance + o.wage" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'></span>
+                                </td>
+                                    
+                            </tr>
+                            
+                             
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Employement Start Date:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                <span class="identifier-data" t-esc="o.first_contract_date"></span>
+                                </td>
+                                    
+                            </tr>
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Contract Change Date</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                <span class="identifier-data" t-esc="o.date_start"></span>
+                                </td>
+                                    
+                            </tr>
+							<tr>
+                                <td>
+                                    <strong><span class="identifier">Contract End Date</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                <span class="identifier-data" t-esc="o.date_end or ''"></span>
+                                </td>
+                                    
+                            </tr>
+                            
+                        </table>
+                        </div>
+
+                        <br></br>
+                         <br></br>
+
+						<div class="employee-info" style="margin-top:25px;">
+							<ul>
+								<li>
+									The employment contract is <span t-esc="o.grade_and_step"> </span> Project Staff the first three months is probation period.
+								</li>
+								<li>
+									The employment is full-time 8 hours including one-hour lunch break and five days a week.
+								</li>
+								<li>
+									For specific job responsibilities please refer to the Job Description of this position.
+								</li>
+								<li>
+									Upon signing this contract, the staff also confirms that she/he has read and understood the SCA Code of Conduct and security and safety instructions and will adhere to confidentiality.
+								</li>
+								<li>
+									The salary is according to the approved SCA Salary Scale.
+								</li>
+								<li>
+									The employee is liable for paying income tax and SCA facilitates tax deduction.
+								</li>
+								<li>
+									The contract can be cancelled by both parties by written notice of one month.
+								</li>
+								<li>
+									According to SHB the employee is entitled for health insurance.
+								</li>
+								<li>
+									The employee is not entitled for pension as per provision of SHB.
+								</li>
+								<li>
+									Redundancy package is only applicable provided the budget is available and donor doesn’t prohibit 
+								</li>
+								<li>
+									The employee is insured to a maximum amount of Afs 400,000 for death and/or permanent disabilities on case-by-case basis
+								</li>
+								<li>
+									SCA will have no employer responsibilities towards the employee when contract ends.
+								</li>
+							</ul>
+						</div>
+
+						<div class="employee-info">
+							<span class="identifier" t-esc="o.create_date.strftime('%d-%B-%Y')"></span>
+							
+						</div>
+						<br></br>
+						<br></br>
+					
+							<div class="d-flex" style="width:100%;flex-direction:row;justify-content:space-between;">
+								<div class="employee-info">
+									<span class="identifier">For SCA:</span>
+									<br></br>
+									<br></br>
+									<br></br>
+		
+		
+		
+									<span>.................................................................</span>
+									<br></br>
+									<br></br>
+									<span class="identifier">Name:</span> <span class="identifier-data" t-esc="o.contract_signatory.name"></span>
+									<br></br>
+									<span class="identifier">Title:</span> <span class="identifier-data" t-esc="o.contract_signatory.employee_id.job_id.name"></span>
+			
+								</div>
+								<div class="employee-info" style="opacity:0;">
+									<span class="identifier">Employee:</span>
+									<br></br>
+									<br></br>
+									<br></br>
+		
+		
+		
+									<span>.............................................................</span>
+									<br></br>
+									<br></br>
+									
+	
+									
+	
+												
+								</div>
+								<div class="employee-info" style="margin-left:400px;">
+									<span class="identifier">Employee:</span>
+									<br></br>
+									<br></br>
+									<br></br>
+		
+		
+		
+									<span>...................................................................</span>
+									<br></br>
+									<br></br>
+									<span class="identifier">Name:</span> <span class="identifier-data" t-esc="o.employee_id.name"></span>
+
+												
+								</div>
+							</div>
+
+						
+					</div>
+
+					<div class="text-right">
+						<span>Version Aug 2019</span>
+					</div>
+					
+				</div>
+			
+		</t>
+	</template>
+
+
+
+	<template id="fps_normal_contract_template">
+		<t t-call="web.basic_layout">
+			<style>
+				@font-face {
+                    font-family: 'georgia';
+					font-family: 'arial';
+                       src: url(/nl_contract/static/src/fonts/georgia.ttf);
+					   src: url(/nl_contract/static/src/fonts/arial-ce.ttf);
+                      }
+					  .emp_info {
+						padding-left:25px;
+					 }
+                
+					 p{
+						 font-size:26px;
+                 font-family: 'georgia' !important;
+					 }
+					 td{
+						 font-size:26px;
+                 font-family: 'georgia' !important;
+					 }
+					 th{
+						 font-size:26px;
+                 font-family: 'georgia' !important;
+					 }
+					 .contract-details{
+						 margin-left:25px;
+						 margin-right:25px;
+					 }
+					 .identifier{
+						font-size:26px;
+                        font-family: 'georgia' !important;
+						font-weigth:bolder;
+
+					}
+					.identifier-data{
+						font-size:26px;
+                         font-family: 'georgia' !important;
+						font-weigth:bold;
+						
+
+					}
+					.employee-info{
+						margin-left:15px;
+					}	
+					li{
+                 font-family: 'georgia' !important;
+						font-size:26px;
+					}
+					.b{
+						font-size:26px;
+						font-family: 'georgia' !important;
+					}
+					.border{
+						border:1.4px solid black !important;
+						padding:5px;
+					}
+			</style>
+				<div style="width:100%;">	
+						
+						<t t-if="o.state in ['draft','to_approve','cancel','rejected']">
+							<div class="watermark" style="margin-top:800px;position:absolute;opacity:0.12;font-size:3em;width:100%;text-align:center;z-index:1000;color:grey;">
+								<p style="font-size:250px"><span t-esc="dict(o._fields['state'].selection).get(o.state)"/></p>
+							</div>
+						</t>
+						<span style="opacity:0;">ss</span>
+						<img t-att-src="'/nl_contract/static/description/sca.png'" alt="Logo"/>
+						<p style="float:right;">Annex 1</p>
+					<br/>
+					<h3 style="color:#006983; margin-top:10px;font-family:'arial';" class="text-center">EMPLOYMENT CONTRACT – FIELD PROJECT STAFF</h3>
+					<h3 style="margin-top:10px;font-family:'arial';" class="text-center">(<u>Field Project Staff on contract of more than 6 months</u>)</h3>
+					<br />
+
+					<div class="contract-details">
+						<p style="margin-top:-20px">
+							This contract is signed between the employee (FPS) and the Swedish Committee for Afghanistan (SCA) based on the following:
+						</p>
+						<div>
+
+                        <table style="width: 100%;" cellpadding="2">
+                            
+							<tr class="border">
+
+								<td class="font-weight-bold border">Name:</td>
+                                    <td class="border">
+                                        <span t-esc="o.employee_id.name" />
+                                    </td>
+
+                                    <td class="font-weight-bold border">Father's Name:</td>
+                                    <td class="border">
+                                        <span t-esc="o.employee_id.father_name" />
+                                 </td>
+							</tr>
+
+							<tr class="border">
+
+								<td class="font-weight-bold border">Job Title:</td>
+                                    <td class="border">
+                                        <span t-esc="o.job_id.name" />
+                                    </td>
+
+                                    <td class="font-weight-bold border">Education level:</td>
+                                    <td class="border">
+                                        <span t-esc="o.employee_id.edu_level" />
+                                 </td>
+							</tr>
+
+							<tr class="border">
+
+								<td class="font-weight-bold border">Teaching exp:</td>
+                                    <td class="border">
+                                        <span t-esc="o.teaching_experience" />
+                                    </td>
+
+                                    <td class="font-weight-bold border">Duty station/RMO:</td>
+                                    <td class="border">
+                                        <span t-esc="o.employee_id.office_id.name" />
+                                 </td>
+							</tr>
+
+							<tr class="border">
+
+								<td class="font-weight-bold border">Project:</td>
+                                    <td class="border">
+                                        <span t-esc="o.employee_id.project_id.name" />
+                                    </td>
+
+                                    <td class="font-weight-bold border">Supervisor/LM:</td>
+                                    <td class="border">
+                                        <span t-esc="o.employee_id.parent_id.name" />
+                                 </td>
+							</tr>
+
+							<tr class="border">
+
+								<td class="font-weight-bold border">National ID:</td>
+                                    <td class="border">
+                                        <span t-esc="o.employee_id.identification_id" />
+                                    </td>
+
+                                    <td class="font-weight-bold border">TIN:</td>
+                                    <td class="border">
+                                        <span t-esc="o.employee_id.tin_no" />
+                                 </td>
+							</tr>
+
+							<tr class="border">
+
+								<td class="font-weight-bold border">Bank Ac. Number:</td>
+                                    <td class="border">
+                                        <span t-esc="o.employee_id.bank_account" />
+                                    </td>
+
+                                    <td class="font-weight-bold border">Bank name:</td>
+                                    <td class="border">
+                                        <span t-esc="o.employee_id.bank_id.name" />
+                                 </td>
+							</tr>
+                               
+                            </table>
+
+						</div>
+
+						<div>
+							<p><b>Monthly Salary details and deductions in AFNS:</b></p>
+
+							<table style="width: 100%;" cellpadding="2">
+
+							<tr class="border">
+								<thead class="border">
+									<th class="border">Monthly gross salary </th>
+									<th class="border">Amount free from Tax</th>
+									<th class="border">Taxable amount</th>
+									<th class="border">Tax deduction</th>
+									<th class="border">Net salary</th>
+								</thead>
+							</tr>
+                            
+							<tr class="border">
+
+								<td class="border">
+									<span t-esc="o.wage" />
+								</td>
+								<td class="border">
+									<span t-esc="o.tax_free_amount" />
+								</td>
+								<td class="border">
+									<span t-esc="o.taxable_amount" />
+								</td>
+								<td class="border">
+									<span t-esc="o.tax_deduction" />
+								</td>
+								<td class="border">
+									<span t-esc="o.net_salary" />
+								</td>
+							</tr>
+
+						
+                               
+                            </table>
+
+						</div>
+
+
+						<div>
+							<p><b>Contract details:</b></p>
+
+							<table style="width: 100%;" cellpadding="2">
+                            
+							<tr class="border">
+
+								<td class="font-weight-bold border">Employment Start Date:</td>
+                                    <td class="border">
+                                        <span t-esc="o.first_contract_date" />
+                                    </td>
+
+									<td class="font-weight-bold border">Contract change date:</td>
+                                    <td class="border">
+										<t t-if="o.is_first_contract == True">
+                                        	<span> </span>
+										</t>
+										<t t-if="o.is_first_contract == False">
+                                        	<span t-esc="o.date_start" />
+										</t>
+                                 </td>
+
+							</tr>
+
+							<tr class="border">
+
+								<td class="font-weight-bold border">Duration of contract:</td>
+                                    <td class="border">
+                                        <span t-esc="o.calculate_contract_duration" ></span>
+										<span>month(s)</span>
+                                    </td>
+
+                                    <td class="font-weight-bold border">Contract end date:</td>
+                                    <td class="border">
+                                        <span t-esc="o.date_end or ''" />
+                                 </td>
+							</tr>
+
+                            </table>
+
+						</div>
+
+						<div>
+							<p><b>The contract maybe renewed dependent on funding and performance</b></p>
+							<p style="margin-top:-20px"><b><u>Terms and conditions</u></b></p>
+							<t t-set="next" t-value="1"/>
+							<t t-foreach="o.general_term_ids" t-as="term">
+								<t t-if="term.sub_point == False">
+									<p style="margin-top:-40px"><b style="font-size:40px;border-radius: 40px">. </b><t t-esc="term.name" /></p>
+								</t>
+								<t t-if="term.sub_point">
+									<p style="margin-left:30px;margin-top:-10px"><t t-esc="next"/>. <t t-esc="term.name" /></p>
+									<t t-set="next" t-value="next+1"/>
+								</t>
+							</t>
+
+						</div>
+
+					
+							<div class="d-flex" style="width:100%;flex-direction:row;justify-content:space-between;">
+								<div class="employee-info">
+									<span class="identifier">For SCA:</span>
+									<br></br>
+		
+		
+		
+									<span>.................................................................</span>
+									<br></br>
+									<span class="identifier"><b>Name</b>:</span> <span class="identifier-data" t-esc="o.contract_signatory.name"></span>
+									<br></br>
+									<span class="identifier"><b>Title</b>:</span> <span class="identifier-data" t-esc="o.contract_signatory.employee_id.job_id.name"></span><br/>
+									<span class="identifier"><b>Signature</b>:</span> <span class="identifier-data"> </span>
+
+								</div>
+								<div class="employee-info" style="opacity:0;">
+									<span class="identifier">Employee:</span>
+									<br></br>
+		
+		
+		
+									<span>.............................................................</span>
+									<br></br>
+
+									
+	
+									
+	
+												
+								</div>
+
+								<div class="employee-info" style="margin-left:400px;">
+									<span class="identifier">Employee:</span>
+									<br></br>
+		
+		
+		
+									<span>...................................................................</span>
+									<br></br>
+									<span class="identifier"><b>Name</b>:</span> <span class="identifier-data" t-esc="o.employee_id.name"></span>
+									<br/>
+									<span class="identifier"><b>Signature</b>:</span> <span class="identifier-data"> </span><br/>
+									<span class="identifier"><b>Date</b>:<span t-esc="o.create_date.strftime('%d-%B-%Y')"></span> </span>
+
+												
+								</div>
+							</div>
+
+					
+							
+								
+								
+						
+							
+					
+
+						
+					</div>
+
+					<div class="text-right">
+						<span>Version July 2021</span>
+					</div>
+					
+				</div>		
+		</t>
+	</template>
+
+
+
+	<template id="fps_education_contract_template">
+		<t t-call="web.basic_layout">
+			<style>
+				@font-face {
+                    font-family: 'georgia';
+					font-family: 'arial';
+                       src: url(/nl_contract/static/src/fonts/georgia.ttf);
+					   src: url(/nl_contract/static/src/fonts/arial-ce.ttf);
+                      }
+					  .emp_info {
+						padding-left:25px;
+					 }
+                
+					 p{
+						 font-size:26px;
+                 font-family: 'georgia' !important;
+					 }
+					 td{
+						 font-size:26px;
+                 font-family: 'georgia' !important;
+					 }
+					 th{
+						 font-size:26px;
+                 font-family: 'georgia' !important;
+					 }
+					 .contract-details{
+						 margin-left:25px;
+						 margin-right:25px;
+					 }
+					 .identifier{
+						font-size:26px;
+                        font-family: 'georgia' !important;
+						font-weigth:bolder;
+
+					}
+					.identifier-data{
+						font-size:26px;
+                         font-family: 'georgia' !important;
+						font-weigth:bold;
+						
+
+					}
+					.employee-info{
+						margin-left:15px;
+					}	
+					li{
+                 font-family: 'georgia' !important;
+						font-size:26px;
+					}
+					.b{
+						font-size:26px;
+						font-family: 'georgia' !important;
+					}
+					.border{
+						border:1.4px solid black !important;
+						padding:5px;
+					}
+			</style>
+				<div style="width:100%;">	
+						
+						<t t-if="o.state in ['draft','to_approve','cancel','rejected']">
+							<div class="watermark" style="margin-top:800px;position:absolute;opacity:0.12;font-size:3em;width:100%;text-align:center;z-index:1000;color:grey;">
+								<p style="font-size:250px"><span t-esc="dict(o._fields['state'].selection).get(o.state)"/></p>
+							</div>
+						</t>
+						<span style="opacity:0;">ss</span>
+						<img t-att-src="'/nl_contract/static/description/sca.png'" alt="Logo"/>
+						<p style="float:right;">Annex 5</p>
+					<br/>
+					<h3 style="color:#006983; margin-top:10px;font-family:'arial';" class="text-center">EMPLOYMENT CONTRACT – FIELD PROJECT STAFF</h3>
+					<h3 style="margin-top:10px;font-family:'arial';" class="text-center">(<u>CBE, Head Teachers, RC Teachers and IERPs on more than 6 months contract</u>)</h3>
+					<br />
+
+					<div class="contract-details">
+						<p style="margin-top:-20px">
+							This contract is signed between the employee (FPS) and the Swedish Committee for Afghanistan (SCA) based on the following:
+						</p>
+						<div>
+                        <table style="width: 100%;" cellpadding="2">
+                            
+							<tr class="border">
+
+								<td class="font-weight-bold border">Name:</td>
+                                    <td class="border">
+                                        <span t-esc="o.employee_id.name" />
+                                    </td>
+
+                                    <td class="font-weight-bold border">Father's Name:</td>
+                                    <td class="border">
+                                        <span t-esc="o.employee_id.father_name" />
+                                 </td>
+							</tr>
+
+							<tr class="border">
+
+								<td class="font-weight-bold border">Job Title:</td>
+                                    <td class="border">
+                                        <span t-esc="o.job_id.name" />
+                                    </td>
+
+                                    <td class="font-weight-bold border">Education level:</td>
+                                    <td class="border">
+                                        <span t-esc="o.employee_id.edu_level" />
+                                 </td>
+							</tr>
+
+							<tr class="border">
+
+								<td class="font-weight-bold border">Teaching exp:</td>
+                                    <td class="border">
+                                        <span t-esc="o.teaching_experience" />
+                                    </td>
+
+                                    <td class="font-weight-bold border">Duty station/RMO:</td>
+                                    <td class="border">
+                                        <span t-esc="o.employee_id.work_location" />
+                                 </td>
+							</tr>
+
+							<tr class="border">
+
+								<td class="font-weight-bold border">Project:</td>
+                                    <td class="border">
+                                        <span t-esc="o.employee_id.project_id.name" />
+                                    </td>
+
+                                    <td class="font-weight-bold border">Supervisor/LM:</td>
+                                    <td class="border">
+                                        <span t-esc="o.employee_id.parent_id.name" />
+                                 </td>
+							</tr>
+
+							<tr class="border">
+
+								<td class="font-weight-bold border">National ID:</td>
+                                    <td class="border">
+                                        <span t-esc="o.employee_id.identification_id" />
+                                    </td>
+
+                                    <td class="font-weight-bold border">TIN:</td>
+                                    <td class="border">
+                                        <span t-esc="o.employee_id.tin_no" />
+                                 </td>
+							</tr>
+
+							<tr class="border">
+
+								<td class="font-weight-bold border">Bank Ac. Number:</td>
+                                    <td class="border">
+                                        <span t-esc="o.employee_id.bank_account" />
+                                    </td>
+
+                                    <td class="font-weight-bold border">Bank name:</td>
+                                    <td class="border">
+                                        <span t-esc="o.employee_id.bank_id.name" />
+                                 </td>
+							</tr>
+                               
+                            </table>
+
+						</div>
+
+						<div>
+							<p><b>Monthly Salary details and deductions in AFNS:</b></p>
+
+							<table style="width: 100%;" cellpadding="2">
+
+							<tr class="border">
+								<thead class="border">
+									<th class="border">Monthly gross salary </th>
+									<th class="border">Amount free from Tax</th>
+									<th class="border">Taxable amount</th>
+									<th class="border">Tax deduction</th>
+									<th class="border">Net salary</th>
+								</thead>
+							</tr>
+                            
+							<tr class="border">
+
+								<td class="border">
+									<span t-esc="o.wage" />
+								</td>
+								<td class="border">
+									<span t-esc="o.tax_free_amount" />
+								</td>
+								<td class="border">
+									<span t-esc="o.taxable_amount" />
+								</td>
+								<td class="border">
+									<span t-esc="o.tax_deduction" />
+								</td>
+								<td class="border">
+									<span t-esc="o.net_salary" />
+								</td>
+							</tr>
+
+						
+                               
+                            </table>
+
+						</div>
+
+
+						<div>
+							<p><b>Contract details:</b></p>
+
+							<table style="width: 100%;" cellpadding="2">
+                            
+							<tr class="border">
+
+								<td class="font-weight-bold border">Employment start date:</td>
+                                    <td class="border">
+                                        <span t-esc="o.first_contract_date" />
+                                    </td>
+
+									<td class="font-weight-bold border">Contract change date:</td>
+                                    <td class="border">
+										<t t-if="o.is_first_contract == True">
+                                        	<span> </span>
+										</t>
+										<t t-if="o.is_first_contract == False">
+                                        	<span t-esc="o.date_start" />
+										</t>
+                                 </td>
+
+							</tr>
+
+							<tr class="border">
+
+								<td class="font-weight-bold border">Duration of contract:</td>
+                                    <td class="border">
+                                        <span t-esc="o.calculate_contract_duration" ></span>
+										<span>month(s)</span>
+                                    </td>
+
+                                    <td class="font-weight-bold border">Contract end date:</td>
+                                    <td class="border">
+                                        <span t-esc="o.date_end" />
+                                 </td>
+							</tr>
+
+                            </table>
+
+						</div>
+
+						<div>
+							<p><b>The contract maybe renewed dependent on funding and performance</b></p>
+							<p><b><u>Terms and conditions</u></b></p>
+							<t t-set="next" t-value="1"/>
+							<t t-foreach="o.general_term_ids" t-as="term">
+								<t t-if="term.sub_point == False">
+									<p style="margin-top:-30px"><b style="font-size:40px">. </b><t t-esc="term.name" /></p>
+								</t>
+								<t t-if="term.sub_point">
+									<p style="margin-left:30px;margin-top:-30px"><t t-esc="next"/>. <t t-esc="term.name" /></p>
+									<t t-set="next" t-value="next+1"/>
+								</t>
+							</t>
+
+						</div>
+
+					
+							<div class="d-flex" style="width:100%;flex-direction:row;justify-content:space-between;">
+								<div class="employee-info">
+									<span class="identifier">For SCA:</span>
+									<br></br>
+		
+		
+									<span>.................................................................</span>
+									<br></br>
+									<span class="identifier"><b>Name</b>:</span> <span class="identifier-data" t-esc="o.contract_signatory.name"></span>
+									<br></br>
+									<span class="identifier"><b>Title</b>:</span> <span class="identifier-data" t-esc="o.contract_signatory.employee_id.job_id.name"></span><br/>
+									<span class="identifier"><b>Signature</b>:</span> <span class="identifier-data"> </span>
+
+								</div>
+								<div class="employee-info" style="opacity:0;">
+									<span class="identifier">Employee:</span>
+									<br></br>
+		
+		
+		
+									<span>.............................................................</span>
+									<br></br>
+									
+	
+									
+	
+												
+								</div>
+								<div class="employee-info" style="margin-left:500px;">
+									<span class="identifier">Employee:</span>
+									<br></br>
+		
+		
+									<span>...................................................................</span>
+									<br></br>
+									<span class="identifier"><b>Name</b>:</span> <span class="identifier-data" t-esc="o.employee_id.name"></span><br/>
+									<span class="identifier"><b>Signature</b>:</span> <span class="identifier-data"> </span><br/>
+									<span class="identifier"><b>Date</b>:<span t-esc="o.create_date.strftime('%d-%B-%Y')"></span> </span>
+
+									
+	
+												
+								</div>
+							</div>
+
+					
+							
+								
+								
+						
+							
+					
+
+						
+					</div>
+
+					<div class="text-right">
+						<span>Version July 2021</span>
+					</div>
+					
+				</div>		
+		</t>
+	</template>
+
+
+	<template id="contract_template_generic">
+		<t t-call="nl_contract.external_layout"/>
+		<t t-call="web.basic_layout">
+			<style>
+				@font-face {
+                    font-family: 'georgia';
+					font-family: 'arial';
+                       src: url(/nl_contract/static/src/fonts/georgia.ttf);
+					   src: url(/nl_contract/static/src/fonts/arial-ce.ttf);
+                      }
+					  .emp_info {
+						padding-left:25px;
+					 }
+                
+					 p{
+						 font-size:26px;
+                 font-family: 'georgia' !important;
+					 }
+					 .contract-details{
+						 margin-left:25px;
+						 margin-right:25px;
+					 }
+					 .identifier{
+						font-size:26px;
+                        font-family: 'georgia' !important;
+						font-weigth:bolder;
+
+					}
+					.identifier-data{
+						font-size:26px;
+                         font-family: 'georgia' !important;
+						font-weigth:bold;
+						
+
+					}
+					.employee-info{
+						margin-left:15px;
+					}	
+					li{
+                 font-family: 'georgia' !important;
+						font-size:26px;
+					}
+			</style>
+				<div style="width:100%;">	
+						
+						<t t-if="o.state in ['draft','to_approve','cancel','rejected']">
+							<div class="watermark" style="margin-top:800px;position:absolute;opacity:0.12;font-size:3em;width:100%;text-align:center;z-index:1000;color:grey;">
+								<p style="font-size:250px"><span t-esc="dict(o._fields['state'].selection).get(o.state)"/></p>
+							</div>
+						</t>
+						<span style="opacity:0;">ss</span>
+						<img t-att-src="'/nl_contract/static/description/sca.png'" alt="Logo"/>
+				
+					<br/>
+					<br/>
+                    <br />
+					<h2 style="color:#006983; margin-top:10px;font-family:'arial';" class="text-center">EMPLOYEMENT CONTRACT</h2>
+
+					<br />
+
+					<div class="contract-details">
+						<p class="margin-top:15px;">
+							This contract is agreed and signed between the employee and the Swedish Committee for Afghanistan (SCA) based on the following:
+						</p>
+						<br></br>
+						<div class="employee-info">
+                            <table>
+                            <tr>
+                                <td>
+                                    <strong> <span class="identifier">Name:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info">
+                                    <span class="identifier-data" t-esc="o.employee_id.name"></span>
+                                </td>
+                                    
+                            </tr>
+                                
+                            <tr>
+                                <td style="width:300px">
+                                    <strong> <span class="identifier">Father's Name:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info">
+                                   <span class="identifier-data" t-esc="o.employee_id.father_name"></span>
+                                </td>
+                                    
+                            </tr>
+                                
+                             <tr>
+                                <td>
+                                    <strong> <span class="identifier">Job Title:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                  <span class="identifier-data" t-esc="o.job_id.name"></span>
+                                </td>
+                                    
+                            </tr>
+                                
+                            <tr>
+                                <td>
+                                    <strong> <span class="identifier">Unit:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                 <span class="identifier-data" t-esc="o.unit_id.name"></span>
+                                </td>
+                                    
+                            </tr>
+                                
+                             <tr>
+                                <td>
+                                    <strong> <span class="identifier">Duty Station:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                <span class="identifier-data" t-esc="o.employee_id.office_id.name"></span>
+                                </td>
+                                    
+                            </tr>
+                               
+                            </table>
+                           
+							
+							
+                            
+						</div>
+						
+						<br></br>
+						<hr style="height:1px;border:none;color:#333;background-color:#333;" />
+                        <br></br>
+                        
+                        <div class="employee-info">
+                             <table>
+                             <tr>
+                                <td>
+                                    <strong> <span class="identifier">Contract Term:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                               <span class="identifier-data" t-esc="o.other_contract_term"></span>
+                                </td>
+                                    
+                            </tr>
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Grade of Position:</span></strong>
+                                </td>
+                                <td> </td>
+								<td class="emp_info"> 
+                              <span class="identifier-data" t-esc="o.salary_grade.name"></span>
+                                </td>
+                                    
+                            </tr>
+                            
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Step (Implementation):</span></strong>
+                                </td>
+                                <td> </td>
+								<td class="emp_info"> 
+                            <span class="identifier-data" t-esc="o.salary_step.name"></span>
+                                </td>
+                                    
+                            </tr>
+                            
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Basic Salary:</span></strong>
+                                </td>
+                                <td> </td>
+								<td class="emp_info"> 
+                                  <span class="identifier-data" t-esc="o.wage" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'></span>
+                                </td>
+                                    
+                            </tr>
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Allowance:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                 <span class="identifier-data" t-esc="o.allowance" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'></span>
+                                </td>
+                                    
+                            </tr>
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Gross Salary:</span></strong>
+                                </td>
+                                <td> </td>
+								<td class="emp_info"> 
+                                	<span class="identifier-data" t-esc="o.allowance + o.wage" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'></span>
+                                </td>
+                                    
+                            </tr>
+                            
+                             <tr t-if="o.cal_pension">
+                                <td>
+                                    <strong><span class="identifier">Pension:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                	<span class="identifier-data" t-esc="o.pension_amount" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'></span>
+                                </td>
+                                    
+                            </tr>
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Employement Start Date:</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                <span class="identifier-data" t-esc="o.first_contract_date"></span>
+                                </td>
+                                    
+                            </tr>
+                             <tr>
+                                <td>
+                                    <strong><span class="identifier">Contract Change Date</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                <span class="identifier-data" t-esc="o.date_start"></span>
+                                </td>
+                                    
+                            </tr>
+
+							<tr>
+                                <td>
+                                    <strong><span class="identifier">Employment End Date</span></strong>
+                                </td>
+                                <td> </td>
+                                <td class="emp_info"> 
+                                <span class="identifier-data" t-esc="o.date_end or ''"></span>
+                                </td>
+                                    
+                            </tr>
+                            
+                        </table>
+                        </div>
+
+                        <br></br>
+                         <br></br>
+
+						<div class="employee-info" style="margin-top:25px;">
+
+                            <ul>
+                                <t t-foreach="o.general_term_ids" t-as="term">
+                                    <li>
+                                        <span t-esc="term.name"></span>
+                                    </li>
+                                </t>
+                            </ul>
+						</div>
+
+						<div class="employee-info">
+							<span class="identifier" t-esc="o.create_date.strftime('%d-%B-%Y')"></span>
+							
+						</div>
+						<br></br>
+						<br></br>
+					
+							<div class="d-flex" style="width:100%;flex-direction:row;justify-content:space-between;">
+								<div class="employee-info">
+									<span class="identifier">For SCA:</span>
+									<br></br>
+									<br></br>
+									<br></br>
+		
+		
+		
+									<span>.................................................................</span>
+									<br></br>
+									<br></br>
+									<span class="identifier">Name:</span> <span class="identifier-data" t-esc="o.contract_signatory.name"></span>
+									<br></br>
+									<span class="identifier">Title:</span> <span class="identifier-data" t-esc="o.contract_signatory.employee_id.job_id.name"></span>
+			
+								</div>
+								<div class="employee-info" style="opacity:0;">
+									<span class="identifier">Employee:</span>
+									<br></br>
+									<br></br>
+									<br></br>
+		
+		
+		
+									<span>.............................................................</span>
+									<br></br>
+									<br></br>
+									
+	
+									
+	
+												
+								</div>
+								<div class="employee-info" style="margin-left:400px;">
+									<span class="identifier">Employee:</span>
+									<br></br>
+									<br></br>
+									<br></br>
+		
+		
+		
+									<span>...................................................................</span>
+									<br></br>
+									<br></br>
+									<span class="identifier">Name:</span> <span class="identifier-data" t-esc="o.employee_id.name"></span>
+									
+	
+									
+	
+												
+								</div>
+							</div>
+
+					
+							
+								
+								
+						
+							
+					
+
+						
+					</div>
+
+					<div class="text-right">
+						<span>Version Aug, 2019</span>
+					</div>
+					
+				</div>
+			
+		</t>
+	</template>
+
+	<template id="contracts_template">
+		<t t-call="web.html_container">
+			<t t-foreach="docs" t-as="o">
+				<t t-if="o.employment_type == 'open_ended'">
+					<t t-call="nl_contract.contract_template"/>
+				</t>
+				<t t-if="o.employment_type =='casual_contract'">
+					<t t-call="nl_contract.contract_template_casual_contract"></t>
+
+				</t>
+				<t t-if="o.employment_type == 'fixed_term'">
+					<t t-call="nl_contract.contract_template_fixed_term_one_year"/>
+				</t>
+				<t t-if="o.employment_type == 'project_based'">
+					<t t-call="nl_contract.contract_template_project_staff"></t>
+				</t>
+
+				<t t-if="o.employment_type == 'fps1_2'">
+					<t t-call="nl_contract.fps_normal_contract_template"></t>
+				</t>
+
+				<t t-if="o.employment_type == 'fps1'">
+					<t t-call="nl_contract.fps_education_contract_template"></t>
+				</t>
+				<t t-if="o.employment_type == 'other'">
+					<t t-call="nl_contract.contract_template_generic"/>
+				</t>
+				
+			</t>
+		</t>
+	</template>
+</odoo>

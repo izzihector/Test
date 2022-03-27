@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="nl_appraisal_website" inherit_id="website.assets_frontend" name="assets of website">
+        <xpath expr="//script[last()]" position="after">
+            <script src="https://unpkg.com/vue@3.2.26/dist/vue.global.js"></script>
+
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/admin_staff/components/sidebar.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/admin_staff/components/breadcrumbs.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/admin_staff/components/flashMessage.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/admin_staff/components/loadingComponent.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/admin_staff/components/submit_form.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/admin_staff/components/all_form.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/admin_staff/components/appraisal_state_returner.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/admin_staff/components/employees/employee_objectives_feedback.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/admin_staff/components/employees/employee_learning_objectives_feedback.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/admin_staff/components/employees/employee_self_assessment.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/admin_staff/components/employees/employee_career_aspiration.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/admin_staff/components/employees/employee_upward_feedback.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/admin_staff/components/employees/employee_final_comments.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/admin_staff/components/managers/setting_objectives.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/admin_staff/components/managers/setting_learning_objectives.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/admin_staff/components/managers/objectives_feedback.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/admin_staff/components/managers/objectives_learning_feedback.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/admin_staff/components/managers/employee_assessment.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/admin_staff/components/managers/career_aspirations.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/admin_staff/components/managers/setting_objectives_next_year.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/admin_staff/components/managers/setting_learning_objectives_next.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/admin_staff/components/managers/performance_rating.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/admin_staff/components/managers/second_supervisor.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/admin_staff/my_appraisal.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/admin_staff/manager_emp_appraisal.js"/>
+
+            <!-- field Staff -->
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/field_staff/components/fieldstaff_sidebar.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/field_staff/components/field_submit_form.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/field_staff/components/field_all_form.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/field_staff/managers/field_performance_assessment.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/field_staff/managers/field_employee_feedback.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/field_staff/managers/field_performance_rating.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/field_staff/managers/field_overall_assessments.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/field_staff/manager_emp_fieldstaff_appraisal.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/field_staff/my_fieldstaff_appraisal.js"/>
+
+            <!-- Probation Related -->
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/probation/components/probation_sidebar.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/probation/components/probation_breadcrumb.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/probation/components/probation_submit_form.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/probation/components/probation_full_form.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/probation/components/probation_state_returner.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/probation/components/employee/probation_self_assessment.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/probation/components/employee/probation_final_comments.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/probation/components/manager/probation_supervisor_assessment.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/probation/components/manager/probation_performance_feedback.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/probation/components/manager/probation_way_forward.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/probation/components/manager/setting_probation_objectives.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/probation/single_probation_appraisal.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/probation/my_probation_appraisal.js"/>
+
+            <!-- PIP -->
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/appraisal_pip/components/pip_sidebar.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/appraisal_pip/components/pip_submit_form.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/appraisal_pip/components/pip_all_form.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/appraisal_pip/components/pip_appraisal_state_returner.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/appraisal_pip/managers/setting_pip_objectives.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/appraisal_pip/managers/setting_pip_reviews.js"/>
+
+            
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/appraisal_pip/manager_emp_pip_appraisal.js"/>
+            <script type="text/javascript" src="/nl_appraisal/static/src/js/appraisal_pip/my_pip_appraisal.js"/>
+
+
+        </xpath>
+    </template>
+    <template id="nl_appraisal_website_css" inherit_id="website.assets_frontend" name="assets of website">
+        <xpath expr="//link[last()]" position="after">
+            <link rel="stylesheet" type="text/css" href="/nl_appraisal/static/src/style/appraisal.css"/>
+        </xpath>
+    </template>
+
+
+
+</odoo>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record model="ir.ui.view" id="mail_compose_message_applicants_wizard_form">
+            <field name="name">mail.compose.message.applicants.form</field>
+            <field name="model">mail.compose.message.applicants</field>
+            <field name="groups_id" eval="[(4,ref('base.group_user'))]"/>
+            <field name="arch" type="xml">
+                <form string="Compose Email">
+                    <field name="applicant_selected_state" invisible="1"/>
+                    <field name="job_announcement_id"  nolabel="1" colspan="2" invisible="1"/>
+                    <group>
+                        <label for="applicant_ids" string="Recipients" groups="base.group_user"/>
+                        <field name="applicant_ids" widget="many2many_tags_email" placeholder="Add Applicants to notify..." nolabel='1' domain="[('job_announcement_id', '=', job_announcement_id), ('stage_state_mode', '=', applicant_selected_state)]"/>
+                        <field name="subject" placeholder="Subject..." required="True"/>
+                    </group>
+                    <field name="body" options="{'style-inline': true}"/>
+                    <group col="4">
+                        <field name="attachment_ids" widget="many2many_binary" string="Attach a file" nolabel="1" colspan="2"/>
+                    </group>
+                    <footer>
+                        <button string="Send"  name="action_send_mail" type="object" class="btn-primary o_mail_send"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+    <record model="ir.actions.act_window" id="action_open_mail_compose_message_applicants_model">
+        <field name="name">Action Open Mail Compose Message Applicants Model</field>
+        <field name="res_model">mail.compose.message.applicants</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+</odoo>

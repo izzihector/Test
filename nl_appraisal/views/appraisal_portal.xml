@@ -1,0 +1,1278 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- Link In main page -->
+    <template id="portal_my_appraisal_menu" name="My Appraisal View Menu" inherit_id="portal.portal_my_home" priority="20">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">My Appraisals</t>
+                <t t-set="url" t-value="'/employee/my-appraisals'" />
+            </t>
+        </xpath>
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="show_subordinates_appraisals" t-call="portal.portal_docs_entry">
+                <t t-set="title">Subordinates Appraisals</t>
+                <t t-set="url" t-value="'/supervisor/employee-appraisals'" />
+                <t t-set="count" t-value="subordinates_appraisals_count" />
+            </t>
+        </xpath>
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="show_my_probation_appraisals" t-call="portal.portal_docs_entry">
+                <t t-set="title">My Probation Appraisal</t>
+                <t t-set="url" t-value="'/employee/my-probation-appraisals'" />
+                <t t-set="count" t-value="my_probation_appraisals_count"/>
+            </t>
+        </xpath>
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="show_subordinates_probation_appraisals" t-call="portal.portal_docs_entry">
+                <t t-set="title">Subordinates Probation Appraisals</t>
+                <t t-set="url" t-value="'/supervisor/employee-probation-appraisals'" />
+                <t t-set="count" t-value="subordinates_probation_appraisals_count" />
+            </t>
+        </xpath>
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t  t-if="show_my_appraisals_pip" t-call="portal.portal_docs_entry">
+                <t t-set="title">My Performance Improvement Plans</t>
+                <t t-set="url" t-value="'/employee/my-pip-appraisals'" />
+                <t t-set="count" t-value="my_appraisals_pip_count" />
+            </t>
+        </xpath>
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="show_subordinates_appraisals_pip" t-call="portal.portal_docs_entry">
+                <t t-set="title">Subordinate Performance Plans</t>
+                <t t-set="url" t-value="'/supervisor/employee-pip-appraisals'" />
+                <t t-set="count" t-value="subordinates_appraisals_pip_count" />
+            </t>
+        </xpath>
+    </template>
+    <!-- my admin staff appraisals -->
+    <template id="my_appraisal" name="My Appraisals">
+        <t t-call="portal.portal_layout">
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">My Appraisal</t>
+            </t>
+            <div class="container vue_appraisal_apps" id="vue_my_appraisal_app">
+                <single-appraisal-employee t-att-id="id" />
+            </div>
+            <!-- chatter -->
+            <div id="invoice_communication" class="mt-4">
+                <h2>History</h2>
+                <t t-call="portal.message_thread">
+                    <t t-set="object" t-value="appraisal"/>
+                </t>
+            </div>
+        </t>
+    </template>
+    <!-- my Field staff appraisals -->
+    <template id="my_field_appraisal" name="My Appraisals">
+        <t t-call="portal.portal_layout">
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">My Appraisal</t>
+            </t>
+            <div class="container vue_appraisal_apps" id="vue_my_field_staff_appraisal_app">
+                <single-field-appraisal-employee t-att-id="id" />
+            </div>
+            <!-- chatter -->
+            <div id="invoice_communication" class="mt-4">
+                <h2>History</h2>
+                <t t-call="portal.message_thread">
+                    <t t-set="object" t-value="appraisal"/>
+                </t>
+            </div>
+        </t>
+    </template>
+    <!-- my probation appraisals -->
+    <template id="my_probation_appraisal" name="My Probation Appraisals">
+        <t t-call="portal.portal_layout">
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">My Probation Appraisal</t>
+            </t>
+            <div class="container vue_appraisal_apps" id="vue_my_probation_appraisal_app">
+                <single-probation-appraisal-employee t-att-id="id" />
+            </div>
+            <!-- chatter -->
+            <div id="invoice_communication" class="mt-4">
+                <h2>History</h2>
+                <t t-call="portal.message_thread">
+                    <t t-set="object" t-value="appraisal"/>
+                </t>
+            </div>
+        </t>
+    </template>
+    <!-- Manager admin staff single appraisal -->
+    <template id="single_appraisal" name="Employee Appraisals">
+        <t t-call="portal.portal_layout">
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Appraisal</t>
+            </t>
+            <div class="container vue_appraisal_apps" id="vue_single_appraisal_app">
+                <single-appraisal-parent t-att-id="id" />
+            </div>
+            <!-- chatter -->
+            <div id="invoice_communication" class="mt-4">
+                <h2>History</h2>
+                <t t-call="portal.message_thread">
+                    <t t-set="object" t-value="appraisal"/>
+                </t>
+            </div>
+        </t>
+    </template>
+    <!-- single probation appraisal -->
+    <template id="single_probation_appraisal" name="Employee Probation Appraisals">
+        <t t-call="portal.portal_layout">
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Porbation Appraisal</t>
+            </t>
+            <div class="container vue_appraisal_apps" id="vue_single_probation_appraisal_app">
+                <single-probation-appraisal-parent t-att-id="id" />
+            </div>
+            <!-- chatter -->
+            <div id="invoice_communication" class="mt-4">
+                <h2>History</h2>
+                <t t-call="portal.message_thread">
+                    <t t-set="object" t-value="appraisal"/>
+                </t>
+            </div>
+        </t>
+    </template>
+    <!-- Manager field staff single appraisal -->
+    <template id="field_staff_single_appraisal" name="Employee Appraisals">
+        <t t-call="portal.portal_layout">
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Appraisal</t>
+            </t>
+            <div class="container vue_appraisal_apps" id="vue_field_staff_single_appraisal_app">
+                <single-field-appraisal-parent t-att-id="id" />
+            </div>
+            <!-- chatter -->
+            <div id="invoice_communication" class="mt-4">
+                <h2>History</h2>
+                <t t-call="portal.message_thread">
+                    <t t-set="object" t-value="appraisal"/>
+                </t>
+            </div>
+        </t>
+    </template>
+    <!-- All My Appraisals -->
+    <template id="all_my_appraisals" name="All Appraisals">
+        <t t-call="portal.portal_layout">
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">My Appraisals</t>
+            </t>
+            <div t-if="not appraisals" class="alert alert-warning mt8" role="alert">
+          No Appraisal Records found!
+        </div>
+            <t t-if="appraisals" t-call="portal.portal_table">
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Department</th>
+                        <th>Unit</th>
+                        <th>Position</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Type</th>
+                        <th>State</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="appraisals" t-as="app">
+                        <td>
+                            <t t-esc="app.get('employee_name', '')"/>
+                        </td>
+                        <td>
+                            <t t-esc="app.get('department_name', '')"/>
+                        </td>
+                        <td>
+                            <t t-esc="app.get('unit_name', '')"/>
+                        </td>
+                        <td>
+                            <t t-esc="app.get('position', '')"/>
+                        </td>
+                        <td>
+                            <t t-esc="app.get('from_date', '')"/>
+                        </td>
+                        <td>
+                            <t t-esc="app.get('to_date', '')"/>
+                        </td>
+                        <td>
+                            <t t-esc="all_appraisal_types.get(app.get('appraisal_type', ''))"/>
+                        </td>
+                        <t t-if="app.get('appraisal_type') == 'admin_staff'">
+                            <td>
+                                <t t-esc="all_states.get(app.get('state', ''))"/>
+                            </td>
+                        </t>
+                        <t t-else="">
+                            <td>
+                                <t t-esc="all_states.get(app.get('field_state', ''))"/>
+                            </td>
+                        </t>
+                        <td>
+                            <a class="btn btn-secondary btn-sm" t-attf-href="/employee/my-appraisals/{{ app.get('id') }}">
+                                <i class="fa fa-view" /> View
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+    <!-- All Appraisals -->
+    <template id="all_appraisals" name="All Appraisals">
+        <t t-call="portal.portal_layout">
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Subordinates Appraisals</t>
+            </t>
+            <div t-if="not appraisals" class="alert alert-warning mt8" role="alert">
+          No Appraisal Records found!
+        </div>
+            <t t-if="appraisals" t-call="portal.portal_table">
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Department</th>
+                        <th>Unit</th>
+                        <th>Position</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Type</th>
+                        <th>State</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="appraisals" t-as="app">
+                        <td>
+                            <t t-esc="app.get('employee_name', '')"/>
+                        </td>
+                        <td>
+                            <t t-esc="app.get('department_name', '')"/>
+                        </td>
+                        <td>
+                            <t t-esc="app.get('unit_name', '')"/>
+                        </td>
+                        <td>
+                            <t t-esc="app.get('position', '')"/>
+                        </td>
+                        <td>
+                            <t t-esc="app.get('from_date', '')"/>
+                        </td>
+                        <td>
+                            <t t-esc="app.get('to_date', '')"/>
+                        </td>
+                        <td>
+                            <t t-esc="all_appraisal_types.get(app.get('appraisal_type', ''))"/>
+                        </td>
+                        <t t-if="app.get('appraisal_type') == 'admin_staff'">
+                            <td>
+                                <t t-esc="all_states.get(app.get('state', ''))"/>
+                            </td>
+                        </t>
+                        <t t-else="">
+                            <td>
+                                <t t-esc="all_states.get(app.get('field_state', ''))"/>
+                            </td>
+                        </t>
+                        <td>
+                            <a class="btn btn-secondary btn-sm" t-attf-href="/supervisor/employee-appraisals/{{ app.get('id') }}">
+                                <i class="fa fa-view" /> View
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+    <!-- All Probation Appraisals -->
+    <template id="all_probation_appraisals" name="All Appraisals">
+        <t t-call="portal.portal_layout">
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Subordinates Appraisals</t>
+            </t>
+            <div t-if="not appraisals" class="alert alert-warning mt8" role="alert">
+          No Probation Appraisal Records found!
+        </div>
+            <t t-if="appraisals" t-call="portal.portal_table">
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Department</th>
+                        <th>Unit</th>
+                        <th>Position</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>State</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="appraisals" t-as="app">
+                        <td>
+                            <t t-esc="app.get('employee_name', '')"/>
+                        </td>
+                        <td>
+                            <t t-esc="app.get('department_name', '')"/>
+                        </td>
+                        <td>
+                            <t t-esc="app.get('unit_name', '')"/>
+                        </td>
+                        <td>
+                            <t t-esc="app.get('position', '')"/>
+                        </td>
+                        <td>
+                            <t t-esc="app.get('from_date', '')"/>
+                        </td>
+                        <td>
+                            <t t-esc="app.get('to_date', '')"/>
+                        </td>
+                        <td>
+                            <t t-esc="all_states.get(app.get('state', ''))"/>
+                        </td>
+                        <td>
+                            <a class="btn btn-secondary btn-sm" t-attf-href="/supervisor/employee-probation-appraisals/{{ app.get('id') }}">
+                                <i class="fa fa-view" /> View
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+    <!-- All My Appraisals -->
+    <template id="all_my_probation_appraisals" name="All My Probation Appraisals">
+        <t t-call="portal.portal_layout">
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">My Probation Appraisals</t>
+            </t>
+            <div t-if="not appraisals" class="alert alert-warning mt8" role="alert">
+          No Probation Appraisal Records found!
+        </div>
+            <t t-if="appraisals" t-call="portal.portal_table">
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Department</th>
+                        <th>Unit</th>
+                        <th>Position</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>State</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="appraisals" t-as="app">
+                        <td>
+                            <t t-esc="app.get('employee_name', '')"/>
+                        </td>
+                        <td>
+                            <t t-esc="app.get('department_name', '')"/>
+                        </td>
+                        <td>
+                            <t t-esc="app.get('unit_name', '')"/>
+                        </td>
+                        <td>
+                            <t t-esc="app.get('position', '')"/>
+                        </td>
+                        <td>
+                            <t t-esc="app.get('from_date', '')"/>
+                        </td>
+                        <td>
+                            <t t-esc="app.get('to_date', '')"/>
+                        </td>
+                        <td>
+                            <t t-esc="all_states.get(app.get('state', ''))"/>
+                        </td>
+                        <td>
+                            <a class="btn btn-secondary btn-sm" t-attf-href="/employee/my-probation-appraisals/{{ app.get('id') }}">
+                                <i class="fa fa-view" /> View
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+    <!-- Admin Appraisal View -->
+    <template id="appraisal_view" name="Appraisal View">
+        <t t-call="portal.portal_layout">
+            <div style="background-color: white" class="my-4 py-lg-2 px-lg-3">
+                <a class="btn btn-secondary btn-sm btn-odoo" t-attf-href="/report/pdf/nl_appraisal.report_employee_appraisal/{{ appraisal.id }}" t-if="appraisal.state == 'done'">
+                    <i class="fa fa-view" /> 
+                    print
+                </a>
+                <t t-if="request.env.user.employee_id">
+                    <a class="btn btn-secondary btn-sm btn-odoo" t-attf-href="/supervisor/employee-appraisals/{{ appraisal.id }}" t-if="request.env.user.employee_id.id == appraisal.manager_id.id or (appraisal.manager_id.parent_id != false and appraisal.manager_id.parent_id.id == request.env.user.employee_id.id)">
+                        <i class="fa fa-view" />
+                        View and edit
+                    </a>
+                    <a class="btn btn-secondary btn-sm btn-odoo" t-attf-href="/employee/my-appraisals/{{ appraisal.id }}" t-if="request.env.user.employee_id.id == appraisal.employee_id.id">
+                        <i class="fa fa-view" />
+                        View and edit
+                    </a>
+                </t>
+                <div class="mt-4">
+                    <h3 >General Information</h3>
+                    <div class="row bg-white mt-2">
+                        <div class="col-lg-2 border-grey custom_font_size border py-1 custom_font_size px-2 headr">Employee Name:</div>
+                        <div class="col-lg-4 odoo-cell-grey border-grey custom_font_size border py-1 custom_font_size px-2" t-esc="appraisal.employee_id.name"></div>
+                        <div class="col-lg-2 odoo-cell-grey border-grey custom_font_size border py-1 custom_font_size px-2 headr">Emp. ID No.</div>
+                        <div class="col-lg-4 odoo-cell-grey border-grey custom_font_size border py-1 custom_font_size px-2" t-esc="appraisal.employee_id.idc_no"></div>
+                    </div>
+                    <div class="row bg-white">
+                        <div class="col-lg-2 border-grey custom_font_size border py-1 custom_font_size px-2 headr">Position Title:</div>
+                        <div class="col-lg-4 odoo-cell-grey border-grey custom_font_size border py-1 custom_font_size px-2" t-esc="appraisal.job_id.name"></div>
+                        <div class="col-lg-2 odoo-cell-grey border-grey custom_font_size border py-1 custom_font_size px-2 headr">Office/Region:</div>
+                        <div class="col-lg-4 odoo-cell-grey border-grey custom_font_size border py-1 custom_font_size px-2" t-esc="appraisal.office_id.name"></div>
+                    </div>
+                    <div class="row bg-white">
+                        <div class="col-lg-2 border-grey custom_font_size border py-1 custom_font_size px-2 headr">Review Period:</div>
+                        <div class="col-lg-4 odoo-cell-grey border-grey custom_font_size border py-1 custom_font_size px-2" t-esc="appraisal.review_period_start_date"></div>
+                        <div class="col-lg-6 odoo-cell-grey border-grey custom_font_size border py-1 custom_font_size px-2" t-esc="appraisal.review_period_end_date"></div>
+                    </div>
+                </div>
+                <div class="mt-5">
+                    <h3 >Objectives set and achieved during the review period.</h3>
+                    <div class="row bg-white mt-2">
+                        <div class="col-lg-3 border-grey custom_font_size border py-1 px-2 headr">List of Objectives</div>
+                        <div class="col-lg-2 border-grey custom_font_size border py-1 px-2 headr">Expected Outcome</div>
+                        <div class="col-lg-3 border-grey custom_font_size border py-1 px-2 headr">Employee Feedback</div>
+                        <div class="col-lg-3 border-grey custom_font_size border py-1 px-2 headr">Manager Feedback</div>
+                        <div class="col-lg-1 border-grey custom_font_size border py-1 px-2 headr">Ratings</div>
+                        <t t-foreach="appraisal.objectives_ids" t-as="obj">
+                            <div class="col-lg-3 border-grey custom_font_size border py-1 px-2 odoo-cell-grey" t-esc="obj.name or ''"></div>
+                            <div class="col-lg-2 border-grey custom_font_size border py-1 px-2 odoo-cell-grey" t-esc="obj.expected_outcome or ''"></div>
+                            <div class="col-lg-3 border-grey custom_font_size border py-1 px-2 odoo-cell-grey" t-esc="obj.employee_feedback  or ''"></div>
+                            <div class="col-lg-3 border-grey custom_font_size border py-1 px-2 odoo-cell-grey" t-esc="obj.manager_feedback  or ''"></div>
+                            <div class="col-lg-1 border-grey custom_font_size border py-1 px-2 odoo-cell-grey" t-esc="obj.rating  or ''"></div>
+                        </t>
+                        <div class="col-lg-3 border-grey custom_font_size border py-1 px-2 headr">Individual Development</div>
+                        <div class="col-lg-3 border-grey custom_font_size border py-1 px-2 headr">Employee Feedback</div>
+                        <div class="col-lg-3 border-grey custom_font_size border py-1 px-2 headr">Manager Feedback</div>
+                        <div class="col-lg-3 border-grey custom_font_size border py-1 px-2 headr">Rating</div>
+                        <t t-foreach="appraisal.individual_objectives_ids" t-as="obj">
+                            <div class="col-lg-3 border-grey custom_font_size border py-1 px-2 odoo-cell-grey" t-esc="obj.name or ''"></div>
+                            <div class="col-lg-3 border-grey custom_font_size border py-1 px-2 odoo-cell-grey" t-esc="obj.employee_feedback  or ''"></div>
+                            <div class="col-lg-3 border-grey custom_font_size border py-1 px-2 odoo-cell-grey" t-esc="obj.manager_feedback  or ''"></div>
+                            <div class="col-lg-3 border-grey custom_font_size border py-1 px-2 odoo-cell-grey" t-esc="obj.rating  or ''"></div>
+                        </t>
+                    </div>
+                </div>
+                <div class="mt-5">
+                    <h3 >Assessment of employee Technical and behavioral competencies during the period in review.</h3>
+                    <div class="row bg-white mt-2">
+                        <div class="col-lg-12 border-grey custom_font_size border py-1 px-2 question-box">1. How has the employee demonstrated their technical skills and competencies in the day-to-day work during the review period in terms of the professional skills, knowledge, accuracy of work, timelines and meeting deadlines and analysis of information for value addition to their work? Use specific examples where necessary</div>
+                    </div>
+                    <div class="row bg-white">
+                        <div class="col-lg-2  custom_font_size py-1 px-2 left-side-box">Employee comments</div>
+                        <div class="col-lg-10 custom_font_size py-1 px-2 odoo-cell-grey" t-esc="appraisal.p3_q1_emp_comments or ''"></div>
+                    </div>
+                    <div class="row bg-white">
+                        <div class="col-lg-2  custom_font_size py-1 px-2 left-side-box">Manager comments</div>
+                        <div class="col-lg-10 custom_font_size py-1 px-2 odoo-cell-grey" t-esc="appraisal.p3_q1_sup_comments or ''"></div>
+                    </div>
+                    <div class="row bg-white mt-2">
+                        <div class="col-lg-12 border-grey custom_font_size border py-1 px-2 question-box">2. How has the employee demonstrated their skills and competencies working with others through communication, coordination, and collaboration as a member of the team, supervisor, or line manager with the unit/department? Please cite examples and incidents</div>
+                    </div>
+                    <div class="row bg-white ">
+                        <div class="col-lg-2  custom_font_size py-1 px-2 left-side-box">Employee comments</div>
+                        <div class="col-lg-10 custom_font_size py-1 px-2 odoo-cell-grey" t-esc="appraisal.p3_q2_emp_comments or ''"></div>
+                    </div>
+                    <div class="row bg-white ">
+                        <div class="col-lg-2  custom_font_size py-1 px-2 left-side-box">Manager comments</div>
+                        <div class="col-lg-10 custom_font_size py-1 px-2 odoo-cell-grey" t-esc="appraisal.p3_q2_sup_comments or ''"></div>
+                    </div>
+                    <div class="row bg-white mt-2">
+                        <div class="col-lg-12 border-grey custom_font_size border py-1 px-2 question-box">3. How has the employee proved their leadership ability to work independently, under pressure, leading through a crisis, adapting to changes  developing others through delegation and support?</div>
+                    </div>
+                    <div class="row bg-white ">
+                        <div class="col-lg-2  custom_font_size py-1 px-2 left-side-box">Employee comments</div>
+                        <div class="col-lg-10 custom_font_size py-1 px-2 odoo-cell-grey" t-esc="appraisal.p3_q3_emp_comments or ''"></div>
+                    </div>
+                    <div class="row bg-white ">
+                        <div class="col-lg-2  custom_font_size py-1 px-2 left-side-box">Manager comments</div>
+                        <div class="col-lg-10 custom_font_size py-1 px-2 odoo-cell-grey" t-esc="appraisal.p3_q3_sup_comments or ''"></div>
+                    </div>
+                    <div class="row bg-white mt-2">
+                        <div class="col-lg-12 border-grey custom_font_size border py-1 px-2 question-box">4. How has the employee integrated the SCA policies and values
+                            <strong>(responsiveness, equality, impartiality, social justice and integrity)</strong> in the day-to-day work during the review period. Key pointers include gender, diversity and inclusion (GDI), enforcing and reinforcing policies, relationship building and support to colleagues, field teams, partners and key stakeholders etc.) Please cite specific examples that demonstrated application and integration of the values.
+                        </div>
+                    </div>
+                    <div class="row bg-white ">
+                        <div class="col-lg-2  custom_font_size py-1 px-2 left-side-box">Employee comments</div>
+                        <div class="col-lg-10 custom_font_size py-1 px-2 odoo-cell-grey" t-esc="appraisal.p3_q4_emp_comments or ''"></div>
+                    </div>
+                    <div class="row bg-white ">
+                        <div class="col-lg-2  custom_font_size py-1 px-2 left-side-box">Manager comments</div>
+                        <div class="col-lg-10 custom_font_size py-1 px-2 odoo-cell-grey" t-esc="appraisal.p3_q4_sup_comments or ''"></div>
+                    </div>
+                </div>
+                <div class="mt-5">
+                    <h3 >Employee Learning, Development and Career Aspirations</h3>
+                    <div class="row bg-white mt-2">
+                        <div class="col-lg-6 border-grey custom_font_size border py-1 px-2 headr">Guiding question</div>
+                        <div class="col-lg-6 border-grey custom_font_size border py-1 px-2 headr">Employee Feedback</div>
+                    </div>
+                    <div class="row bg-white">
+                        <div class="col-lg-6 border-grey custom_font_size border py-1 px-2 odoo-cell-grey">Did you receive any formal training sponsored by SCA/Donor or stakeholder during the review period?</div>
+                        <div class="col-lg-6 border-grey custom_font_size border py-1 px-2 odoo-cell-grey" t-esc="appraisal.p4_emp_feed1 or ''"></div>
+                    </div>
+                    <div class="row bg-white">
+                        <div class="col-lg-6 border-grey custom_font_size border py-1 px-2 odoo-cell-grey">How has the training impacted on your work and SCA mission and objectives?</div>
+                        <div class="col-lg-6 border-grey custom_font_size border py-1 px-2 odoo-cell-grey" t-esc="appraisal.p4_emp_feed2 or ''"></div>
+                    </div>
+                    <div class="row bg-white">
+                        <div class="col-lg-6 border-grey custom_font_size border py-1 px-2 odoo-cell-grey">Where you involved in any assignments within your department/ unit? (out of your day-to-day work) such as Leading on a project, or any other assignment that improved your skills, competencies and confidence.</div>
+                        <div class="col-lg-6 border-grey custom_font_size border py-1 px-2 odoo-cell-grey" t-esc="appraisal.p4_emp_feed3 or ''"></div>
+                    </div>
+                    <div class="row bg-white">
+                        <div class="col-lg-6 border-grey custom_font_size border py-1 px-2 odoo-cell-grey">Do you think you are on the right career path in SCA? What are your career aspirations based on your skills, experience and current role in SCA?</div>
+                        <div class="col-lg-6 border-grey custom_font_size border py-1 px-2 odoo-cell-grey" t-esc="appraisal.p4_emp_feed4 or ''"></div>
+                    </div>
+                    <div class="row bg-white mt-3">
+                        <div class="col-lg-2 custom_font_size py-1 px-2 left-side-box">Employee comments:</div>
+                        <div class="col-lg-10 odoo-cell-grey  custom_font_size py-1 px-2" t-esc="appraisal.p4_emp_comments or ''"></div>
+                    </div>
+                    <div class="row bg-white">
+                        <div class="col-lg-2 custom_font_size py-1 px-2 left-side-box">Manager comments:</div>
+                        <div class="col-lg-10 odoo-cell-grey  custom_font_size py-1 px-2" t-esc="appraisal.p4_sup_comments or ''"></div>
+                    </div>
+                </div>
+                <div class="mt-5">
+                    <h3>Performance Goals and Expectations (for next review period)</h3>
+                    <div class="row bg-white mt-2">
+                        <div class="col-lg-6 border-grey custom_font_size border py-1 px-2 headr">
+                            <strong>SMART GOALS: </strong>(Specific, Measurable, Attainable, Realistic, Timely)
+                        </div>
+                        <div class="col-lg-6 border-grey custom_font_size border py-1 px-2 headr">
+                            <strong>Expected outcome/ How to know the objectives have been achieved.</strong>
+                        </div>
+                    </div>
+                    <t t-foreach="appraisal.next_review_objectives_ids" t-as="obj">
+                        <div class="row bg-white">
+                            <div class="col-lg-6 border-grey custom_font_size border py-1 px-2 odoo-cell-grey" t-esc="obj.name or ''"></div>
+                            <div class="col-lg-6 border-grey custom_font_size border py-1 px-2 odoo-cell-grey" t-esc="obj.expected_outcome or ''"></div>
+                        </div>
+                    </t>
+                    <div class="row bg-white mt-2">
+                        <div class="col-lg-12 border-grey custom_font_size border py-1 px-2 headr">Individual Development/ Learning Objectives - based on Training and Develpment needs and career aspirations.</div>
+                    </div>
+                    <div class="row bg-white">
+                        <div class="col-lg-12 border-grey custom_font_size border odoo-cell-grey py-1 px-2">
+                            <strong>Identify one learning and development objective for the review period (Professional training, workshop/ seminar):</strong>
+                            <p style="margin-top:25px;" t-esc="appraisal.next_individual_obj1 or ''"></p>
+                        </div>
+                    </div>
+                    <div class="row bg-white">
+                        <div class="col-lg-12 border-grey custom_font_size border odoo-cell-grey py-1 px-2">
+                            <strong>Identify assignments and initiatives to support your career growth and aspirations within your unit or in SCA (Job shadowing Understudy, Project leading or back stopping):</strong>
+                            <p style="margin-top:25px;" t-esc="appraisal.next_individual_obj2 or ''"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5">
+                    <h3>Upward feedback to Supervisor/ Line manager</h3>
+                    <div class="row bg-white mt-2">
+                        <div class="col-lg-6 border-grey custom_font_size border py-1 px-2 headr">Employee feedback to the supervisor about how they feel they have been managed during the review period and any areas the supervisor could improve on.</div>
+                        <div class="col-lg-6 border-grey custom_font_size border py-1 px-2 odoo-cell-grey" t-esc="appraisal.p6_emp_feed1 or ''"></div>
+                    </div>
+                </div>
+                <div class="mt-5">
+                    <h3>Line Supervisor and overall performance rating and way forward</h3>
+                    <div class="row bg-white">
+                        <div class="col-lg-3 border-grey custom_font_size border headr py-1 px-2">
+                            <strong>Rating</strong>
+                        </div>
+                        <div class="col-lg-6 border-grey custom_font_size border headr py-1 px-2">
+                            <strong>Interpretaion</strong>
+                        </div>
+                        <div class="col-lg-3 border-grey custom_font_size border headr py-1 px-2">
+                            <strong>Supervisor final rating</strong>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-9 p-0">
+                            <div class="row bg-white">
+                                <div class="col-lg-4 border-grey custom_font_size border odoo-cell-grey py-1 px-2">4.5 – 5</div>
+                                <div class="col-lg-8 border-grey custom_font_size border odoo-cell-grey py-1 px-2">Exceptional/Outstanding</div>
+                            </div>
+                            <div class="row bg-white">
+                                <div class="col-lg-4 border-grey custom_font_size border odoo-cell-grey py-1 px-2">3.5 – 4.4</div>
+                                <div class="col-lg-8 border-grey custom_font_size border odoo-cell-grey py-1 px-2">Exceeds Expected Performance</div>
+                            </div>
+                            <div class="row bg-white">
+                                <div class="col-lg-4 border-grey custom_font_size border odoo-cell-grey py-1 px-2">2.5 – 3.4</div>
+                                <div class="col-lg-8 border-grey custom_font_size border odoo-cell-grey py-1 px-2">Meets Expected Performance</div>
+                            </div>
+                            <div class="row bg-white">
+                                <div class="col-lg-4 border-grey custom_font_size border odoo-cell-grey py-1 px-2">1.5 – 2.4 </div>
+                                <div class="col-lg-8 border-grey custom_font_size border odoo-cell-grey py-1 px-2">Required performance improvement</div>
+                            </div>
+                            <div class="row bg-white">
+                                <div class="col-lg-4 border-grey custom_font_size border odoo-cell-grey py-1 px-2">1 – 1.4 </div>
+                                <div class="col-lg-8 border-grey custom_font_size border odoo-cell-grey py-1 px-2">Unsatisfactory/Unacceptable Performance</div>
+                            </div>
+                            <div class="row bg-white">
+                                <div class="col-lg-4 border-grey custom_font_size border odoo-cell-grey py-1 px-2">Not Applicable</div>
+                                <div class="col-lg-8 border-grey custom_font_size border odoo-cell-grey py-1 px-2">Not Applicable or Not Able to Evaluate</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 odoo-cell-grey custom_font_size">
+                            <div class="d-flex justify-content-center align-items-center" style="height:100%; flex-direction:column; text-align:center;">
+                                <t t-if="appraisal.p7_overall_rating_not_applicable">Not Applicable</t>
+                                <t t-else="">
+                                    <span t-esc="appraisal.p7_overall_rating"></span>
+                                    <span class="mt-2" style="font-size:12px;" t-esc="'Exceptional/Outstanding' if appraisal.p7_overall_rating >= 4.5 else 'Exceeds Expected Performance' if appraisal.p7_overall_rating >= 3.5 else 'Meets Expected Performance' if appraisal.p7_overall_rating >= 2.5 else 'Required Performance Improvement' if appraisal.p7_overall_rating >= 1.5 else 'Unsatisfactory/Unacceptable Performance' if appraisal.p7_overall_rating >= 1 else ''"></span>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white border border-grey custom_font_size">
+                        <div class="row">
+                            <div class="col-lg-12 py-2 font-weight-bold">Recommendation on employee contract with SCA (Cycle the applicable option)</div>
+                        </div>
+                        <div class="row px-4">
+                            <div class="col-lg-6 text-center">
+                                <svg t-if="appraisal.p7_emp_contract_rec == 'extension_of_contract'" style="width: 1.25rem; color:green;" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                        Extension of contract
+                            </div>
+                            <div class="col-lg-6 text-center">
+                                <svg t-if="appraisal.p7_emp_contract_rec == 'non_renewal_of_contract'" style="width: 1.25rem; color:green;" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                        Non-renewal of contract
+                            </div>
+                        </div>
+                        <div class="row px-4 pb-1">
+                            <div class="col-lg-6 text-center">
+                                <svg t-if="appraisal.p7_emp_contract_rec == 'termination_of_contract'" style="width: 1.25rem; color:green;" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                        Termination of contract
+                            </div>
+                            <div class="col-lg-6 text-center">
+                                <svg t-if="appraisal.p7_emp_contract_rec == 'performance_improvement_plan'" style="width: 1.25rem; color:green;" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                        Performance Improvement plan(Consult HR for process)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5">
+                    <h3>2nd Line Manager/ Supervisor (If Applicable)</h3>
+                    <div class="row bg-white">
+                        <div class="col-lg-6  custom_font_size border py-1 px-2 headr border-bottom-white">Do you agree with the above performance appraisal of the direct line manager?</div>
+                        <div class="col-lg-6 border-grey custom_font_size border py-1 px-2 text-center odoo-cell-grey">
+                            <span class="mr-4">
+                                <svg t-if="appraisal.p8_2sup_q1 == 'yes'" style="width: 1.25rem; color:green;" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            Yes
+                            </span>
+                            <span>
+                                <svg t-if="appraisal.p8_2sup_q1 == 'no'" style="width: 1.25rem; color:green;" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            No
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row bg-white">
+                        <div class="col-lg-6 border-grey custom_font_size border py-1 px-2 headr border-bottom-white">
+                            <strong>Reason: </strong>
+                        </div>
+                        <div class="col-lg-6 border-grey custom_font_size border py-1 px-2 odoo-cell-grey">
+                            <t t-esc="appraisal.p8_2sup_q1_reason" />
+                        </div>
+                    </div>
+                    <div class="row bg-white">
+                        <div class="col-lg-6 border-grey custom_font_size border py-1 px-2 headr border-bottom-white">Are you directly familiar with this staff member's work?</div>
+                        <div class="col-lg-6 border-grey custom_font_size border py-1 px-2 odoo-cell-grey">
+                            <div>
+                                <svg t-attf-style="color: {{'green' if appraisal.p8_2sup_q2 == 'yes' else 'transparent'}}; width: 1.3rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            Yes, directly.
+                            </div>
+                            <div>
+                                <svg t-attf-style="color: {{'green' if appraisal.p8_2sup_q2 == 'no' else 'transparent'}}; width: 1.3rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            No, only through the direct line manager.
+                            </div>
+                            <div>
+                                <svg t-attf-style="color: {{'green' if appraisal.p8_2sup_q2 == 'other' else 'transparent'}}; width: 1.3rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            Technical manager/ Line Director.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5">
+                    <h3>Employee's feedback on rating and recommendations</h3>
+                    <div class="row bg-white">
+                        <div class="col-lg-6 headr custom_font_size py-1 px-2" >
+                            <p>Do you agree with the above performance appraisal rating and recommendation?</p>
+                        </div>
+                        <div class="col-lg-6 odoo-cell-grey custom_font_size py-1 px-2" style="border: none !important;" >
+                            <t t-if="appraisal.p9_emp_feed == 'yes'">
+                                <svg t-attf-style="color: green; width: 1.3rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            I agree
+                            </t>
+                            <t t-else="">
+                                <svg t-attf-style="color: green; width: 1.3rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            I do not agree
+                            </t>
+                        </div>
+                    </div>
+                    <div class="row bg-white mt-2">
+                        <div class="col-lg-6 headr custom_font_size py-1 px-2" >
+                            Employee Comments
+                        </div>
+                        <div class="col-lg-6 odoo-cell-grey custom_font_size py-1 px-2" style="border: none !important;" >
+                            <p t-esc="appraisal.p9_emp_feed_comments or ''"></p>
+                        </div>
+                    </div>
+                    <p class="mt-2">(I understand that I am entitled to submit a statement of explanation if I so wish)</p>
+                </div>
+                <div class="mt-5" t-if="appraisal.employee_sign_date or appraisal.manager_sign_date or appraisal.second_manager_sign_date">
+                    <h3>Signed by:</h3>
+                    <div t-if="appraisal.employee_sign_date">
+                        <strong>Employee:</strong>
+                        <t t-esc="appraisal.employee_id.name"/>
+                        on
+                        <t t-esc="appraisal.employee_sign_date" />
+                    </div>
+                    <div t-if="appraisal.manager_sign_date">
+                        <strong>Supervisor:</strong>
+                        <t t-esc="appraisal.manager_id.name"/>
+                        on
+                        <t t-esc="appraisal.manager_sign_date"/>
+                    </div>
+                    <div t-if="appraisal.second_manager_sign_date and appraisal.second_manager_id">
+                        <strong>2nd Supervisor (if applicable): </strong>
+                        <t t-esc="appraisal.second_manager_id.name"/>
+                        on
+                        <t t-esc="appraisal.second_manager_sign_date"/>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    <!-- Probation Appraisal View -->
+    <template id="probation_appraisal_view" name="Appraisal View">
+        <t t-call="portal.portal_layout">
+            <div style="background-color: white" class="my-4 py-lg-2 px-lg-3">
+                <a class="btn btn-secondary btn-sm btn-odoo" t-attf-href="/report/pdf/nl_appraisal.report_proabation_appraisal/{{ appraisal.id }}" t-if="appraisal.state == 'done'">
+                    <i class="fa fa-view" /> 
+                    print
+                </a>
+                <t t-if="request.env.user.employee_id">
+                    <a class="btn btn-secondary btn-sm btn-odoo" t-attf-href="/supervisor/employee-probation-appraisals/{{ appraisal.id }}" t-if="request.env.user.employee_id.id == appraisal.manager_id.id">
+                        <i class="fa fa-view" /> 
+                    View and edit
+                    </a>
+                    <a class="btn btn-secondary btn-sm btn-odoo" t-attf-href="/employee/my-probation-appraisals/{{ appraisal.id }}" t-if="request.env.user.employee_id.id == appraisal.employee_id.id">
+                        <i class="fa fa-view" /> 
+                    View and edit
+                    </a>
+                </t>
+                <div>
+                    <div class="mt-4">
+                        <h3>General Information</h3>
+                        <div class="row bg-white mt-2">
+                            <div class="col-lg-2 border-grey border py-1 px-2 headr custom_font_size" >Employee Name:</div>
+                            <div class="col-lg-4 border-grey border py-1 px-2 custom_font_size" t-esc="appraisal.employee_id.name"></div>
+                            <div class="col-lg-2 border-grey border py-1 px-2 headr custom_font_size">Emp. ID No.</div>
+                            <div class="col-lg-4 border-grey border py-1 px-2 custom_font_size" t-esc="appraisal.employee_id_no"></div>
+                        </div>
+                        <div class="row bg-white">
+                            <div class="col-lg-2 border-grey border py-1 px-2 headr custom_font_size">Position Title:</div>
+                            <div class="col-lg-4 border-grey border py-1 px-2 custom_font_size" t-esc="appraisal.job_id.name"></div>
+                            <div class="col-lg-2 border-grey border py-1 px-2 headr custom_font_size" >Office/Region:</div>
+                            <div class="col-lg-4 border-grey border py-1 px-2 custom_font_size" t-esc="appraisal.office_id.name"></div>
+                        </div>
+                        <div class="row bg-white">
+                            <div class="col-lg-2 border-grey border py-1 px-2 headr custom_font_size">Manager Name:</div>
+                            <div class="col-lg-4 border-grey border py-1 px-2 custom_font_size" t-esc="appraisal.manager_id.name"></div>
+                            <div class="col-lg-2 border-grey border py-1 px-2 headr custom_font_size" >Manager Position:</div>
+                            <div class="col-lg-4 border-grey border py-1 px-2 custom_font_size" t-esc="appraisal.manager_job_id.name"></div>
+                        </div>
+                        <div class="row bg-white">
+                            <div class="col-lg-4 border-grey border py-1 px-2 headr custom_font_size" >Review Period:</div>
+                            <div class="col-lg-4 border-grey border py-1 px-2 custom_font_size" t-esc="appraisal.start_date"> </div>
+                            <div class="col-lg-4 border-grey border py-1 px-2 custom_font_size" t-esc="appraisal.end_date"></div>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <h3 >Objectives set and achieved during the review period.</h3>
+                        <div class="row bg-white mt-2">
+                            <div class="col-lg-6 border-grey border py-1 px-2 headr" >List of Objectives</div>
+                            <div class="col-lg-6 border-grey border py-1 px-2 headr" >Expected Outcome</div>
+                            <t t-foreach="appraisal.objectives_ids" t-as="obj">
+                                <div class="col-lg-6 border-grey border py-1 px-2 custom_font_size" t-esc="obj.name or ''"></div>
+                                <div class="col-lg-6 border-grey border py-1 px-2 custom_font_size" t-esc="obj.expected_outcome or ''"></div>
+                            </t>
+                        </div>
+                    </div>
+                    <t t-if="appraisal.state not in ['objective_setting', 'probation_period', 'self_assessment']">
+                        <div class="mt-5">
+                            <h3 >Overall Assessment</h3>
+                            <div class="row bg-white mt-2">
+                                <div class="col-lg-4 border-grey border py-1 px-2 headr" >Assessment Area</div>
+                                <div class="col-lg-2 border-grey border py-1 px-2 headr" >Improvement required</div>
+                                <div class="col-lg-2 border-grey border py-1 px-2 headr" >Average</div>
+                                <div class="col-lg-2 border-grey border py-1 px-2 headr" >Good</div>
+                                <div class="col-lg-2 border-grey border py-1 px-2 headr" >Excellent</div>
+                                <div class="col-lg-4 border-grey border py-1 px-2 custom_font_size">Quality and accuracy of work</div>
+                                <div class="col-lg-2 border-grey border py-1 px-2 custom_font_size text-center text-success" >
+                                    <svg t-if="appraisal.p2_q1 == 'improvement_required'" style="width:1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <div class="col-lg-2 border-grey border py-1 px-2 custom_font_size text-center text-success" >
+                                    <svg t-if="appraisal.p2_q1 == 'average'" style="width:1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <div class="col-lg-2 border-grey border py-1 px-2 custom_font_size text-center text-success" >
+                                    <svg t-if="appraisal.p2_q1 == 'good'" style="width:1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <div class="col-lg-2 border-grey border py-1 px-2 custom_font_size text-center text-success" >
+                                    <svg t-if="appraisal.p2_q1 == 'excellent'" style="width:1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <div class="col-lg-4 border-grey border py-1 px-2 custom_font_size">Efficiency</div>
+                                <div class="col-lg-2 border-grey border py-1 px-2 custom_font_size text-center text-success" >
+                                    <svg t-if="appraisal.p2_q2 == 'improvement_required'" style="width:1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <div class="col-lg-2 border-grey border py-1 px-2 custom_font_size text-center text-success" >
+                                    <svg t-if="appraisal.p2_q2 == 'average'" style="width:1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <div class="col-lg-2 border-grey border py-1 px-2 custom_font_size text-center text-success" >
+                                    <svg t-if="appraisal.p2_q2 == 'good'" style="width:1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <div class="col-lg-2 border-grey border py-1 px-2 custom_font_size text-center text-success" >
+                                    <svg t-if="appraisal.p2_q2 == 'excellent'" style="width:1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <div class="col-lg-4 border-grey border py-1 px-2 custom_font_size">Attendance and time keeping</div>
+                                <div class="col-lg-2 border-grey border py-1 px-2 custom_font_size text-center text-success" >
+                                    <svg t-if="appraisal.p2_q3 == 'improvement_required'" style="width:1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <div class="col-lg-2 border-grey border py-1 px-2 custom_font_size text-center text-success" >
+                                    <svg t-if="appraisal.p2_q3 == 'average'" style="width:1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <div class="col-lg-2 border-grey border py-1 px-2 custom_font_size text-center text-success" >
+                                    <svg t-if="appraisal.p2_q3 == 'good'" style="width:1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <div class="col-lg-2 border-grey border py-1 px-2 custom_font_size text-center text-success" >
+                                    <svg t-if="appraisal.p2_q3 == 'excellent'" style="width:1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <div class="col-lg-4 border-grey border py-1 px-2 custom_font_size">Understating and application of SCA policies and Values</div>
+                                <div class="col-lg-2 border-grey border py-1 px-2 custom_font_size text-center text-success" >
+                                    <svg t-if="appraisal.p2_q4 == 'improvement_required'" style="width:1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <div class="col-lg-2 border-grey border py-1 px-2 custom_font_size text-center text-success" >
+                                    <svg t-if="appraisal.p2_q4 == 'average'" style="width:1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <div class="col-lg-2 border-grey border py-1 px-2 custom_font_size text-center text-success" >
+                                    <svg t-if="appraisal.p2_q4 == 'good'" style="width:1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <div class="col-lg-2 border-grey border py-1 px-2 custom_font_size text-center text-success" >
+                                    <svg t-if="appraisal.p2_q4 == 'excellent'" style="width:1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <div class="col-lg-4 border-grey border py-1 px-2 custom_font_size">Work relationships (Teamwork, interpersonal and communication skills)</div>
+                                <div class="col-lg-2 border-grey border py-1 px-2 custom_font_size text-center text-success" >
+                                    <svg t-if="appraisal.p2_q5 == 'improvement_required'" style="width:1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <div class="col-lg-2 border-grey border py-1 px-2 custom_font_size text-center text-success" >
+                                    <svg t-if="appraisal.p2_q5 == 'average'" style="width:1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <div class="col-lg-2 border-grey border py-1 px-2 custom_font_size text-center text-success" >
+                                    <svg t-if="appraisal.p2_q5 == 'good'" style="width:1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <div class="col-lg-2 border-grey border py-1 px-2 custom_font_size text-center text-success" >
+                                    <svg t-if="appraisal.p2_q5 == 'excellent'" style="width:1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-5">
+                            <h3 >Performance Feedback</h3>
+                            <div class="row bg-white mt-2">
+                                <div class="col-lg-12 border-grey border py-1 px-2 headr">1. Highlight areas where the employee is performing well against objectives and set standards.</div>
+                                <div class="col-lg-12 border-grey border py-1 px-2" t-esc="appraisal.p3_q1 or ''"></div>
+                                <div class="col-lg-12 border-grey border py-1 px-2 headr">2. Are there areas that require improvement? (give details/ examples)</div>
+                                <div class="col-lg-12 border-grey border py-1 px-2" t-esc="appraisal.p3_q2 or ''"></div>
+                                <div class="col-lg-12 border-grey border py-1 px-2 headr">3. Outline the plans for performance improvement.</div>
+                                <div class="col-lg-12 border-grey border py-1 px-2" t-esc="appraisal.p3_q3 or ''"></div>
+                                <div class="col-lg-12 border-grey border py-1 px-2 headr">Supervisor's summary of employee's overall performance</div>
+                                <div class="col-lg-12 border-grey border py-1 px-2" t-esc="appraisal.p3_sup_comments or ''"></div>
+                            </div>
+                        </div>
+                        <div class="mt-5">
+                            <h3>Employee's Comments</h3>
+                            <div class="row bg-white mt-2">
+                                <div class="col-lg-12 border-grey border py-1 px-2 headr">Employees Major Achievements:</div>
+                                <div class="col-lg-12 border-grey border py-1 px-2" t-esc="appraisal.emp_major_achievements or ''"></div>
+                                <div class="col-lg-12 border-grey border py-1 px-2 headr">Employees view on the job, work environment and working conditions</div>
+                                <div class="col-lg-12 border-grey border py-1 px-2" t-esc="appraisal.p3_emp_comments or ''"></div>
+                            </div>
+                        </div>
+                        <div class="mt-5">
+                            <h3 >Way forward</h3>
+                            <div class="row bg-white mt-2">
+                                <div class="col-lg-5 border-grey border py-1 px-2">Is the employee's employment with SCA is confirmed?</div>
+                                <div class="col-lg-7 border-grey border py-1 px-2 text-center" t-esc="'Yes' if appraisal.p4_q1 == 'yes' else 'No' if appraisal.p4_q1 == 'no' else ''"></div>
+                                <t t-if="appraisal.p4_q1 == 'no'">
+                                    <div class="col-lg-5 border-grey border py-1 px-2">If no, give details of the performance concerns and the proposed way forward.</div>
+                                    <div class="col-lg-7 border-grey border py-1 px-2 text-center" t-esc="'Performance Improvement Plan' if appraisal.p4_q2 == 'improvement' else 'Termination of Contract' if appraisal.p4_q2 == 'termination' else ''"></div>
+                                </t>
+                            </div>
+                        </div>
+                        <div class="mt-5" t-if="appraisal.employee_sign_date or appraisal.manager_sign_date ">
+                            <h3>Signed by:</h3>
+                            <div t-if="appraisal.employee_sign_date">
+                                <strong>Employee:</strong>
+                                <t t-esc="appraisal.employee_id.name"/> on
+                                <t t-esc="appraisal.employee_sign_date"/>
+                            </div>
+                            <div t-if="appraisal.manager_sign_date">
+                                <strong>Supervisor:</strong>
+                                <t t-esc="appraisal.manager_id.name"/> on
+                                <t t-esc="appraisal.manager_sign_date"/>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+    <!-- Field Staff Appraisal View -->
+    <template id="field_appraisal_view" name="Appraisal View">
+        <t t-call="portal.portal_layout">
+            <div style="background-color: white" class="my-4 py-lg-2 px-lg-3">
+                <a class="btn btn-secondary btn-sm btn-odoo" t-attf-href="/report/pdf/nl_appraisal.report_employee_appraisal/{{ appraisal.id }}" t-if="appraisal.field_state == 'done'">
+                    <i class="fa fa-view" /> 
+                    print
+                </a>
+                <t t-if="request.env.user.employee_id">
+                    <a class="btn btn-secondary btn-sm btn-odoo" t-attf-href="/supervisor/employee-appraisals/{{ appraisal.id }}" t-if="request.env.user.employee_id.id == appraisal.manager_id.id or (appraisal.manager_id.parent_id != false and appraisal.manager_id.parent_id.id == request.env.user.employee_id.id)">
+                        <i class="fa fa-view" />
+ 
+                        View and edit
+                    </a>
+                    <a class="btn btn-secondary btn-sm btn-odoo" t-attf-href="/employee/my-appraisals/{{ appraisal.id }}" t-if="request.env.user.employee_id.id == appraisal.employee_id.id">
+                        <i class="fa fa-view" />
+ 
+                        View and edit
+                    </a>
+                </t>
+                <div class="mt-4 custom_font_size">
+                    <h3>General Information</h3>
+                    <div class="row bg-white mt-2">
+                        <div class="col-lg-2 border-grey border py-1 px-2 headr custom_font_size">Employee Name:</div>
+                        <div class="col-lg-4 border-grey border odoo-cell-grey py-1 px-2 custom_font_size">
+                            <t t-esc="appraisal.employee_id.name"/>
+                        </div>
+                        <div class="col-lg-2 border-grey border py-1 px-2 headr custom_font_size">Office/ Duty station</div>
+                        <div class="col-lg-4 border-grey border odoo-cell-grey py-1 px-2 custom_font_size">
+                            <t t-esc="appraisal.office_id.name"/>
+                        </div>
+                    </div>
+                    <div class="row bg-white">
+                        <div class="col-lg-2 border-grey border py-1 px-2 headr custom_font_size">Position Title:</div>
+                        <div class="col-lg-4 border-grey border odoo-cell-grey py-1 px-2 custom_font_size">
+                            <t t-esc="appraisal.job_id.name"/>
+                        </div>
+                        <div class="col-lg-2 border-grey border py-1 px-2 headr custom_font_size">Date of Evaluation:</div>
+                        <div class="col-lg-4 border-grey border odoo-cell-grey py-1 px-2 custom_font_size">
+                            <t t-esc="appraisal.create_date"/>
+                        </div>
+                    </div>
+                    <div class="row bg-white">
+                        <div class="col-lg-2 border-grey border py-1 px-2 headr custom_font_size">Review Period From:</div>
+                        <div class="col-lg-4 border-grey border odoo-cell-grey py-1 px-2 custom_font_size">
+                            <t t-esc="appraisal.review_period_start_date"/>
+                        </div>
+                        <div class="col-lg-2 border-grey border py-1 px-2 headr custom_font_size">Review Period To:</div>
+                        <div class="col-lg-4 border-grey border odoo-cell-grey py-1 px-2 custom_font_size">
+                            <t t-esc="appraisal.review_period_end_date"/>
+                        </div>
+                    </div>
+                    <div class="row bg-white">
+                        <div class="col-lg-2 border-grey border py-1 px-2 headr custom_font_size">Supervisor:</div>
+                        <div class="col-lg-4  border-grey odoo-cell-grey border py-1 px-2 custom_font_size">
+                            <t t-esc="appraisal.manager_id.name"/>
+                        </div>
+                        <div class="col-lg-2 border-grey border py-1 px-2 headr custom_font_size">Title:</div>
+                        <div class="col-lg-4  border-grey odoo-cell-grey border py-1 px-2 custom_font_size">
+                            <t t-esc="appraisal.second_manager_job_id.name"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5 custom_font_size">
+                    <div class="mb-3 page-hint">
+                        Average of the above ratings (can be weighted in the judgement of the evaluator based on performance throughout the review period.)
+                        <strong> 
+                            4.5 – 5 Exceptional/outstanding, 
+                            3.5 – 4.4 Exceeds Expected Performance 2.5 – 3.4,          
+                            Meets Expected Performance, 1.5 – 2.4          
+                            Required performance improvement, 1 – 1.4             
+                            Unsatisfactory/Unacceptable performance,
+                        </strong>
+                    </div>
+                    <h4 >A.	Performance assessment by supervisor in discussion with employee:</h4>
+                    <div class="row bg-white mt-2">
+                        <div class="col-lg-3 border-grey border py-1 odoo-cell-grey px-2 headr">Evaluation area</div>
+                        <div class="col-lg-7 border-grey border py-1 odoo-cell-grey px-2 headr">Description/ Assessment question </div>
+                        <div class="col-lg-2 border-grey border py-1 odoo-cell-grey px-2 headr">Ratings</div>
+                        <div class="col-lg-3 border-grey border py-1 odoo-cell-grey px-2 d-flex align-items-center">1. Work Performance</div>
+                        <div class="col-lg-7 border-grey border py-1 odoo-cell-grey px-2">How is the employee performing his/her routine-tasks based on job description?</div>
+                        <div class="col-lg-2 odoo-cell-grey d-flex align-items-center justify-content-center" style="padding: 0px">
+                            <t t-esc="appraisal.field_p1_rating1"/>
+                        </div>
+                        <div class="col-lg-3 border-grey border py-1 odoo-cell-grey px-2 d-flex align-items-center">2. Discipline</div>
+                        <div class="col-lg-7 border-grey border py-1 odoo-cell-grey px-2">How disciplined or obedient is the employee?</div>
+                        <div class="col-lg-2 odoo-cell-grey d-flex align-items-center justify-content-center" style="padding: 0px">
+                            <t t-esc="appraisal.field_p1_rating2"/>
+                        </div>
+                        <div class="col-lg-3 border-grey border py-1 odoo-cell-grey px-2 d-flex align-items-center">3. Behaviour</div>
+                        <div class="col-lg-7 border-grey border py-1 odoo-cell-grey px-2">How is the overall behaviour and conduct of the employee, how does he/she behave with his/her other colleagues</div>
+                        <div class="col-lg-2 odoo-cell-grey d-flex align-items-center justify-content-center" style="padding: 0px">
+                            <t t-esc="appraisal.field_p1_rating3"/>
+                        </div>
+                        <div class="col-lg-3 border-grey border py-1 odoo-cell-grey px-2 d-flex align-items-center">4. Punctuality</div>
+                        <div class="col-lg-7 border-grey border py-1 odoo-cell-grey px-2">
+                            How is the attendance and visibility of the employee during the official office hours?
+                        </div>
+                        <div class="col-lg-2 odoo-cell-grey d-flex align-items-center justify-content-center" style="padding: 0px">
+                            <t t-esc="appraisal.field_p1_rating4"/>
+                        </div>
+                        <div class="col-lg-3 border-grey border py-1 odoo-cell-grey px-2 d-flex align-items-center">5. Response to Instructions</div>
+                        <div class="col-lg-7 border-grey border py-1 odoo-cell-grey px-2">
+                            How does the employee take the formal instruction that you give to them as the supervisor? 
+                            How quickly does the employee respond to the instructions, do they ignore instructions or delay in 
+                            implementing the instructions?
+                        </div>
+                        <div class="col-lg-2 odoo-cell-grey d-flex align-items-center justify-content-center" style="padding: 0px">
+                            <t t-esc="appraisal.field_p1_rating5"/>
+                        </div>
+                        <div class="col-lg-3 border-grey border py-1 odoo-cell-grey px-2 d-flex align-items-center">6. Helpfulness &amp; Initiative</div>
+                        <div class="col-lg-7 border-grey border py-1 odoo-cell-grey px-2">
+                            <strong>Does the employee</strong> show willingness to help others without being asked, suggests ideas, contributes to team building and volunteers when needed?
+                        </div>
+                        <div class="col-lg-2 odoo-cell-grey d-flex align-items-center justify-content-center" style="padding: 0px">
+                            <t t-esc="appraisal.field_p1_rating6"/>
+                        </div>
+                        <div class="col-lg-3 border-grey border py-1 odoo-cell-grey px-2 d-flex align-items-center">7. Respect SCA policies and Values</div>
+                        <div class="col-lg-7 border-grey border py-1 odoo-cell-grey px-2">
+                            Does your employee respect all the contents of SCA policies and values? Does the employee consider the policies and 
+                            values before he/she decides to do something?
+                            <br/>
+                            <strong>SCA values: Responsiveness, Equality, Impartiality, Social Justice, and Integrity</strong>
+                        </div>
+                        <div class="col-lg-2 odoo-cell-grey d-flex align-items-center justify-content-center" style="padding: 0px">
+                            <t t-esc="appraisal.field_p1_rating7"/>
+                        </div>
+                        <div class="col-lg-3 border-grey border py-1 odoo-cell-grey px-2 d-flex align-items-center">8. Quality of Work</div>
+                        <div class="col-lg-7 border-grey border py-1 odoo-cell-grey px-2">
+                            Does the employee complete work/tasks to a high-level standard, pays attention to neatness and safety instructions?
+                        </div>
+                        <div class="col-lg-2 odoo-cell-grey d-flex align-items-center justify-content-center" style="padding: 0px">
+                            <t t-esc="appraisal.field_p1_rating8"/>
+                        </div>
+                        <div class="col-lg-3 border-grey border py-1 odoo-cell-grey px-2 d-flex align-items-center">9. Supervision</div>
+                        <div class="col-lg-7 border-grey border py-1 odoo-cell-grey px-2">
+                            Does the employee work independently with minimum supervision?  Does the employee remain calm and focused under pressure?
+                        </div>
+                        <div class="col-lg-2 odoo-cell-grey d-flex align-items-center justify-content-center" style="padding: 0px">
+                            <t t-esc="appraisal.field_p1_rating9"/>
+                        </div>
+                        <div class="col-lg-3 border-grey border py-1 odoo-cell-grey px-2 d-flex align-items-center">10. Efficiency</div>
+                        <div class="col-lg-7 border-grey border py-1 odoo-cell-grey px-2">
+                            Does the employee appropriately use/utilize SCA assets, equipment and supplies given to him/her?
+                        </div>
+                        <div class="col-lg-2 odoo-cell-grey d-flex align-items-center justify-content-center" style="padding: 0px">
+                            <t t-esc="appraisal.field_p1_rating10"/>
+                        </div>
+                        <div class="col-lg-10 border-grey border py-1 odoo-cell-grey px-2 headr">
+                            Total score - Consolidated total 50/10. Sample rating. 40/10 = 4 (Above expected performance
+                        </div>
+                        <div class="col-lg-2 border-grey border d-flex align-items-center justify-content-center headr" style="padding: 0px">
+                            <t t-esc="appraisal.field_p1_total_score"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5 custom_font_size">
+                    <h4 >B.	Employee feedback (Capacity development and feedback about supervision)</h4>
+                    <div class="row bg-white">
+                        <div class="col-lg-7 headr border-grey border py-1 px-2">
+                            Did the employee receive any trainings during the review period 
+                            (both individual and group trainings apply)?
+                        </div>
+                        <div class="col-lg-5  border-grey border odoo-cell-grey py-1 px-2">
+                            <t t-esc="appraisal.field_p2_q1"/>
+                            <br/>
+                            <span t-if="appraisal.field_p2_q1 == 'yes'">
+                                <small class="text-muted">
+                                    <strong>Type Of Training:</strong>
+                                </small>
+                                <t t-esc="appraisal.field_p2_q1_training_type"/>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row bg-white">
+                        <div class="col-lg-7 headr border-grey border py-1 px-2">
+                            Is the level of supervision by your supervisor adequate and supportive?
+                        </div>
+                        <div class="col-lg-5  border-grey border odoo-cell-grey py-1 px-2">
+                            <t t-esc="appraisal.field_p2_q2"/>
+                        </div>
+                    </div>
+                    <div class="row bg-white">
+                        <div class="col-lg-7 headr border-grey border py-1 px-2">
+                            What training opportunities and support does the employee request for the next review period?
+                        </div>
+                        <div class="col-lg-5  border-grey border odoo-cell-grey py-1 px-2">
+                            <t t-esc="appraisal.field_p2_q3"/>
+                        </div>
+                    </div>
+                    <div class="row bg-white">
+                        <div class="col-lg-12 mt-3 question-text  px-2">
+                            <h5>Employees Comments on his performance, Training and support accorded by supervisor during the review period:</h5>
+                        </div>
+                        <div class="col-lg-12 py-1 px-2 odoo-cell-grey">
+                            <t t-esc="appraisal.field_p2_emp_comments"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5 custom_font_size">
+                    <h4>C. Line Supervisor and overall performance rating and way forward</h4>
+                    <div class="row bg-white">
+                        <div class="col-lg-3 border-grey headr  border py-1 px-2">
+                            <strong>Rate</strong>
+                        </div>
+                        <div class="col-lg-6 border-grey headr  border py-1 px-2">
+                            <strong>Interpretaion</strong>
+                        </div>
+                        <div class="col-lg-3 border-grey headr  border py-1 px-2">
+                            <strong>Supervisor final rating</strong>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-9 p-0">
+                            <div class="row bg-white">
+                                <div class="col-lg-4 border-grey  border odoo-cell-grey py-1 px-2">4.5 – 5</div>
+                                <div class="col-lg-8 border-grey  border odoo-cell-grey py-1 px-2">Exceptional/Outstanding</div>
+                            </div>
+                            <div class="row bg-white">
+                                <div class="col-lg-4 border-grey  border odoo-cell-grey py-1 px-2">3.5 – 4.4</div>
+                                <div class="col-lg-8 border-grey  border odoo-cell-grey py-1 px-2">Exceeds Expected Performance</div>
+                            </div>
+                            <div class="row bg-white">
+                                <div class="col-lg-4 border-grey  border odoo-cell-grey py-1 px-2">2.5 – 3.4</div>
+                                <div class="col-lg-8 border-grey  border odoo-cell-grey py-1 px-2">Meets Expected Performance</div>
+                            </div>
+                            <div class="row bg-white">
+                                <div class="col-lg-4 border-grey  border odoo-cell-grey py-1 px-2">1.5 – 2.4 </div>
+                                <div class="col-lg-8 border-grey  border odoo-cell-grey py-1 px-2">Required performance improvement</div>
+                            </div>
+                            <div class="row bg-white">
+                                <div class="col-lg-4 border-grey  border odoo-cell-grey py-1 px-2">1 – 1.4 </div>
+                                <div class="col-lg-8 border-grey  border odoo-cell-grey py-1 px-2">Unsatisfactory/Unacceptable Performance</div>
+                            </div>
+                            <div class="row bg-white">
+                                <div class="col-lg-4 border-grey  border odoo-cell-grey py-1 px-2">Not Applicable</div>
+                                <div class="col-lg-8 border-grey  border odoo-cell-grey py-1 px-2">Not Applicable or Not Able to Evaluate</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 odoo-cell-grey ">
+                            <div class="d-flex justify-content-center align-items-center" style="height:100%; flex-direction:column; text-align:center;">
+                                <t t-if="appraisal.p7_overall_rating_not_applicable">Not Applicable</t>
+                                <t t-else="">
+                                    <span t-esc="appraisal.p7_overall_rating"></span>
+                                    <span class="mt-2" style="font-size:12px;" t-esc="'Exceptional/Outstanding' if appraisal.p7_overall_rating >= 4.5 else 'Exceeds Expected Performance' if appraisal.p7_overall_rating >= 3.5 else 'Meets Expected Performance' if appraisal.p7_overall_rating >= 2.5 else 'Required Performance Improvement' if appraisal.p7_overall_rating >= 1.5 else 'Unsatisfactory/Unacceptable Performance' if appraisal.p7_overall_rating >= 1 else ''"></span>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5 custom_font_size">
+                    <h4 >D.	Overall rating</h4>
+                    <div class="row bg-white">
+                        <div class="col-lg-12 mt-3 question-text  px-2">
+                            <h5>Supervisor/Evaluator’s Comments and recommendation:</h5>
+                        </div>
+                        <div class="col-lg-12 py-1 px-2 odoo-cell-grey">
+                            <t t-esc="appraisal.field_overall_assessment" />
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5">
+                    <h4>Signed by:</h4>
+                    <div>
+                        <strong>Supervisor:</strong>
+                        <t t-esc="appraisal.manager_id.name" />
+                        on
+                        <t t-esc="appraisal.manager_sign_date" />
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

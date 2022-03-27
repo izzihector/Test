@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+        <record model="ir.actions.act_window" id="action_hr_job_announcement_applications">
+            <field name="name">Applications</field>
+            <field name="res_model">hr.applicant</field>
+            <field name="view_mode">kanban,tree,form,pivot</field>
+            <field name="search_view_id" ref="hr_recruitment.hr_applicant_view_search_bis"/>
+            <field name="context">{'search_default_job_announcement_id': [active_id], 'default_job_announcement_id': active_id}</field>
+            <field name="help" type="html">
+                    <p class="o_view_nocontent_empty_folder">
+                    No applications yet
+                    </p><p>
+                    Odoo helps you track applicants in the recruitment
+                    process and follow up all operations: meetings, interviews, etc.
+                    </p><p>
+                    Applicants and their attached CV are created automatically when an email is sent.
+                    If you install the document management modules, all resumes are indexed automatically,
+                    so that you can easily search through their content.
+                    </p>
+                </field>
+        </record>
+
+        <record id="hr_applicant_view_search_bis_inherit_nl_recruitment" model="ir.ui.view">
+            <field name="name">hr.applicant.view.search.inherit</field>
+            <field name="model">hr.applicant</field>
+            <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_search_bis"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='job_id']" position="after">
+                    <field name="job_announcement_id" />
+                </xpath>
+                <xpath expr="//filter[@name='job']" position="after">
+                    <filter string="Job Announcement" name="job_announcement" domain="[]" context="{'group_by': 'job_announcement_id'}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="job_announcement_pivot" model="ir.ui.view">
+            <field name="name">hr.job.announcement.pivot</field>
+            <field name="model">hr.job.announcement</field>
+            <field name="arch" type="xml">
+                <pivot string="Job Announcement Analysis" disable_linking="True" sample="1">
+                    <field name="office_id" type="col"/>
+                    <field name="state" type="col" />
+                    <field name="announcement" type="row" />
+                    <field name="announcement_type" type="row" />
+                    <field name="female_applicant" type="measure" />
+                    <field name="male_applicant" type="measure" />
+                </pivot>
+            </field>
+        </record>
+
+        <record id="view_job_announcement_search" model="ir.ui.view">
+            <field name="name">hr.job.announcement.search</field>
+            <field name="model">hr.job.announcement</field>
+            <field name="arch" type="xml">
+                <search string="Job Announcement Analysis">
+                    <field string="Job" name="job_id" />
+                    <filter string="Announcement Date" name="vacancy_start_date" date="vacancy_start_date"/>
+                    <separator/>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_hr_job_announcement_form" model="ir.ui.view">
+            <field name="name">hr.job.announcement.form</field>
+            <field name="model">hr.job.announcement</field>
+            <field name="arch" type="xml">
+                <form string="Announcement">
+                    <header>
+                        <button name="set_recruit" string="Start Recruitment" states="draft,close" type="object" class="oe_highlight" groups="hr_recruitment.group_hr_recruitment_user"/>
+                        <button name="set_open" string="Stop Recruitment" states="recruit" type="object" groups="hr_recruitment.group_hr_recruitment_user"/>
+                        <!-- <button name="reset_as_draft" string="Reset Draft" states="close" type="object" class="oe_highlight" groups="hr_recruitment.group_hr_recruitment_user"/> -->
+                        <button name="notify_panel_members" string="Notify Panel Members" states="recruit" type="object" class="oe_highlight" groups="hr_recruitment.group_hr_recruitment_user" confirm="Are you sure?"/>
+                        <button name="%(action_open_mail_compose_message_applicants_model)d" states="recruit" context="{'default_job_announcement_id': id, 'applicant_notify_mode': 'written_test'}"  string="Written Test Invite" type="action" class="oe_highlight" groups="hr_recruitment.group_hr_recruitment_user"/>
+                        <button name="%(action_open_mail_compose_message_applicants_model)d" states="recruit" context="{'default_job_announcement_id': id, 'applicant_notify_mode': 'interview'}"  string="Interview Invite" type="action" class="oe_highlight" groups="hr_recruitment.group_hr_recruitment_user"/>
+                        <button name="action_open_download_attachment_wizard" context="{'default_job_announcement_id': id}"  string="Download Attachments" type="object" class="oe_highlight" groups="hr_recruitment.group_hr_recruitment_user"/>
+
+                        <field name="state" widget="statusbar" statusbar_visible="draft,recruit,close"/>
+                    </header>
+                    <sheet>
+                        <div name="button_box" class="oe_button_box">
+                            <button class="oe_stat_button"
+                                style="width: 180px"
+                                icon="fa-folder-o"
+                                name="action_get_applicant_file_attachment_tree_view"
+                                type="object">
+                                <field name="recruitment_file_count" widget="statinfo" string="Recruitment File"/>
+                            </button>
+                            <button class="oe_stat_button"
+                                icon="fa-pencil"
+                                name="%(action_hr_job_announcement_applications)d"
+                                context="{'default_user_id': user_id, 'active_test': False}"
+                                type="action">
+                                <field name="all_application_count" widget="statinfo" string="Applications"/>
+                            </button>
+                            <button class="oe_stat_button"
+                                style="width: 180px"
+                                icon="fa-file-o"
+                                name="action_get_attachment_tree_view"
+                                type="object">
+                                <field name="documents_count" widget="statinfo" string="Applicant Resumes"/>
+                            </button>
+                            <field name="is_published" widget="website_redirect_button"/>
+                        </div>
+                        <div class="oe_title">
+                            <label for="job_id" class="oe_edit_only" string="Job Posistion"/>
+                            <group>
+                                <h1><field name="job_id" placeholder="e.g. Sales Manager"/></h1>
+                            </group>
+                        </div>
+                        <div class="oe_title">
+                            <group>
+                                <h2><field name="va_reference" placeholder="Vacancy Reference"/></h2>
+                            </group>
+                        </div>
+                        <group>
+                            <group string="Recruitment Information">
+                                <field name="company_id" invisible="1"/>
+                                <field name="office_id" />
+                                <field name="department_id" />
+                                <field name="unit_id" />
+                                <field name="recruitment_officer" string="Recruitment Manager"/>
+                                <field name="user_id" domain="[('share', '=', False)]" string="HR Responsible"/>
+                                <field name="announcement"/>
+                                <field name="announcement_type" />
+                                <field name="compute_gender" invisible="1"/>
+                            </group>
+                            <group string="Evaluation Committee ">
+                                <field name="panel_members" widget="many2many_tags_avatar"  avatar_field="image_1920"/>
+                                <field name="written_test_date" string="Planned Written Test Date"/>
+                                <field name="interview_date" string="Planned Interview Date"/>
+                            </group>
+                            <group string="Vacancy Detail">
+                                <field name="no_of_recruitment" />
+                                <field name="vacancy_start_date" />
+                                <field name="vacancy_deadline" />
+                                <field name="gender" />
+                                <field name="website_id" invisible="1"/>
+                                <field name="address_id" invisible="1" context="{'show_address': 1}" domain= "[('is_company', '=', True )]" options="{'always_reload': True}"/>
+                                <field name="employment_type" />
+                                <field name="probation_period" />
+                                <field name="salary_grade" domain="[('contract', '=', employment_type)]"/>
+                                <field name="salary_step" domain="[('grade_id', '=', salary_grade)]"/>
+                                <field name="requires_travel" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Default Selection Criteria">
+                                <field name="qualifications_criteria_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="qualification" string="Education Level"/>
+                                        <field name="years_of_experience"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Job Description">
+                                <div>
+                                    <field name="summary" class="ml-2"/>
+                                </div>
+                            </page>
+                            <page string="Notes">   
+                                <p><b>Conclusion</b> (Give detailed arguments for the selection, strengths/weakness, and the order of any runner-up candidates):</p>
+                                <field name="notes" nolabel='1' placeholder="Notes"/>
+                            </page>
+                            <page name="hired_employees" string="Hired Candidate(s)">
+                                <field name="employee_announcement_line_ids" nolabel="1">
+                                    <tree>
+                                        <field name="employee_id" />
+                                        <field name="hire_date" string="Date Hired"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_hr_job_announcement_kanban" model="ir.ui.view">
+            <field name="name">hr.job.announcement.kanban</field>
+            <field name="model">hr.job.announcement</field>
+            <field name="arch" type="xml">
+                <kanban class="oe_background_grey o_kanban_dashboard o_hr_recruitment_kanban" sample="1">
+                    <field name="job_id" />
+                    <field name="state" />
+                    <field name="color" />
+                    <field name="new_application_count"/>
+                    <field name="no_of_recruitment"/>
+                    <field name="application_count"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="#{!selection_mode ? kanban_color(record.color.raw_value) : ''}">
+                                <field name="website_published" invisible="1"/>
+                                <div class="ribbon ribbon-top-right" attrs="{'invisible': [('website_published', '=', False)]}">
+                                    <span class="o_recruitment_purple">Published</span>
+                                </div>
+                                
+                                <div class="o_kanban_card_header">
+                                    <div class="o_kanban_card_header_title">
+                                        <div class="o_primary col-12">
+                                            <a type="object" name="open_form_view"><span class="oe_kanban_global_click"><t t-esc="record.job_id.value"/></span></a>
+                                        </div>
+                                        <field name="is_favorite" widget="boolean_favorite" nolabel="1"/>
+                                    </div>
+                                    <div class="o_kanban_manage_button_section">
+                                        <a class="o_kanban_manage_toggle_button" href="#"><i class="fa fa-ellipsis-v" role="img" aria-label="Manage" title="Manage"/></a>
+                                    </div>
+                                    
+                                </div>
+                                <div class="container o_kanban_card_content">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <button class="btn btn-primary" name="%(action_hr_job_announcement_applications)d" type="action">
+                                                <field name="application_count"/> Applications
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <a t-attf-href="#{record.website_url.raw_value}" class="col-6">Vacancy Announcement</a>
+                                        <div class="col-6 text-right" data-toggle="tooltip" data-placement="top" title="Vacancy Closing Date"> <i class="fa  fa-calendar" /> <field name="vacancy_deadline"/></div>
+                                    </div>
+                                    <div name="kanban_boxes" class="row o_recruitment_kanban_boxes">
+                                        <div class="o_recruitment_kanban_box o_kanban_primary_bottom bottom_block" style="padding-left:8px;">
+                                            <field name="website_url" invisible="1"/>
+                                            <span>
+                                                <t t-if="record.is_published.raw_value" ><span style="color: #00a09c;">Published</span> </t>
+                                                <t t-if="!record.is_published.raw_value"><span  style="color: #acacac;"> Publish </span> </t>
+                                                <field name="is_published" widget='boolean_toggle'/>
+                                            </span>
+                                        </div>
+                                    </div>                             
+                                </div>
+                                <div class="o_kanban_card_manage_pane dropdown-menu" role="menu">
+                                    <div class="o_kanban_card_manage_section">
+                                        <div role="menuitem"><a t-if="record.state.raw_value == 'recruit'" name="set_open" type="object">Recruitment Done</a></div>
+                                        <div role="menuitem"><a t-if="record.state.raw_value == 'close' | record.state.raw_value == 'draft'" name="set_recruit" type="object">Start recruitment</a></div>
+                                        <div role="menuitem"><a t-if="widget.editable" name="edit_job" type="edit">Edit</a></div>
+                                    </div>
+                                    <div role="menuitem" aria-haspopup="true">
+                                        <ul class="oe_kanban_colorpicker" data-field="color" role="menu"/>
+                                    </div>
+                                </div>
+                                <div class="o_hr_job_boxes">
+                                    <a class="o_hr_job_box" name="%(action_hr_job_announcement_applications)d" type="action"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- <record id="view_hr_job_announcement_pivot" model="ir.ui.view">
+            <field name="name">hr.job.announcement.pivot</field>
+            <field name="model">hr.job.announcement</field>
+            <field name="arch" type="xml">
+                <pivot string="Job Announcement" disable_linking="1" sample="1">
+                    <field name="vacancy_start_date" type="row"/>
+                    <field name="office_id" type="col"/>
+                </pivot>
+            </field>
+        </record> -->
+
+        <record id="action_job_announcement_form" model="ir.actions.act_window">
+            <field name="name">Job Announcement</field>
+            <field name="res_model">hr.job.announcement</field>
+            <field name="view_mode">pivot</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                    (0, 0, {'view_mode': 'pivot', 'view_id': ref('job_announcement_pivot')})]"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                Create Job Announcement
+                </p>
+            </field>
+        </record>
+
+        <record id="action_job_announcement_pivot_server" model="ir.actions.server">
+            <field name="name">Job Announcement Analysis</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_hr_job_announcement"/>
+            <!-- <field name="binding_model_id" ref="model_employee_appraisal"/> -->
+            <field name="state">code</field>
+            <field name="code">
+                action = model.calculate_and_return_pivot_view()
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_hr_job_announcement">
+            <field name="name">Job Announcements</field>
+            <field name="res_model">hr.job.announcement</field>
+            <field name="view_mode">kanban,form,pivot</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Ready to recruit more efficiently?
+            </p><p>
+                Let's create a job Announcements.
+            </p>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_hr_job_announcement_form">
+            <field name="name">Job Announcements</field>
+            <field name="res_model">hr.job.announcement</field>
+            <field name="view_mode">form</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Ready to recruit more efficiently?
+            </p><p>
+                Let's create a job Announcements.
+            </p>
+            </field>
+        </record>
+
+        <menuitem name="Announcements" parent="hr_recruitment.menu_crm_case_categ0_act_job" id="menu_hr_job_announcements" action="action_hr_job_announcement" sequence="0"/>
+        <menuitem name="Recruitment Report" id="hr_job_announcement_report_menu" parent="hr_recruitment.report_hr_recruitment"
+        sequence="51" action="action_job_announcement_pivot_server"/>
+        <!-- <menuitem name="Recruitment Report" id="hr_job_announcement_report_menu" parent="hr_recruitment.report_hr_recruitment"
+        sequence="51" action="action_job_announcement_form"/> -->
+
+        <!-- hr related job position menu action -->
+        <record model="ir.actions.act_window" id="hr_recruitment.action_hr_job">
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref=""/>
+        </record>
+
+        <record id="view_hr_job_tree_inherit" model="ir.ui.view">
+            <field name="name">hr.name.view.tree.inherit</field>
+            <field name="model">hr.job</field>
+            <field name="inherit_id" ref="hr.view_hr_job_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='no_of_employee']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='no_of_recruitment']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='expected_employees']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='no_of_hired_employee']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='state']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='department_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.menu" id="hr_recruitment.menu_hr_recruitment_configuration">
+            <field name="groups_id" eval="[(4,ref('hr_recruitment.group_hr_recruitment_user')), (4,ref('nl_master.group_hr_recruitment_read_only'))]"/>
+        </record>
+        <record model="ir.ui.menu" id="hr_recruitment.menu_crm_case_categ_all_app">
+            <field name="name">Applications</field>
+        </record>
+        <record model="ir.ui.menu" id="hr_recruitment.menu_hr_job_position">
+            <field name="name">Job Positions</field>
+        </record>
+        <record model="ir.ui.menu" id="hr_recruitment.menu_crm_case_categ0_act_job">
+            <field name="name">Announcements</field>
+        </record>
+
+    </data>
+</odoo>
+    

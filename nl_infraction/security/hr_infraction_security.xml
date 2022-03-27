@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Record rule for Poject Manager -->
+        <!-- <record id="rule_project_manager" model="ir.rule">
+            <field name="name">Project Manager can see only his subordinates infraction.</field>
+            <field name="model_id" ref="model_hr_infraction"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="domain_force">['|',('employee_id.user_id','child_of',user.id),('employee_id.parent_id.user_id','child_of',user.id)]</field>
+        </record> -->
+
+        <record id = "infraction_record_based_on_allowed_province" model = "ir.rule"> 
+            <field name = "name">User Can Read Infractions Based on his/her Allowed Offices</field> 
+            <field name = "model_id" ref = "model_hr_infraction" /> 
+            <field name = "groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name = "perm_read" eval = "True" /> 
+            <field name = "perm_write" eval = "True" /> 
+            <field name = "perm_create" eval = "False" /> 
+            <field name = "perm_unlink" eval = "False" /> 
+            <field name = "domain_force"> [('employee_id.office_id.id', 'in',user.office_ids.ids)] </field>
+        </record>
+    </data>
+</odoo>

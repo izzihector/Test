@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+        <report id="action_confidentiality_agreement" string="Confidentiality Agreement" model="hr.employee" report_type="qweb-pdf" name="nl_employee.confidentiality_agreement_template" file="nl_employee.confidentiality_agreement_template" print_report_name="'Confidentiality Agreement - %s' % (object.name)" />
+		
+
+        <template id="template_header">
+            <div class="header">
+                <table width="100%">
+                    <tr>
+                        <td style="float:left;text-align:left;">
+                            <img t-att-src="'/nl_employee/static/description/sca.jpg'" alt="Logo" style="height:60px;" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </template>
+
+        <template id="confidentiality_main_info">
+            <t t-call="nl_employee.template_header" />
+            <t t-raw="0" />
+        </template>
+
+
+        <template id="confidentiality_agreement_template">
+			<t t-call="web.html_container">
+            	<t t-foreach="docs" t-as="o">
+            		<t t-call="nl_employee.confidentiality_main_info">
+	            		<div class="page" style="padding: 30px;">
+	            			<style>
+                                .mainborder{border:1px solid black;
+                                            border-collapse:collapse;
+                                            font-size: 20px;
+                                            text-align:left;
+                                            padding:5px;
+                                            color:black;
+                                            }
+                                .paragraph{
+                                			font-size:20px;
+                                			padding:5px;
+                                }
+
+
+
+                                #leftbox {
+                                    float:left; 
+                                    width:33%;
+                                    height:100px;
+                                    border:1px solid grey;
+                                   
+                                }
+                                #middlebox{
+                                    float:left; 
+                                    width:33%;
+                                    height:100px;
+                                    border:1px solid grey;
+                                    
+                                }
+                                #rightbox{
+                                    float:left;
+                                    width:33%;
+                                    height:100px;
+                                    border:1px solid grey;
+                                    
+                                }
+                                .boxpadding{
+                                    padding-left:5px;
+                                    padding-top:5px;
+                                }
+                        	</style>
+	            			<div class="row">
+	            				<h2 style="text-align:center;"><u>Employee Confidentiality Agreement</u></h2>
+	            			</div>
+
+                            <div>
+                                <p>I hereby acknowledge, by my signature below, that I understand that in my position as   <u><span t-esc="o.job_id.name"/></u>, </p>
+                                <ol>
+                                    <li>I will have knowledge and access to confidential information and data in the course of my employment with Swedish Committee for Afghanistan (SCA).  </li>
+                                    <li>I understand that this this information is to be kept confidential and this confidentiality is a condition of my employment with SCA. </li>
+                                    <li>This information shall not be disclosed to anyone under any circumstances, except to the extent necessary to fulfil my job requirements. </li>
+                                    <li>I understand that my duty to remain to maintain confidentiality continues even after I am no longer employed.  Further, upon termination with SCA, I shall return all the confidential information and data in my possession. </li>
+                                    <li>I am familiar that SCA has guidelines pertaining to disclosure of information as per the SHB section 10.1. Approvals should first be obtained before any disclosure of confidential information.</li>
+                                    <li>I also understand that the unauthorised disclosure of any confidential information and data for SCA is ground for disciplinary action, up to and including immediate termination.</li>
+                                </ol>
+                                <p>In the event of any breach of this agreement, SCA may pursue the disciplinary action.</p>
+                            </div>
+                            <div>
+                                <b>Signed by:</b>
+                                <div id = "boxes">
+                                    <div id = "leftbox">
+                                        <b class='boxpadding'>Employee Name</b>
+                                        <p class='boxpadding'><span t-esc="o.name"/></p>
+                                        
+                                    </div> 
+                                    
+                                    <div id = "middlebox">
+                                        <b class='boxpadding'>Signature</b>
+                                        
+                                    </div>
+                                    
+                                    <div id = "rightbox">
+                                        <b class='boxpadding'>Date</b>
+                                        <p class='boxpadding'><span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/>  </p>
+                                    </div>
+
+                                    <div id = "leftbox">
+                                        <b class='boxpadding'>Witness Name</b>
+                                        
+                                    </div> 
+                                    
+                                    <div id = "middlebox">
+                                        <b class='boxpadding'>Signature</b>
+                                        
+                                    </div>
+                                    
+                                    <div id = "rightbox">
+                                        <b class='boxpadding'>Date</b>
+                                        <p class='boxpadding'><span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/>  </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            		</t>
+            	</t>			
+			</t>
+		</template>
+	</data>
+</odoo>

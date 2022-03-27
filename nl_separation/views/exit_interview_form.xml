@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_hr_exit_interview_form" model="ir.ui.view">
+        <field name="name">exit.interview.form</field>
+        <field name="model">exit.interview.form</field>
+        <field name="arch" type="xml">
+            <form string="Exit Interview Form">
+                <sheet>
+                    
+                        
+                    <h4>The reason(s) that you are leaving your position in (Swedish Committee for Afghanistan) is/are:  </h4>
+                    <group>
+                        <group>
+                            <field name="better_employement_elsewhere" readonly="1"/>
+                            <field name="diffucilt_with_work" readonly="1"/>
+                            <field name="limited_career" readonly="1"/>
+                            <field name="pay_compensation" readonly="1"/>
+                            <field name="benefits" readonly="1"/>
+                            
+                        </group>
+                        <group>
+                            <field name="dissatisfied_job" readonly="1"/>
+                            <field name="dissatisfied_working_condition" readonly="1"/>
+                            <field name="supervision_issues" readonly="1"/>
+                            <field name="own_security" readonly="1"/>
+                            <field name="higher_education" readonly="1" />
+                        </group>
+                    </group>
+                   
+                    <h4>5 = Very Good, 4 = Good, 3 = Fair, 2 = Disappointing, 1 = Poor"</h4>
+                  <group>
+                    <group >
+                        <field name="place_of_work" readonly="1"/>
+                        <field name="working_condition" readonly="1"/>
+                        
+                        
+                    </group>
+
+                    <group>
+                        <field name="supervisor_relationship" readonly="1"/>
+                        <field name="understand_job" readonly="1"/>
+                        <field name="goals_and_objectives" readonly="1"/>
+                    </group>
+
+                    <group>
+                        <field name="ahead_of_time" readonly="1"/>
+                        <field name="place_of_work" readonly="1"/>
+                        
+                    </group>
+
+                    <group>
+                        <field name="problem_solving" readonly="1"/>
+                        <field name="respect" readonly="1"/>
+                        <field name="staff_concern" readonly="1"/>
+                    </group>
+
+                  </group>
+                               
+                         
+
+                    
+                       
+                   
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

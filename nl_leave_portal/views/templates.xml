@@ -1,0 +1,649 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   <template id="portal_my_home_menu_leave" name="Portal layout : Leave menu entry" inherit_id="portal.portal_breadcrumbs" priority="25">
+      <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+         <li t-if="page_name == 'leave' or leave" t-attf-class="breadcrumb-item #{'active ' if not leave else ''}">
+            <a t-if="leave" t-attf-href="/my/leaves?{{ keep_query() }}">
+            Leaves
+            </a>
+            <t t-else="">
+               Leaves
+            </t>
+         </li>
+         <li t-if="leave" class="breadcrumb-item active">
+            <span t-field="leave.name" />
+         </li>
+      </xpath>
+      <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+         <li t-if="page_name == 'leave_allocation' or allocation" t-attf-class="breadcrumb-item #{'active ' if not allocation else ''}">
+            <a t-if="allocation" t-attf-href="/my/allocations?{{ keep_query() }}">
+            Allocations
+            </a>
+            <t t-else="">
+               Allocations
+            </t>
+         </li>
+         <li t-if="allcoation" class="breadcrumb-item active">
+            <span t-field="allocation.name" />
+         </li>
+      </xpath>
+   </template>
+   <template id="portal_my_leaves" name="Portal My Leaves : Leave entries" inherit_id="portal.portal_my_home" priority="20">
+      <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+         <t t-if="request.env.user.employee_id" t-call="portal.portal_docs_entry">
+            <t t-set="title">My Leaves</t>
+            <t t-set="url" t-value="'/my/leaves'" />
+            <t t-set="count" t-value="leave_count" />
+         </t>
+      </xpath>
+   </template>
+
+   <template id="portal_my_home_menu_leave_allocation_request" name="Portal layout : Leave Allocation" inherit_id="portal.portal_my_home" priority="21">
+      <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+         <t t-if="request.env.user.employee_id" t-call="portal.portal_docs_entry">
+            <t t-set="title">Allocation Request</t>
+            <t t-set="url" t-value="'/my/allocations'" />
+            <t t-set="count" t-value="allocation_request_count" />
+         </t>
+      </xpath>
+   </template>
+
+   <template id="portal_my_leaves_to_approve" name="Portal My Leaves : Leave entries" inherit_id="portal.portal_my_home" priority="21">
+      <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+         <t t-if="show">
+            <t t-if="request.env.user.employee_id" t-call="portal.portal_docs_entry">
+               <t t-set="title">Leaves to Approve</t>
+               <t t-set="url" t-value="'/my/leaves/approve'" />
+               <t t-set="count" t-value="leave_count_approve" />
+            </t>
+         </t>
+      </xpath>
+   </template>
+
+   <template id="portal_my_allocation_to_approve" name="Portal My Leaves : Leave entries" inherit_id="portal.portal_my_home" priority="21">
+      <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+         <t t-if="show_allocation">
+            <t t-if="request.env.user.employee_id" t-call="portal.portal_docs_entry">
+               <t t-set="title">Allocations to Approve</t>
+               <t t-set="url" t-value="'/my/allocation/approve'" />
+               <t t-set="count" t-value="allocatoin_request_approve_count" />
+            </t>
+         </t>
+      </xpath>
+   </template>
+
+ 
+   <template id="portal_my_leaves_details_approve" name="My Leaves">
+      <t t-call="portal.portal_layout">
+         <t t-set="breadcrumbs_searchbar" t-value="True" />
+         <t t-call="portal.portal_searchbar">
+            <t t-set="title">Leaves to Approve</t>
+         </t>
+         <div t-if="not leaves" class="alert alert-warning mt8" role="alert">
+            There are no leaves.
+         </div>
+         <t t-if="leaves" t-call="portal.portal_table">
+            <thead>
+               <tr>
+                  <th>Employee</th>
+                  <th>Leave type</th>
+                  <th>Description</th>
+                  <th>Start date</th>
+                  <th>End date</th>
+                  <th>No of days</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                  <th>Attachment</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr t-foreach="leaves" t-as="leave">
+                  <!-- t-options='{"widget": "date"}' -->
+                  <td><span t-field="leave.employee_id" /></td>
+                  <td><span t-field="leave.holiday_status_id.name" /></td>
+                  <td><span style="white-space: pre-wrap;" t-field="leave.name" /></td>
+                  <td><span t-field="leave.request_date_from" /></td>
+                  <td><span t-field="leave.request_date_to" /></td>
+                  <td><span t-field="leave.number_of_days" /></td>
+                  <td><span t-att-class="'badge badge-success' if leave.state=='validate' else '' 
+                     'badge badge-primary' if leave.state=='confirm' else ''
+                     'badge badge-danger' if leave.state=='cancel' else ''
+                     'badge badge-warning' if leave.state=='refuse' else ''
+                     'badge badge-light' if leave.state=='draft' else ''
+                     'badge badge-info' if leave.state=='validate1' else ''
+                     " t-field="leave.state" /></td>
+                  <td>
+                     <t t-if="leave.state == 'confirm'">
+                        <a class="btn btn-success btn-sm" t-attf-href="/my/leave/approve/approve?id=#{leave.id}"><i class="fa fa-check" /> Approve</a>
+                        <a class="btn btn-danger btn-sm" style="margin-left:3px;" t-attf-href="/my/leave/approve/deny?id=#{leave.id}">
+                        <i class="fa fa-times" /> Deny
+                        </a>
+                     </t>
+                  </td>
+                  <td>
+                    
+                        <a class="btn btn-primary btn-sm" t-attf-href="/my/leave/approve/attachment?id=#{leave.id}" t-if="attachments.get(leave.id).get('has_attachment')">
+                        <i class="fa fa-paperclip" /> Download
+                        </a>
+                  
+                  </td>
+               </tr>
+            </tbody>
+         </t>
+      </t>
+   </template>
+
+   <template id="portal_my_allocation_details_approve" name="My Leaves">
+      <t t-call="portal.portal_layout">
+         <t t-set="breadcrumbs_searchbar" t-value="True" />
+         <t t-call="portal.portal_searchbar">
+            <t t-set="title">Allocations to Approve</t>
+         </t>
+         <div t-if="not allocations" class="alert alert-warning mt8" role="alert">
+            There are no allocations.
+         </div>
+         <t t-if="allocations" t-call="portal.portal_table">
+            <thead>
+               <tr>
+                  <th>Employee</th>
+                  <th>Leave type</th>
+                  <th>Description</th>
+                  <th>Request Date</th>
+                  <th>No of days</th>
+                  <th>Status</th>
+                  <th>Action</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr t-foreach="allocations" t-as="allocation">
+                  <!-- t-options='{"widget": "date"}' -->
+                  <td><span t-field="allocation.employee_id" /></td>
+                  <td><span t-field="allocation.holiday_status_id.name" /></td>
+                  <td><span style="white-space: pre-wrap;" t-field="allocation.notes" /></td>
+                  <td><span t-field="allocation.date_from" /></td>
+                  <td><span t-field="allocation.number_of_days" /></td>
+                  <td><span t-att-class="'badge badge-success' if allocation.state=='validate' else ''
+                     'badge badge-primary' if allocation.state=='confirm' else ''
+                     'badge badge-danger' if allocation.state=='cancel' else ''
+                     'badge badge-warning' if allocation.state=='refuse' else ''
+                     'badge badge-light' if allocation.state=='draft' else ''
+                     'badge badge-info' if allocation.state=='validate1' else ''
+                     " t-field="allocation.state" /></td>
+                  <td>
+                     <t t-if="allocation.state == 'confirm'">
+                        <a class="btn btn-success btn-sm" t-attf-href="/my/allocation/approve/approve?id=#{allocation.id}"><i class="fa fa-check" /> Approve</a>
+                        <a class="btn btn-danger btn-sm" style="margin-left:3px;" t-attf-href="/my/allocation/approve/deny?id=#{allocation.id}">
+                        <i class="fa fa-times" /> Deny
+                        </a>
+                     </t>
+
+
+               </td>
+               </tr>
+            </tbody>
+         </t>
+      </t>
+   </template>
+
+
+   <template id="portal_my_allocations" name="My Allocation Requests">
+      <t t-call="portal.portal_layout">
+         <t t-set="breadcrumbs_searchbar" t-value="True" />
+         <t t-call="portal.portal_searchbar">
+            <t t-set="title">Allocations</t>
+            <div class="clearfix form-inline ml-lg-4" t-if="request.env.user.employee_id">
+               <a class="btn btn-success btn-sm" href="/my/allocation/create">
+               <i class="fa fa-plus" /> Create New
+               </a>
+            </div>
+         </t>
+         <div t-if="not allocations" class="alert alert-warning mt8" role="alert">
+            There are no Allocation Requests.
+         </div>
+         <t t-if="allocations" t-call="portal.portal_table">
+            <thead>
+               <tr>
+                  <th>Employee</th>
+                  <th>Leave type</th>
+                  <th>Description</th>
+                  <th>No of days</th>
+                  <th>Status</th>
+                  
+               </tr>
+            </thead>
+            <tbody>
+               <tr t-foreach="allocations" t-as="allocation">
+                  <td><span t-field="allocation.employee_id" /></td>
+                  <td><span t-field="allocation.holiday_status_id.name" /></td>
+                  <td><span style="white-space: pre-wrap;" t-field="allocation.notes" /></td>
+                  <td><span t-field="allocation.number_of_days" /></td>
+                  <td><span t-att-class="'badge badge-success' if allocation.state=='validate' else '' 
+                     'badge badge-primary' if allocation.state=='confirm' else ''
+                     'badge badge-danger' if allocation.state=='cancel' else ''
+                     'badge badge-warning' if allocation.state=='refuse' else ''
+                     'badge badge-light' if allocation.state=='draft' else ''
+                     'badge badge-info' if allocation.state=='validate1' else ''
+                     " t-field="allocation.state" /></td>
+                  
+                 
+                     
+                  
+               </tr>
+            
+         </tbody>
+         </t>
+      </t>
+   </template>
+
+   <template id="portal_my_leaves_details" name="My Leaves">
+      <t t-call="portal.portal_layout">
+         <t t-set="breadcrumbs_searchbar" t-value="True" />
+         <t t-call="portal.portal_searchbar">
+            <t t-set="title">Leaves</t>
+            <div class="clearfix form-inline ml-lg-4" t-if="request.env.user.employee_id">
+               <a class="btn btn-success btn-sm" href="/my/leave/create">
+               <i class="fa fa-plus" /> Create New
+               </a>
+            </div>
+         </t>
+         <div t-if="not leaves" class="alert alert-warning mt8" role="alert">
+            There are no leaves.
+         </div>
+         <t t-if="leaves" t-call="portal.portal_table">
+            <thead>
+               <tr>
+                  <th>Employee</th>
+                  <th>Leave type</th>
+                  <th>Description</th>
+                  <th>Start date</th>
+                  <th>End date</th>
+                  <th>No of days</th>
+                  <th>Status</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr t-foreach="leaves" t-as="leave">
+                  <!-- t-options='{"widget": "date"}' -->
+                  <td><span t-field="leave.employee_id" /></td>
+                  <td><span t-field="leave.holiday_status_id.name" /></td>
+                  <td><span style="white-space: pre-wrap;" t-field="leave.name" /></td>
+                  <td><span t-field="leave.request_date_from" /></td>
+                  <td><span t-field="leave.request_date_to" /></td>
+                  <td><span t-field="leave.number_of_days" /></td>
+                  <td><span t-att-class="'badge badge-success' if leave.state=='validate' else '' 
+                     'badge badge-primary' if leave.state=='confirm' else ''
+                     'badge badge-danger' if leave.state=='cancel' else ''
+                     'badge badge-warning' if leave.state=='refuse' else ''
+                     'badge badge-light' if leave.state=='draft' else ''
+                     'badge badge-info' if leave.state=='validate1' else ''
+                     " t-field="leave.state" /></td>
+               </tr>
+            </tbody>
+         </t>
+      </t>
+   </template>
+
+
+   <template id="my_leave_create" name="My Leave Create">
+      <t t-call="portal.portal_layout">
+         <t t-set="breadcrumbs_searchbar" t-value="True" />
+         <!-- <t t-call="portal.portal_searchbar">
+            <t t-set="title">New Leave</t>
+            </t> -->
+         <link href="https://fonts.googleapis.com/css?family=Anton|Comfortaa|Droid+Sans|Fjalla+One|Josefin+Sans|Josefin+Slab|Lora|Manuale|Maven+Pro|Noto+Serif|Press+Start+2P|Rajdhani|Slabo+13px|Ubuntu|VT323" rel="stylesheet"/>
+         <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"></link> -->
+         <style>
+         </style>
+         <head>
+            <link rel="stylesheet" href="/nl_leave_portal/static/src/css/pignose.calendar.css" />
+            <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'/>
+               <script src="/nl_leave_portal/static/src/js/pignose.calendar.full.js" />
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+            
+            <script>
+
+               //function that returns the total number of days between from_date and to_date
+               function get_total_days(from_date, to_date) {
+                  var from_date = new Date(from_date);
+                  var to_date = new Date(to_date);
+                  var total_days = 0;
+                  while (from_date &lt;= to_date) {
+                     total_days++;
+                     from_date.setDate(from_date.getDate() + 1);
+                  }
+                  return total_days;
+               }
+               //function that hanldes attachment part
+               function handle_attachment() {
+                  total_days = get_total_days($('input[name="from_date"]').val(), $('input[name="to_date"]').val());
+                  if (total_days >= $('[name="leave_type"]:checked').attr("max_days")) {
+                     $('#attachment_div').show();
+                     $('#attachment').attr('required', true);
+                  } else {
+                     $('#attachment_div').hide();
+                     $('#attachment').attr('required', false);
+                  }
+               }
+               $(function() {
+
+                  //Disable submit button on form submit
+                  $( "#submit_form" ).submit(function(e) {
+                     $('#submit_form_btn').prop('disabled', true);
+                  });
+
+                  $('#attachment_div').hide();
+                  $('#attachment_div').attr('required', false);
+                  var calendar = $('.calendar').pignoseCalendar({
+                     multiple: true,
+                     week: 0,
+                     initialize: false,
+                     disabledWeekdays: [
+                        6,
+                        5,
+                     ],
+      
+                     select: function (date, context) {
+                        /**
+                        * @params this Element
+                        * @params date moment[]
+                        * @params context PignoseCalendarContext
+                        * @returns void
+                        */
+                        // This is selected button Element.
+                        var $this = $(this);
+
+                        // You can get target element in `context` variable, This element is same `$(this)`.
+                        var $element = context.element;
+
+                        // You can also get calendar element, It is calendar view DOM.
+                        var $calendar = context.calendar;
+
+                        // Selected dates (start date, end date) is passed at first parameter, And this parameters are moment type.
+                        // If you unselected date, It will be `null`.
+                        if (date[0]) {
+                           from = $('input[name="from_date"]').val(moment(date[0]).format("YYYY-MM-DD"));
+                        } else {
+                           from = $('input[name="from_date"]').val("From");
+                        }
+                        if (date[1]) {
+                           to = $('input[name="to_date"]').val(moment(date[1]).format("YYYY-MM-DD"));
+                        } else {
+                           to = $('input[name="to_date"]').val("To");
+                        }
+
+                        if ($('[name="leave_type"]:checked').attr("attachment") == 'True') {
+                           handle_attachment()
+                        } else {
+                           $('#attachment_div').hide();
+                           $('#attachment').attr('required', false);
+                        }
+                     }
+                  }); // Calender configuration end
+      
+                  $('#half_day').on('change', function() {
+                     if ($(this).is(':checked')) {
+                        $('#to_date_day_div').hide();
+                        calendar.settings.multiple = false;
+                        calendar.pignoseCalendar('set', $('input[name="from_date"]').val());
+                        $('input[name="to_date"]').val('')
+                        $('#to_date_day').val('');
+                     } else {
+                        $('#to_date_day_div').show();
+                        calendar.settings.multiple = true;
+                     }
+                     handle_attachment()
+                  });
+                  
+                  var logic = $('[name="leave_type"]').on('click', function() {
+                     if ($(this).attr("attachment") == 'True') {
+                        handle_attachment()
+                     } else {
+                         $('#attachment_div').hide();
+                         $('#attachment').attr('required', false);
+                     }
+                  });
+
+                  //Handle Old Data on page redirect back incase of errors
+                  <t t-if="old_data">
+                     var old_date = '<t t-esc="old_data.get('from_date')" />~<t t-esc="old_data.get('to_date')" />'
+                     if (old_date.split("~")[0]) {
+                        calendar.pignoseCalendar('set', old_date)
+                        $('input[name="from_date"]').val(old_date.split("~")[0]);
+                        $('input[name="to_date"]').val(old_date.split("~")[1]);
+                     }
+                     $("#description_part").val("<t t-esc="old_data.get('description')" />");
+                     <t t-if="old_data.get('half_day', False) == True">
+                           $("#half_day").prop("checked", 'true')
+                     </t>
+                     $("input[id='leave_type_<t t-esc="old_data.get('leave_type_id', '')" />']").prop("checked", true)
+                     handle_attachment()
+                  </t>
+
+                  //On page refresh or when on change is not called keep the half day checked effects
+                  if ($("#half_day").is(':checked')) {
+                     $('#to_date_day_div').hide();
+                     calendar.settings.multiple = false;
+                     calendar.pignoseCalendar('set', $('input[name="from_date"]').val());
+                     $('input[name="to_date"]').val('')
+                     $('#to_date_day').val('');
+                     handle_attachment()
+                  } else {
+                     $('#to_date_day_div').show();
+                     calendar.settings.multiple = true;
+                     handle_attachment()
+                  }
+                  
+               }); // main function end
+
+               //Function to check if the leave type has leave availible
+               function check_valid_leaves(event) {
+                  all_leaves = event.target.attributes.all_leaves.value
+                  taken_leaves = event.target.attributes.taken_leaves.value
+                  if (all_leaves == taken_leaves) {
+                     alert("No leave availible for the current leave type! Please choose another type.")
+                     $(`#leave_type_${event.target.attributes.value.value}`).prop("checked", false)
+                  }
+               }
+               
+            </script>
+         </head>
+         <!-- <h2 class="mt16 mb32">New Leave Request</h2> -->
+         <form  action="/my/leave/submit" method="POST"  enctype="multipart/form-data" id="submit_form">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+            <div class="card-body mt-3" style="background: #ececec !important;">
+            
+               <div t-if="errors" class="'alert p-2 mb-3 alert-danger alert-dismissible fade show" style="color: #a94442;
+                  background-color: #f2dede; border-color: #ebccd1;  width:100%" >
+                  <t t-if="error_type == 'validations'">
+                     <h3>Please fill the required fields.</h3>
+                     <ul>
+                        <t t-foreach="errors" t-as="error">
+                           <li class="font-weight-bold"><t t-esc="error"/></li>      
+                        </t>
+                     </ul>
+                  </t>
+                  <t t-if="error_type == 'other'">
+                     <strong><t t-esc="errors"/></strong>
+                  </t>
+               </div>
+              
+               <h3>1) Pick your leave type</h3>
+               <div class="d-flex flex-row flex-wrap justify-content-center mt-3 mb-3" >
+                  <t t-foreach="timeoffs" t-as="timeoff">
+                     <t set="i" t-value="0">
+                        <div class="type mr-1">
+                           <input type="radio" required="1" t-att-all_leaves="timeoff[1]['max_leaves']" t-att-taken_leaves="timeoff[1]['virtual_leaves_taken']" onclick="check_valid_leaves(event)" t-attf-id="leave_type_{{timeoff[1]['id']}}" name="leave_type" t-att-max_days="timeoff[1]['require_attachments_after_days']" t-att-attachment="timeoff[1]['require_attachments']" class="text-center leave_type" t-att-value="timeoff[1]['id']"></input>
+                           
+                           <div class="leave_details">
+                              <div class="leave-header">
+                                 <h6 class="text-center" t-esc="timeoff[0]"></h6>
+                              </div>
+                              <div class="leave-data">
+                                 <div class="leave_numbers">
+                                    <span class="total_leave" t-esc="timeoff[1]['virtual_leaves_taken']"></span><span class="slash">/</span><span class="total_allocation" t-esc="timeoff[1]['max_leaves']"></span>
+                                 </div>
+                              </div>
+                              <div class="leave-footer" style="font-size: 14px; text-align: center">
+                                 <t t-if="timeoff[1]['max_leaves'] == timeoff[1]['virtual_leaves_taken']">
+                                    <small style="color: red;">No Leave Available</small>
+                                 </t>
+                                 <t t-else="">
+                                    <p style="color: green; font-size:13px;">Available <span t-esc="float(timeoff[1]['max_leaves']) - float(timeoff[1]['virtual_leaves_taken'])"></span></p>
+                                 </t>
+                              </div>
+                           </div>
+                        </div>
+                     </t>
+                  </t>
+               </div>
+            </div>
+            <div class="card-body" style="background: #ececec !important;">
+               <h3 class="mb-4">2) Select Leave Duration</h3>
+               <div class="d-flex flex-row flex-wrap align-items-end my-3">
+                  <div class="form-group mb-0 ml-2 d-flex align-items-center">
+                     <input type="checkbox"  style="border: none;
+                        border-bottom: 2px solid #b7b7b7;
+                        border-radius: unset;
+                        background: transparent;width: 18px;height: 18px;"  class="form-control" id="half_day" name="request_unit_half" placeholder="Half Day" />
+                     <label for="half_day" style="margin-bottom: 0px"><span class="ml-2" style="color: #2f3337;font-size: 14px;">Half Day</span></label>
+                  </div>
+               </div>
+               <div class="calendar"></div>
+               <div class="d-flex flex-row flex-wrap align-items-end my-4 justify-content-center">
+                  <div class="form-group mb-0 mr-3">
+                     <input type="text"   class="form-control" style="border: none;
+                        border-bottom: 2px solid #b7b7b7;
+                        border-radius: unset;
+                        background: transparent;" name="from_date" id="from_date" readonly="1" placeholder="From" required='true'/>
+                  </div>
+                  <div class="form-group mb-0 mr-3" id="to_date_day_div">
+                     <input type="text"  style="border: none;
+                        border-bottom: 2px solid #b7b7b7;
+                        border-radius: unset;
+                        background: transparent;"  class="form-control"  id="to_date" readonly="1" name="to_date" placeholder="To"/>
+                  </div>
+               </div>
+            </div>
+            <div class="card-body" style="background: #ececec !important;">
+               <h3 class="mb-3">3) Enter Leave Description</h3>
+               <textarea class="form-control" name="description" style="height: 150px;" id="description_part" placeholder="Your Text..." required='true'></textarea>
+            </div>
+        
+            <div id="attachment_div" class="card-body" style="background: #ececec !important;">
+               <h3 class="mb-3">4) Attach Certificate</h3>
+               <input type="file" style="height: 80px;padding: 22px 23px;" class="form-control" name="attachment" id="attachment"/>
+            </div>
+           
+            
+            
+            <div class="card-body d-flex justify-content-end" style="background: #ececec !important;">
+               <button type="submit" class="btn btn-primary" style="background: #7b6576;border-color: #7b6576;" id="submit_form_btn">Submit</button>
+            </div>
+         </form>
+      </t>
+   </template>
+
+   <template id="my_allocation_create" name="My Leave Create">
+      <t t-call="portal.portal_layout">
+         <t t-set="breadcrumbs_searchbar" t-value="True" />
+         <!-- <t t-call="portal.portal_searchbar">
+            <t t-set="title">New Leave</t>
+            </t> -->
+         <link href="https://fonts.googleapis.com/css?family=Anton|Comfortaa|Droid+Sans|Fjalla+One|Josefin+Sans|Josefin+Slab|Lora|Manuale|Maven+Pro|Noto+Serif|Press+Start+2P|Rajdhani|Slabo+13px|Ubuntu|VT323" rel="stylesheet"/>
+         <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"></link> -->
+         <style>
+         </style>
+         <head>
+            <link rel="stylesheet" href="/nl_leave_portal/static/src/css/pignose.calendar.css" />
+            <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'/>
+               <script src="/nl_leave_portal/static/src/js/pignose.calendar.full.js">
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+            </script>
+
+            <script>
+               $(function() {
+
+                  //Disable submit button on form submit
+                  $( "#submit_form" ).submit(function(e) {
+                     $('#submit_form_btn').prop('disabled', true);
+                  });
+
+               });
+            </script>
+            
+         </head>
+         <!-- <h2 class="mt16 mb32">New Leave Request</h2> -->
+         <form  action="/my/allocation/submit" method="POST" id="submit_form">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+            <div class="card-body mt-3" style="background: #ececec !important;">
+            
+                    
+                    <div t-if="errors" class="'alert p-2 mb-3 alert-danger alert-dismissible fade show" style="color: #a94442;
+                    background-color: #f2dede;
+                    border-color: #ebccd1;
+                    width:100%" >
+                        <strong t-esc="errors"></strong>
+                        <!-- <strong t-esc="errors[0]"></strong> -->
+                       
+                       
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">×</span>
+                        </button>
+                      </div>
+              
+               <h3>1) Pick your leave type</h3>
+               <div class="d-flex flex-row flex-wrap justify-content-center mt-3 mb-3" >
+                  <t t-if="holiday_type_ids">
+                     <t t-foreach="holiday_type_ids" t-as="timeoff">
+                        <t set="i" t-value="0">
+                           <div class="type ml-1">
+                              <input type="radio" required="1"  name="leave_type" class="text-center" t-att-value="timeoff.id"></input>
+                              <div class="leave_details">
+                                 <div class="leave-header">
+                                    <h6 class="text-center" t-esc="timeoff.name"></h6>
+                                 </div>
+                                 <div class="leave-data">
+                                    <div class="leave_numbers">
+                                       <span class="total_leave" t-esc="timeoff.virtual_leaves_taken"></span><span class="slash">/</span><span class="total_allocation" t-esc="timeoff.max_leaves"></span>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </t>
+                     </t>
+
+                  </t>
+                  
+                  
+               </div>
+            </div>
+            <div class="card-body" style="background: #ececec !important;">
+               <h3 class="mb-4">2) No of Days</h3>
+               <div class="my-3">
+                  <div class="form-group mb-0 ml-2 d-flex align-items-center">
+                     <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" style="background: #875a7b;border: none;color: white;" id="basic-addon1">Days</span>
+                        </div>
+                        <input type="number" name="number_of_days" class="form-control" required="1" aria-describedby="basic-addon1"/>
+                      </div>
+                  </div>
+               </div>
+               
+            </div>
+            <div class="card-body" style="background: #ececec !important;">
+               <h3 class="mb-3">3) Enter Leave Description</h3>
+               <textarea class="form-control" required="1" name="description" style="height: 150px;"></textarea>
+            </div>
+            
+            <div class="card-body d-flex justify-content-end" style="background: #ececec !important;">
+               <button type="submit" class="btn btn-primary" style="background: #7b6576;border-color: #7b6576;" id="submit_form_btn">Submit</button>
+            </div>
+         </form>
+      </t>
+   </template>
+
+ 
+
+
+</odoo>

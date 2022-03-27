@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+	<report
+        id="hr_payroll.action_report_payslip"
+        model="hr.payslip"
+        string="Payslip"
+        report_type="qweb-pdf"
+        name="hr_payroll.report_payslip"
+        
+        print_report_name="'Payslip - %s' % (object.employee_id.name)"
+    />
+
+    <record id="email_template_nl_payslip" model="mail.template" >
+        <field name="name">Payslip: Send by email</field>
+        <field name="model_id" ref="hr_payroll.model_hr_payslip"/>
+        <field name="subject">${object.company_id.name} Payslip (Ref ${object.employee_id.name or 'n/a'})</field>
+        <field name="body_html"> </field>
+        <field name="lang">${object.lang}</field>
+        <field name="auto_delete" eval="False"/>
+    </record>
+
+    <record id="mail_template_new_payslip_extended" model="mail.template">
+        <field name="name">Payroll: New Payslip</field>
+        <field name="model_id" ref="hr_payroll.model_hr_payslip"/>
+        <field name="subject">${object.employee_id.name}, a new payslip is available for you</field>
+        <field name="email_from">${user.email_formatted | safe}</field>
+        <field name="partner_to">${object.employee_id.user_id.partner_id.id}</field>
+        <field name="body_html" type="html">
+            <table border="0" cellpadding="0" cellspacing="0" style="width:100%; margin:0px auto;"><tbody>
+                <tr><td valign="top" style="text-align: left; font-size: 14px;">
+                    Dear ${object.employee_id.name},<br/><br/>
+                     
+                    Kindly find attached the link to your payslip for the month of ${object.date_to.strftime('%B')}.<br/><br/>
+                    Please find the PDF of your payslip here.<br/><br/>
+                    <a href="/my/payroll/view/payslip?id=${object.id}" style="color: white;
+                    border-radius: 30px;
+                    padding: 4px 30px;
+                    font-size: 12px;
+                    background: #875a7b;
+                    border: none;" class="btn btn-info">View Payslip</a>
+                    <br/><br/>
+                    Best Regards,<br/>
+                    HR Unit
+                    SCA
+                </td></tr>
+            </tbody></table>
+        </field>
+        <field name="lang">${object.lang}</field>
+        <field name="auto_delete" eval="False"/>
+      </record>
+    
+
+</odoo>

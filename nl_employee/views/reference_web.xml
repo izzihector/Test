@@ -1,0 +1,891 @@
+
+<odoo>
+	<data>
+		<template id="create_reference" name="Create Reference">
+			<t t-call="website.layout">
+				<style>
+					@import url(https://fonts.googleapis.com/css?family=Montserrat);
+					@font-face {
+						font-family: 'bahij';
+						   src: url(/nl_contract/static/description/naz-reg.ttf);
+							
+						
+						  }
+					.pashto{
+						font-family:'bahij' !important;
+					}
+
+					footer{
+						display:none !important;
+					}
+					header{
+						display:none !important;
+					}
+					.o_menu_brand{
+						display:none !important;
+					}
+					#oe_main_menu_navbar{
+						display:none !important;
+					}
+					/*basic reset*/
+					@import url(https://fonts.googleapis.com/css?family=Montserrat);
+					
+					/*basic reset*/
+					* {
+						margin: 0;
+						padding: 0;
+					}
+					
+					html {
+						height: 100%;
+						background: #eee;
+					}
+					
+					body {
+						font-family: montserrat, arial, verdana;
+						background: white !important;
+					}
+					
+					/*form styles*/
+					#msform {
+						text-align: center;
+						position: relative;
+						margin-top: 30px;
+					}
+					
+					#msform fieldset {
+						background: white;
+						border: 1px solid #cccccc;
+						border-radius: 0px;
+						/* box-shadow: 0 0 39px 13px rgb(0 0 0 / 5%); */
+						padding: 20px 30px;
+						box-sizing: border-box;
+						width: 80%;
+						margin: 0 10%;
+						position: relative;
+					}
+					
+					/*Hide all except first fieldset*/
+					#msform fieldset:not(:first-of-type) {
+						display: none;
+					}
+					
+					/*inputs*/
+					#msform input, #msform textarea {
+						padding: 19px;
+						border: 1px solid #ccc;
+						border-radius: 0px;
+						margin-bottom: 10px;
+						width: 64%;
+						box-sizing: border-box;
+						font-family: montserrat;
+						color: #2C3E50;
+						font-size: 13px;
+					}
+					
+					#msform input:focus, #msform textarea:focus {
+						-moz-box-shadow: none !important;
+						-webkit-box-shadow: none !important;
+						box-shadow: none !important;
+						border: 1px solid #2098ce;
+						outline-width: 0;
+						transition: All 0.5s ease-in;
+						-webkit-transition: All 0.5s ease-in;
+						-moz-transition: All 0.5s ease-in;
+						-o-transition: All 0.5s ease-in;
+					}
+					
+					/*buttons*/
+					#msform .action-button {
+						width: 100px;
+						background: #678bba;
+						font-weight: bold;
+						color: white;
+						border: 0 none;
+						border-radius: 25px;
+						cursor: pointer;
+						padding: 10px 5px;
+						margin: 18px 10px;
+					}
+					
+					#msform .action-button:hover, #msform .action-button:focus {
+						box-shadow: 0 0 0 2px white, 0 0 0 3px #678bba;
+					}
+					
+					#msform .action-button-previous {
+						width: 100px;
+						background: #aCbEd0;
+						font-weight: bold;
+						color: white;
+						border: 0 none;
+						border-radius: 25px;
+						cursor: pointer;
+						padding: 10px 5px;
+						margin: 10px 5px;
+						
+					}
+					
+					#msform .action-button-previous:hover, #msform .action-button-previous:focus {
+						box-shadow: 0 0 0 2px white, 0 0 0 3px #aCbEd0;
+					}
+					
+					/*headings*/
+					.fs-title {
+						font-size: 18px;
+						text-transform: uppercase;
+						color: #2C3E50;
+						margin-bottom: 10px;
+						letter-spacing: 2px;
+						font-weight: bold;
+					}
+					
+					.fs-subtitle {
+						font-weight: normal;
+						font-size: 16px;
+						color: #666;
+						margin-bottom: 20px;
+					}
+					
+					/*progressbar*/
+					#progressbar {
+						margin-bottom: 30px;
+						overflow: hidden;
+						/*CSS counters to number the steps*/
+						counter-reset: step;
+					}
+					
+					#progressbar li {
+						list-style-type: none;
+						color: #666;
+						text-transform: uppercase;
+						font-size: 9px;
+						width: 33.33%;
+						float: left;
+						position: relative;
+						letter-spacing: 1px;
+					}
+					
+					#progressbar li:before {
+						content: counter(step);
+						counter-increment: step;
+						width: 24px;
+						height: 24px;
+						line-height: 23px;
+						display: block;
+						font-size: 12px;
+						color: #333;
+						background: #d4d4d4;
+						border-radius: 25px;
+						margin: 0 auto 10px auto;
+					}
+					
+					/*progressbar connectors*/
+					#progressbar li:after {
+						content: '';
+						width: 100%;
+						height: 2px;
+						background: #d4d4d4;
+						position: absolute;
+						left: -50%;
+						top: 9px;
+						z-index: -1;
+					}
+					.image-container{
+						margin-top:200px;
+					}
+					
+					#progressbar li:first-child:after {
+						/*connector not needed before the first step*/
+						content: none;
+					}
+					.td-data{
+						text-align:initial;
+						padding: 14px 12px;
+					}
+					
+					/*marking active/completed steps green*/
+					/*The number of the step and the connector before it = green*/
+					#progressbar li.active:before, #progressbar li.active:after {
+						background: #678bba;
+						color: white;
+					}
+					.remove-me {
+						margin-left:20px;
+					}
+					.add-more {
+						margin-left: 20px;
+						padding: 1px 5px;
+					}
+
+					.parent-input {
+						position: relative;
+						cursor: pointer;
+					}
+
+					.parent-input span {
+						z-index: 1;
+						font-weight: 100;
+						padding: 8px 15px;
+						border-radius: 50px;
+						transition: all .3s ease;
+						background-color: #eee;
+					}
+
+					.parent-input:hover span {
+						background-color: #ccc;
+					}
+
+					.parent-input input {
+						width: 20px !important;
+						visibility: hidden;
+					}
+
+					input:checked + span {
+						color: white;
+						font-weight: bold !important;
+						background-color: #4f9eff !important;
+					}
+
+					<!-- .input-radio::checked::before {
+						content: " ";
+						position: absolute;
+						left: 0;
+						top: 0;
+						width: 100%;
+						height: 100%;
+						background-color: red;
+						z-index: 0;
+					} -->
+					
+					
+				</style>
+				<div class="conatiner">
+					<div class="row text-center">
+						<div class="col-md-12 col-lg-12">
+							<div class="text-center">
+								<img t-att-src="image_data_uri(o.logo)" alt="Logo" style="height:150px;" />
+								<h4 class="pashto">کمیته سویدن برای افغانستان</h4>
+								<h5 class="pashto">ریاست منابع بشری</h5>
+								<br></br>
+								<h3 class="pashto">فورم تاییدی استخدام کارمندان</h3>
+							</div>
+							<form id="msform"  method="POST" role="form" action="/reference/general/submit">
+								<input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+								<!-- progressbar -->
+								<ul id="progressbar">
+									<li class="active">Start</li>
+									<li>Reference Check</li>
+									<li>Rating</li>
+								</ul>
+								<!-- fieldsets -->
+								<fieldset>
+									<h2 class="fs-title pashto" style="font-size:22px;">شهرت کارمند</h2>
+									<!-- <h3 class="fs-subtitle">Employees are rated on a scale of 1-5, where 1 indicates the lowest and 5 indicate the highest performance level</h3> -->
+									<table class="table table-bordered">
+										<thead>
+											<th  class="pashto">
+												تاریخ
+											</th>
+											<th  class="pashto">
+												وظیفه درخواست شده
+											</th>
+											
+                                            <th class="pashto">
+												درخواست کننده
+											</th>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<span  class="pashto" t-esc="today.strftime('%Y-%m-%d')"> </span>
+												</td>
+												<td>
+													<span  class="pashto" t-esc="employee_id.job_id.job_poisition_in_dari"></span>
+												</td>
+												
+                                                <td>
+													<span  class="pashto" t-esc="employee_id.name_in_dari"></span>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+									<br></br>
+									<table class="table table-bordered">
+										<tbody>
+											<h6 class="pashto" style= "text-align:right;">
+												  محترم آقای <span  class="pashto" t-esc="referee.name"></span>   
+												
+											</h6>
+											<p  class="pashto" style="font-size:18px; text-align:right;">کمیته سویدن برای افغانستان برای تقرر کارمندان در بخش های مختلف بعد از اعلان کاریابی و اخذ امتحان ورودی یک تعداد را به عنوان کاندید برتر انتخاب نموده است که محترم 
+												
+												<span class="pashto" t-esc="employee_id.name_in_dari"></span> نیز شامل کاندیدان برتربرای پُست 
+												
+												<span class="pashto" t-esc="employee_id.job_id.job_poisition_in_dari"></span>   
+												
+												<span class="pashto" t-esc="employee_id.province_id.name_in_dari"></span>  شناخته شده است.
+												نامبرده ادعا دارد که با شما شناخت دارد و با شخصیت و خصوصیات ایشان آشنایی دارید.
+												اینک از جناب محترم شما تقاضامندیم تا، در مورد اهلیت و شخصیت ایشان با این ادره معلومات داده ممنون سازید
+												
+												
+												
+												<h6 class="pashto">بااحترام </h6>
+												<!-- <h6  class="pashto">درخشان شادان</h6> -->
+												<h6 class="pashto"> منابع بشری</h6>
+												<h6 class="pashto">کمیته سویدن برای افغانستان</h6>
+											</p>
+										</tbody>
+									</table>
+									<input type="button" name="next" class="next action-button" value="Start"/>
+								</fieldset>
+								<fieldset>
+									<h2 class="fs-title">Reference Check</h2>
+									<p style="font-size:18px; text-align: left;"> 1. How long have you known the candidate professionally and in what capacity?</p>
+									<p  class="pashto" style="font-size:18px;text-align: right; float: right;direction: rtl; font-size: 18px;">  چه مدت است که داوطلب را از نظر حرفه ای و با چه ظرفیتی می شناسید؟</p>
+									<input autocomplete="off" style = "width: 100%;" class="input" id="goal1" name="candidate_capacity" type="text" placeholder="Write Here" data-items="8"/>
+									<hr></hr>
+									<p style="font-size:18px; text-align: left;"> 2. When did the candidate work for your organization and what were his key responsibilities?</p>
+									<p class="pashto" style="font-size:18px;text-align: right;float: right;direction: rtl; font-size: 18px;">   تا چه زمانی کارمند برای دفتر شما کار می کرد و مسئولیت های اصلی وی چه بود؟</p>
+									<input autocomplete="off" style = "width: 100%;" class="input" id="goal1" name="key_responsibilities" type="text" placeholder="Write Here" data-items="8"/>
+									<hr></hr>
+									<p style="font-size:18px; text-align: left;"> 3. Overall, how would you rate the candidate’s performance in those key areas?</p>
+									<p class="pashto" style="font-size:18px;text-align: right;float: right;direction: rtl; font-size: 18px;"> به طور کلی ، عملکرد داوطلب را در زمینه های :کاری چگونه ارزیابی می کنید؟</p>
+									<input autocomplete="off" style = "width: 100%;" class="input" id="goal1" name="candidate_performance" type="text" placeholder="Write Here" data-items="8"/>
+									<hr></hr>
+									<p style="font-size:18px; text-align: left;"> 4. Please identify any specific areas that proved challenging to the candidate and/or where he could have improved upon in this role? </p>
+									<p class="pashto" style="font-size:18px;text-align: right;float: right;direction: rtl; font-size: 18px;"> لطفاً موارد را ذکر کنید که برای داوطلب فوق الذکر چالش برانگیز بوده باشد و یا نکاتی که می تواند در آن رشد نماید؟</p>
+									<input autocomplete="off" style = "width: 100%;" class="input" id="goal1" name="improvement_areas" type="text" placeholder="Write Here" data-items="8"/>
+									<hr></hr>
+									<p style="font-size:18px; text-align: left;"> 5. Did the candidate leave your organization on good terms? </p>
+									<p class="pashto" style="font-size:18px;text-align: right;float: right;direction: rtl; font-size: 18px;"> آیا کارمند مذکور با شرایط خوبی از سازمان شما خارج شد؟</p>
+									<div style="display: flex;justify-content: center;width: 100%;align-items: center;">
+										<label class="parent-input" style="position: relative;
+										display: flex;
+										flex-direction: row;
+										margin-left: 50px;
+										align-items: center;
+										padding: 6px 15px;
+										border-radius: 79px;
+										">
+										<input type="radio" name="good_terms" class="input-radio" value="true"/>
+										<span>Yes</span>
+									</label>
+									<label class="parent-input" style="
+									display: flex;
+									flex-direction: row;
+									margin-left: 50px;
+									align-items: center;
+									padding: 6px 15px;
+									border-radius: 79px;
+									">
+									<input type="radio" name="good_terms" class="input-radio" value="false"/>
+									<span>No</span>
+								</label>
+                                    </div>
+									<hr></hr>
+									<p style="font-size:18px; text-align: left;"> 6. Would you re-hire the candidate for a similar position in your organization? </p>
+									<p class="pashto" style="font-size:18px;text-align: right;float: right;direction: rtl; font-size: 18px;"> آیا مجدداً کارمند را میخواهید برای یک بست مشابه در سازمان خود استخدام می کنید؟</p>
+                                    <div style="display: flex;justify-content: center;width: 100%;align-items: center;">
+                                            <label class="parent-input" style="position: relative;
+                                            display: flex;
+                                            flex-direction: row;
+                                            margin-left: 50px;
+                                            align-items: center;
+                                            padding: 6px 15px;
+                                            border-radius: 79px;
+                                            ">
+                                            <input type="radio" name="candidate_rehiring" class="input-radio" value="true"/>
+                                            <span>Yes</span>
+                                        </label>
+                                        <label class="parent-input" style="
+                                        display: flex;
+                                        flex-direction: row;
+                                        margin-left: 50px;
+                                        align-items: center;
+                                        padding: 6px 15px;
+                                        border-radius: 79px;
+                                        ">
+                                        <input type="radio" name="candidate_rehiring" class="input-radio" value="false"/>
+                                        <span>No</span>
+                                    </label>
+                                         </div>
+                                        <hr></hr>
+                                       
+									
+<input type="button" name="previous" class="previous action-button-previous" value="Previous"/>
+<input type="button" name="next" class="next action-button" value="Next"/>
+</fieldset>
+<fieldset>
+	<h2 class="fs-title">Rating </h2>
+    <br></br>
+	<p style="font-size:18px; text-align: left;"> 7. Teamwork and ability to work with and build relationships with others.</p>
+									<p class="pashto" style="font-size:18px;text-align: right;float: right;direction: rtl; font-size: 18px;"> کار و توانایی کار با دیگران و ایجاد روابط با آنها.</p>
+									<br></br>
+									<hr></hr>
+									<div style="display: flex;justify-content: center;width: 100%;align-items: center;">
+										<label class="parent-input" style="position: relative;
+										display: flex;
+										flex-direction: row;
+										margin-left: 50px;
+										align-items: center;
+										padding: 6px 15px;
+										border-radius: 79px;
+										">
+										<input type="radio" name="team_work_rating" class="input-radio" value="excellent"/>
+										<span>Excellent</span>
+									</label>
+									<label class="parent-input" style="
+									display: flex;
+									flex-direction: row;
+									margin-left: 50px;
+									align-items: center;
+									padding: 6px 15px;
+									border-radius: 79px;
+									">
+									<input type="radio" name="team_work_rating" class="input-radio" value="good"/>
+									<span>Good</span>
+								</label>
+								<label class="parent-input" style="
+								display: flex;
+								flex-direction: row;
+								margin-left: 50px;
+								align-items: center;
+								padding: 6px 15px;
+								border-radius: 79px;
+								">
+								<input type="radio" name="team_work_rating" class="input-radio" value="fair"/>
+								<span>Fair</span>
+							</label>
+							<label class="parent-input" style="
+							display: flex;
+							flex-direction: row;
+							margin-left: 50px;
+							align-items: center;
+							padding: 6px 15px;
+							border-radius: 79px;
+							">
+							<input type="radio" name="team_work_rating" class="input-radio" value="poor"/>
+							<span>Poor</span>
+						</label>
+					</div>
+					<br></br>
+					<hr></hr>
+					<p style="font-size:18px; text-align: left;"> 8. Punctuality, timeliness of work, and ability to meet deadlines.</p>
+					<p class="pashto" style="font-size:18px;text-align: right;float: right;direction: rtl; font-size: 18px;"> وقت شناسي ، به موقع بودن كار و توانايي رعايت ضرب الاجل ها.</p>
+					<br></br>
+					<div style="display: flex;justify-content: center;width: 100%;align-items: center;">
+						<label class="parent-input" style="position: relative;
+						display: flex;
+						flex-direction: row;
+						margin-left: 50px;
+						align-items: center;
+						padding: 6px 15px;
+						border-radius: 79px;
+						">
+						<input type="radio" name="candidate_punctuality" class="input-radio" value="excellent"/>
+						<span>Excellent</span>
+					</label>
+					<label class="parent-input" style="
+					display: flex;
+					flex-direction: row;
+					margin-left: 50px;
+					align-items: center;
+					padding: 6px 15px;
+					border-radius: 79px;
+					">
+					<input type="radio" name="candidate_punctuality" class="input-radio" value="good"/>
+					<span>Good</span>
+				</label>
+				<label class="parent-input" style="
+				display: flex;
+				flex-direction: row;
+				margin-left: 50px;
+				align-items: center;
+				padding: 6px 15px;
+				border-radius: 79px;
+				">
+				<input type="radio" name="candidate_punctuality" class="input-radio" value="fair"/>
+				<span>Fair</span>
+			</label>
+			<label class="parent-input" style="
+			display: flex;
+			flex-direction: row;
+			margin-left: 50px;
+			align-items: center;
+			padding: 6px 15px;
+			border-radius: 79px;
+			">
+			<input type="radio" name="candidate_punctuality" class="input-radio" value="poor"/>
+			<span>Poor</span>
+		</label>
+	</div>
+	<br></br>
+	<hr></hr>
+	<p style="font-size:18px; text-align: left;"> 9. Quality of work.</p>
+	<p class="pashto" style="font-size:18px;text-align: right;float: right;direction: rtl; font-size: 18px;"> کیفیت کار.</p>
+	<br></br>
+	<div style="display: flex;justify-content: center;width: 100%;align-items: center;">
+		<label class="parent-input" style="position: relative;
+		display: flex;
+		flex-direction: row;
+		margin-left: 50px;
+		align-items: center;
+		padding: 6px 15px;
+		border-radius: 79px;
+		">
+		<input type="radio" name="work_quality" class="input-radio" value="excellent"/>
+		<span>Excellent</span>
+	</label>
+	<label class="parent-input" style="
+	display: flex;
+	flex-direction: row;
+	margin-left: 50px;
+	align-items: center;
+	padding: 6px 15px;
+	border-radius: 79px;
+	">
+	<input type="radio" name="work_quality" class="input-radio" value="good"/>
+	<span>Good</span>
+</label>
+<label class="parent-input" style="
+display: flex;
+flex-direction: row;
+margin-left: 50px;
+align-items: center;
+padding: 6px 15px;
+border-radius: 79px;
+">
+<input type="radio" name="work_quality" class="input-radio" value="fair"/>
+<span>Fair</span>
+</label>
+<label class="parent-input" style="
+display: flex;
+flex-direction: row;
+margin-left: 50px;
+align-items: center;
+padding: 6px 15px;
+border-radius: 79px;
+">
+<input type="radio" name="work_quality" class="input-radio" value="poor"/>
+<span>Poor</span>
+</label>
+</div>
+<br></br>
+<hr></hr>
+<p style="font-size:18px; text-align: left;"> 10. Multi-tasking and ability to effectively handle several assignments at once.</p>
+<p class="pashto" style="font-size:18px;text-align: right;float: right;direction: rtl; font-size: 18px;">  توانایی مدیریت موثر چندین کار همزمان.</p>
+<br></br>
+<div style="display: flex;justify-content: center;width: 100%;align-items: center;">
+	<label class="parent-input" style="position: relative;
+	display: flex;
+	flex-direction: row;
+	margin-left: 50px;
+	align-items: center;
+	padding: 6px 15px;
+	border-radius: 79px;
+	">
+	<input type="radio" name="multi_tasking" class="input-radio" value="excellent"/>
+	<span>Excellent</span>
+</label>
+<label class="parent-input" style="
+display: flex;
+flex-direction: row;
+margin-left: 50px;
+align-items: center;
+padding: 6px 15px;
+border-radius: 79px;
+">
+<input type="radio" name="multi_tasking" class="input-radio" value="good"/>
+<span>Good</span>
+</label>
+<label class="parent-input" style="
+display: flex;
+flex-direction: row;
+margin-left: 50px;
+align-items: center;
+padding: 6px 15px;
+border-radius: 79px;
+">
+<input type="radio" name="multi_tasking" class="input-radio" value="fair"/>
+<span>Fair</span>
+</label>
+<label class="parent-input" style="
+display: flex;
+flex-direction: row;
+margin-left: 50px;
+align-items: center;
+padding: 6px 15px;
+border-radius: 79px;
+">
+<input type="radio" name="multi_tasking" class="input-radio" value="poor"/>
+<span>Poor</span>
+</label>
+</div>
+<hr></hr>
+<br></br>
+<p style="font-size:18px; text-align: left;"> 11. Self-sufficiency in seeing things through on project tasks or assignments.</p>
+<p class="pashto" style="font-size:18px;text-align: right;float: right;direction: rtl; font-size: 18px;">  خودکفایی در روند کارها و کنترول پروژه.</p>
+<br></br>
+<div style="display: flex;justify-content: center;width: 100%;align-items: center;">
+	<label class="parent-input" style="position: relative;
+	display: flex;
+	flex-direction: row;
+	margin-left: 50px;
+	align-items: center;
+	padding: 6px 15px;
+	border-radius: 79px;
+	">
+	<input type="radio" name="employee_self_sufficincies" class="input-radio" value="excellent"/>
+	<span>Excellent</span>
+</label>
+<label class="parent-input" style="
+display: flex;
+flex-direction: row;
+margin-left: 50px;
+align-items: center;
+padding: 6px 15px;
+border-radius: 79px;
+">
+<input type="radio" name="employee_self_sufficincies" class="input-radio" value="good"/>
+<span>Good</span>
+</label>
+<label class="parent-input" style="
+display: flex;
+flex-direction: row;
+margin-left: 50px;
+align-items: center;
+padding: 6px 15px;
+border-radius: 79px;
+">
+<input type="radio" name="employee_self_sufficincies" class="input-radio" value="fair"/>
+<span>Fair</span>
+</label>
+<label class="parent-input" style="
+display: flex;
+flex-direction: row;
+margin-left: 50px;
+align-items: center;
+padding: 6px 15px;
+border-radius: 79px;
+">
+<input type="radio" name="employee_self_sufficincies" class="input-radio" value="poor"/>
+<span>Poor</span>
+</label>
+</div>
+<hr></hr>
+<br></br>
+<p style="font-size:18px; text-align: left;"> 12. How would you rate capabilities in Microsoft Excel, Microsoft Word, and database information entry and retrieval.</p>
+<p class="pashto" style="font-size:18px;text-align: right;float: right;direction: rtl; font-size: 18px;">  آشنایی با برنامه های کپیوتری و دسترسی به معلومات.</p>
+<br></br>
+<hr></hr>
+<div style="display: flex;justify-content: center;width: 100%;align-items: center;">
+	<label class="parent-input" style="position: relative;
+	display: flex;
+	flex-direction: row;
+	margin-left: 50px;
+	align-items: center;
+	padding: 6px 15px;
+	border-radius: 79px;
+	">
+	<input type="radio" name="other_skills" class="input-radio" value="excellent"/>
+	<span>Excellent</span>
+</label>
+<label class="parent-input" style="
+display: flex;
+flex-direction: row;
+margin-left: 50px;
+align-items: center;
+padding: 6px 15px;
+border-radius: 79px;
+">
+<input type="radio" name="other_skills" class="input-radio" value="good"/>
+<span>Good</span>
+</label>
+<label class="parent-input" style="
+display: flex;
+flex-direction: row;
+margin-left: 50px;
+align-items: center;
+padding: 6px 15px;
+border-radius: 79px;
+">
+<input type="radio" name="other_skills" class="input-radio" value="fair"/>
+<span>Fair</span>
+</label>
+<label class="parent-input" style="
+display: flex;
+flex-direction: row;
+margin-left: 50px;
+align-items: center;
+padding: 6px 15px;
+border-radius: 79px;
+">
+<input type="radio" name="other_skills" class="input-radio" value="poor"/>
+<span>Poor</span>
+</label>
+</div>
+<br></br>
+<p style="font-size:18px; text-align: left;"> If you were in a position to hire Miss. Maryam Farzami would you have any reservations about placing Name in this role?</p>
+<p class="pashto" style="font-size:18px;text-align: right;float: right;direction: rtl; font-size: 18px;">  آشنایی با برنامه های کپیوتری و دسترسی به معلومات.</p>
+<br></br>
+<div style="display: flex;justify-content: center;width: 100%;">
+	<select name= "further_reservations" style = "padding: 5px 100px;" >
+		<option value="no_reservation">No Reservation</option>
+		<option value="some_reservation">Some Reservation</option>
+		<option value="not_approperiate">Not Approperiate</option>
+	</select>
+</div>
+<p style = "font-size:18px; float: left;">Comments / Explaination:</p>
+<input autocomplete="off" style = "width: 100%;" class="input" id="goal1" name="comments_explanation" type="text" placeholder="Write Here" data-items="8"/>
+	<br></br>
+	<input type="hidden" name="token" t-att-value="token" id="token_id"
+	class="form-control" invisible="1"/>
+	<input type="button" name="previous" class="previous action-button-previous" value="Previous"/>
+	<input type="submit" name="submit" class="submit action-button" value="Submit"/>
+</fieldset>
+</form>
+</div>
+
+</div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+	var current_fs, next_fs, previous_fs; //fieldsets
+	var left, opacity, scale; //fieldset properties which we will animate
+	var animating; //flag to prevent quick multi-click glitches
+	
+	$(".next").click(function(){
+		if(animating) return false;
+		animating = true;
+		
+		current_fs = $(this).parent();
+		next_fs = $(this).parent().next();
+		
+		//activate next step on progressbar using the index of next_fs
+		$("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+		
+		//show the next fieldset
+		next_fs.show(); 
+		//hide the current fieldset with style
+		current_fs.animate({opacity: 0}, {
+			step: function(now, mx) {
+				//as the opacity of current_fs reduces to 0 - stored in "now"
+				//1. scale current_fs down to 80%
+				scale = 1 - (1 - now) * 0.2;
+				//2. bring next_fs from the right(50%)
+				left = (now * 50)+"%";
+				//3. increase opacity of next_fs to 1 as it moves in
+				opacity = 1 - now;
+				current_fs.css({
+					'transform': 'scale('+scale+')',
+					'position': 'absolute'
+				});
+				next_fs.css({'left': left, 'opacity': opacity});
+			}, 
+			duration: 800, 
+			complete: function(){
+				current_fs.hide();
+				animating = false;
+			}, 
+			//this comes from the custom easing plugin
+			easing: 'easeInOutBack'
+		});
+	});
+	
+	$(".previous").click(function(){
+		if(animating) return false;
+		animating = true;
+		
+		current_fs = $(this).parent();
+		previous_fs = $(this).parent().prev();
+		
+		//de-activate current step on progressbar
+		$("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+		
+		//show the previous fieldset
+		previous_fs.show(); 
+		//hide the current fieldset with style
+		current_fs.animate({opacity: 0}, {
+			step: function(now, mx) {
+				//as the opacity of current_fs reduces to 0 - stored in "now"
+				//1. scale previous_fs from 80% to 100%
+				scale = 0.8 + (1 - now) * 0.2;
+				//2. take current_fs to the right(50%) - from 0%
+				left = ((1-now) * 50)+"%";
+				//3. increase opacity of previous_fs to 1 as it moves in
+				opacity = 1 - now;
+				current_fs.css({'left': left});
+				previous_fs.css({'transform': 'scale('+scale+')', 'opacity': opacity});
+			}, 
+			duration: 800, 
+			complete: function(){
+				current_fs.hide();
+				animating = false;
+			}, 
+			//this comes from the custom easing plugin
+			easing: 'easeInOutBack'
+		});
+	});
+	
+	
+	
+	
+	
+	
+	
+	
+</script>
+</t>
+</template>
+
+<template id="thankyou">
+	<t t-call="website.layout">
+		<style>
+			@import url(https://fonts.googleapis.com/css?family=Montserrat);
+		footer{
+			display:none !important;
+			}
+			header{
+			display:none !important;
+			}
+			.o_menu_brand{
+			display:none !important;
+			}
+			#oe_main_menu_navbar{
+			display:none !important;
+			}
+		/*basic reset*/
+		@import url(https://fonts.googleapis.com/css?family=Montserrat);
+		</style>
+		<link rel="stylesheet" href="https://2-22-4-dot-lead-pages.appspot.com/static/lp918/min/default_thank_you.css"/>
+		<div class="conatiner">
+			<div class="row text-center">
+				
+				<div class="col-md-12 col-lg-12">
+					<div class="text-center">
+						<img t-att-src="image_data_uri(company_id.logo)" alt="Logo" style="height:150px;" />
+						<h4 class="">Swedish Committee for Afghanistan</h4>
+						<br></br>
+						<h3 class=""></h3>
+					</div>
+					
+					<form id="msform">
+						
+						<header class="site-header" id="header">
+							<h1 class="site-header__title" data-lead-id="site-header-title">THANK YOU!</h1>
+						</header>
+
+						<div class="main-content">
+							<i class="fa fa-check main-content__checkmark" id="checkmark"></i>
+							<p class="main-content__body" data-lead-id="main-content-body">Thanks a bunch for filling that out. It means a lot to us, just like you do! We really appreciate you giving us a moment of your time today.</p>
+						</div>
+						
+					</form>
+				</div>
+				
+			</div>
+
+		</div>
+	</t>
+</template>
+</data>
+</odoo>

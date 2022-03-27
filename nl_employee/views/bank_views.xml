@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<record id="bank_bank_action" model="ir.actions.act_window">
+    <field name="name">Bank Action</field>
+    <field name="res_model">bank.bank</field>
+    <field name="view_mode">tree,form</field>
+</record>
+
+<menuitem
+    id="bank_bank_menu"
+    name="Bank"
+    action="bank_bank_action"
+    parent="hr.menu_human_resources_configuration"
+    groups="hr.group_hr_manager"
+    sequence="100"/>
+
+</odoo>

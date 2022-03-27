@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+        <report 
+            id="action_print_applicant_reference_check"
+            model="employee.references"
+            string="Print Reference Check"
+            report_type="qweb-pdf"
+            name="nl_recruitment.applicant_reference_check"
+            file="nl_recruitment.applicant_reference_check"
+        />
+
+        <record id="paperformat_applicant_reference_check" model="report.paperformat">
+            <field name="name">Employee Reference Check</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">15</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">10</field>
+            <field name="margin_right">10</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">20</field>
+            <field name="dpi">150</field>
+        </record>
+        <record id="action_print_applicant_reference_check" model="ir.actions.report">
+            <field name="paperformat_id" ref="nl_recruitment.paperformat_applicant_reference_check"/>
+        </record>
+
+    <template id="applicant_reference_check_template">
+		<t t-call="web.basic_layout">
+			<style>
+				@font-face {
+                    font-family: 'georgia';
+					font-family: 'arial';
+                       src: url(/nl_contract/static/src/fonts/georgia.ttf);
+					   src: url(/nl_contract/static/src/fonts/arial-ce.ttf);
+                      }
+					  .emp_info {
+						padding-left:25px;
+					 }
+                
+					 p{
+						 font-size:26px;
+                 font-family: 'georgia' !important;
+					 }
+					 td{
+						 font-size:26px;
+                 font-family: 'georgia' !important;
+					 }
+					 th{
+						 font-size:26px;
+                 font-family: 'georgia' !important;
+					 }
+					 .contract-details{
+						 margin-left:25px;
+						 margin-right:25px;
+					 }
+					 .identifier{
+						font-size:26px;
+                        font-family: 'georgia' !important;
+						font-weigth:bolder;
+
+					}
+					.identifier-data{
+						font-size:26px;
+                         font-family: 'georgia' !important;
+						font-weigth:bold;
+						
+
+					}
+					.employee-info{
+						margin-left:15px;
+					}	
+					li{
+                 font-family: 'georgia' !important;
+						font-size:26px;
+					}
+					.b{
+						font-size:26px;
+						font-family: 'georgia' !important;
+					}
+					.border{
+						border:1.4px solid black !important;
+						padding:5px;
+					}
+			</style>
+            <div style="width:100%;">	
+                <img t-att-src="'/nl_contract/static/description/sca.png'" alt="Logo"/>
+                <p style="float:right; width:200px">Annex Recr 9</p>
+                <br/>
+                <h1 style="margin-top:10px" class="text-center"><b>Reference Check</b></h1>
+                <h3 style="color:white; background-color:black" class="text-center"><b>Applicant Information</b></h3>
+                <br/>
+
+                <div>
+                    <div>
+                        <div style="float:left; font-size: 25px">Applicant Name:</div>
+                        <div style="width:800px; border-bottom:1px solid black; float:left; margin-left:178px; font-size: 25px"><t t-if="o._context['model'] == 'hr.applicant'"><span t-esc="o.applicant_id.name"/></t><t t-if="o._context['model'] == 'hr.employee'"><span t-esc="o.empl_id.name"/></t><span style="margin-left:300px;"><b>Date:</b><span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/></span></div>
+                        <span style="margin-left: 400px; font-size: 20px">First</span><span style="margin-left: 100px; font-size: 20px">Last</span><br/><br/><br/> 
+                        <div style="float:left; font-size: 25px; width: 230px">Position Applied for:</div>
+                        <div style="width:800px; border-bottom:1px solid black; float:left; margin-left:135px; font-size: 25px"><span t-esc="o.applicant_id.job_announcement_id.job_id.name"/></div><br/><br/><br/>  
+                        <div style="float:left; font-size: 25px">Recruiter Name:</div>
+                        <div style="width:800px; border-bottom:1px solid black; float:left; margin-left:180px;"><span style="font-size:25px">Swedish Committee for Afghanistan</span></div><br/><br/><br/>                
+                    </div>
+                </div>
+                <br/>
+                <h3 style="color:white; background-color:black" class="text-center"><b>Contact Information</b></h3>
+                <br/>
+                <div>
+                    <div style="margin-top:30px">
+                        <div style="float:left; font-size: 25px">Name of Referee:</div>
+                        <div style="float:left; border-bottom:1px solid black; width:1100px; font-size: 25px;margin-left: 60px"><span t-esc="o.name"/><span /></div>
+                    </div><br/><br/>
+                    
+                    <div>
+                        <div style="float:left; font-size: 25px">Title:</div>
+                        <div style="float:left; border-bottom:1px solid black; width:720px; font-size: 25px; margin-left: 192px"><span t-esc="o.job_title"/><span /></div>
+                        <div style="float:left; font-size: 25px"> Phone: </div>
+                        <div style="float:left; border-bottom:1px solid black; width:300px;font-size: 25px;"><span style="margin-left:20px" t-esc="o.contact_number"/></div>
+                    </div><br/><br/>
+
+                    <div style="margin-top:30px">
+                        <div style="float:left; font-size: 25px">Company:</div>
+                        <div style="float:left; border-bottom:1px solid black; width:1100px; font-size: 25px; margin-left: 140px"><span t-esc="o.organization"/></div>
+                    </div><br/><br/>
+                    <div style="margin-top:30px">
+                        <div style="float:left; font-size: 25px">Address:</div>
+                        <div style="float:left; border-bottom:1px solid black; width:1100px; font-size: 25px; margin-left: 152px"><span /></div>
+                        <span style="margin-left: 200px; font-size: 20px">Street Address</span><span style="margin-left: 700px; font-size: 20px">Suite #</span><br/><br/>
+                        <div style="float:left; border-bottom:1px solid black; width:1100px; font-size: 25px; margin-top: 20px; margin-left: 250px"><span /></div>
+                        <span style="margin-left: 300px; font-size: 20px">City</span><span style="margin-left: 400px; font-size: 20px">State</span><span style="margin-left: 300px; font-size: 20px">ZIP/postcode</span>
+                    </div><br/><br/>
+                </div>
+                <h3 style="color:white; background-color:black" class="text-center"><b>Comments</b></h3>
+                <br/>
+                <div>
+                    <p>Was the applicant an employee of your organization? If, so</p>
+                    <div style="float:left; font-size: 25px">which period? <b>From:</b></div>
+                    <div style="float:left; border-bottom:1px solid black; width:150px; font-size: 25px; margin-top: 20px; margin-left: 10px"><span /></div>
+                    <div style="float:left; font-size: 25px"><b>To:</b></div>
+                    <div style="float:left; border-bottom:1px solid black; width:150px; font-size: 25px; margin-top: 20px; margin-left: 10px"><span /></div>
+                </div><br/><br/>
+                <div style="border-bottom: 1px solid black;"></div><br/>
+
+                <div>
+                    <p>What was your relationship with the applicant?</p>
+                    <div style="border-bottom: 1px solid black; margin-top:-20px"></div><br/><br/>
+                </div>
+                <div>
+                    <p>What were the applicant's job title and responsibilities?</p>
+                    <div style="height: 100px; border: 1px solid black"></div>
+                </div>
+                <div>
+                    <p>How would you describe the applicant's institutional and personal leadership skills? What would you characterize as the applicant's strengths and weakness?</p>
+                    <div style="height: 100px; border: 1px solid black"></div>
+                </div>
+                <div>
+                    <p>What are the candidate's key accomplishments or impact on your organization?</p>
+                    <div style="height: 100px; border: 1px solid black"></div>
+                </div>
+                <div>
+                    <p>Why did he/she leave the position? Would you consider hiring the applicant again? If not, why?</p>
+                    <div style="height: 100px; border: 1px solid black"></div>
+                </div>
+                <br/>
+                <br/>
+                <br/>
+                <div>
+                    <h1><b>Reference Check</b></h1>
+                    <div style="border-bottom: 1px solid black;"></div><br/>
+                    <p>How would you describe his/her:</p>
+
+                    <table style="width: 100%;" cellpadding="2">
+                        <tr class="border">
+                            <td class="border" style="width:440px; height:40px">
+                                <span>1. Ability to motivate and develop his/her subordinates</span>
+                            </td>
+                        </tr>
+                        <tr class="border">
+                            <td class="border" style="width:440px; height:60px">
+                                <span></span>
+                            </td>
+                        </tr>
+                        <tr class="border">
+                            <td class="border" style="width:440px; height:40px">
+                                <span>2. Honesty?</span>
+                            </td>
+                        </tr>
+                        <tr class="border">
+                            <td class="border" style="width:440px; height:60px">
+                                <span></span>
+                            </td>
+                        </tr>
+                        <tr class="border">
+                            <td class="border" style="width:440px; height:40px">
+                                <span>3. Willingness to accept responsibility?</span>
+                            </td>
+                        </tr>
+                        <tr class="border">
+                            <td class="border" style="width:440px; height:60px">
+                                <span></span>
+                            </td>
+                        </tr>
+                        <tr class="border">
+                            <td class="border" style="width:440px; height:40px">
+                                <span>4. Ability to write reports and documents clearly and concisely?</span>
+                            </td>
+                        </tr>
+                        <tr class="border">
+                            <td class="border" style="width:440px; height:60px">
+                                <span></span>
+                            </td>
+                        </tr>
+                        <tr class="border">
+                            <td class="border" style="width:440px; height:40px">
+                                <span>5. Ability to manage difficult people?</span>
+                            </td>
+                        </tr>
+                        <tr class="border">
+                            <td class="border" style="width:440px; height:60px">
+                                <span></span>
+                            </td>
+                        </tr>
+                        <tr class="border">
+                            <td class="border" style="width:440px; height:40px">
+                                <span>6. Undrestanding and living to the values of the organization?</span>
+                            </td>
+                        </tr>
+                        <tr class="border">
+                            <td class="border" style="width:440px; height:60px">
+                                <span></span>
+                            </td>
+                        </tr>
+                        
+                    </table>
+                </div>
+                <br/><br/>
+                <div>
+                    <p>What areas should we focus on to be build and develop the applicant's skills and competence further?</p>
+                    <div style="height: 150px; border: 1px solid black"></div>
+                </div>
+                <br/>
+                <p>Would you let us know the last remuneration package he was receiving?</p>
+                <div style="border-bottom: 1px solid black; margin-top:-20px"></div>
+                <div style="border-top: 1px solid black; margin-top:60px"></div>
+
+                <br/>
+
+                <p>To the best of your knowledge, did he/she have any incident or reports of child abuse, harassment and/ or discrimination in the workplace? How is he/she respectful to the code of conduct in you organization?</p>
+                <div style="border-bottom: 1px solid black; margin-top:-20px"></div>
+                <div style="border-top: 1px solid black; margin-top:60px"></div>
+
+                <br/>
+
+                <p>Is there anything else you would like to add?</p>
+                <div style="border-bottom: 1px solid black; margin-top:-20px"></div>
+                <div style="border-top: 1px solid black; margin-top:60px"></div>
+
+                <br/>
+
+                <div>
+                    <div>
+                        <div style="float:left"><p><b>Signature:</b></p></div>
+                        <div style="width:700px; border-bottom:1px solid black; float:left; margin-left:235px;"></div><br/><br/><br/>  
+                        <div style="float:left; margin-top: -10px"><p><b>Name/Title:</b></p></div>
+                        <div style="width:700px; border-bottom:1px solid black; float:left; margin-left:220px;"></div><br/><br/><br/> 
+                        <div style="float:left; margin-top: -10px"><p><b>Mobile Contact Number:</b></p></div>
+                        <div style="float:left; border-bottom:1px solid black; width:400px; font-size: 25px; margin-top: 20px; margin-left: 50px"><span /></div>
+                        <div style="float:left; font-size: 25px"> Date: </div>
+                        <div style="float:left; border-bottom:1px solid black; width:300px; font-size: 25px; margin-top: 20px"></div>               
+                    </div>
+                </div>
+                <br/>
+                <br/>
+
+                <p><b>Note: The reference form should be signed and stamped and sent via an official email address unless the referee is no longer with the organization.</b></p>
+                <br/><br/>
+                <p style="float:right; width:600px"><b>Thank you for your time and assistance.</b></p>
+                <div style="border: 1px solid black; margin-top:-20px; float:right; width:100%"></div>
+                <p style="float:right">Version May 2021</p>
+
+
+
+                
+            </div>		
+		</t>
+	</template>
+
+    <template id="applicant_reference_check">
+		<t t-call="web.html_container">
+			<t t-foreach="docs" t-as="o">
+                <t t-call="nl_recruitment.applicant_reference_check_template"/>
+			</t>
+		</t>
+	</template>
+
+
+	</data>
+</odoo>
+

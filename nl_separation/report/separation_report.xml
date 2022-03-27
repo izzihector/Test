@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="paperformat_requisitions" model="report.paperformat">
+        <field name="name">Separation Details Paper Format</field>
+        <field name="default" eval="True" />
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">45</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">1</field>
+        <field name="margin_right">1</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">10</field>
+        <field name="dpi">100</field>
+    </record>
+
+	<report
+		id="employee_separation_report"
+		model="hr.separation"
+		string="Termination of Employment"
+		report_type="qweb-pdf"
+        menu="False"
+		file="nl_separation.employee_separation_template1"
+		name="nl_separation.employee_separation_template1"
+		paperformat="nl_separation.paperformat_certificate"
+        print_report_name="'Termination Letter - %s' % (object.employee_id.name)"
+	/>
+
+    <!-- <record id="employee_separation_report" model="ir.actions.report">
+        <field name="name">Termination of Employment</field>
+        <field name="model">hr.separation</field>
+        <field name="binding_model_id" ref="model_hr_separation"/>
+        <field name="report_type">qweb-pdf</field>
+        <field name="paperformat_id" ref="nl_separation.paperformat_certificate"/>
+        <field name="report_name">nl_separation.employee_separation_template1</field>
+        <field name="report_file">nl_separation.employee_separation_template1</field>
+        <field name="print_report_name">(object.print_termination_letter())</field>
+        <field name="binding_view_types">list,form</field>
+    </record> -->
+
+    <template id="certificate_main_info">
+        <t t-call="nl_separation.certificate_header" />
+        <t t-raw="0" />
+        <t t-call="nl_separation.certificate_footer"/>
+    </template>
+
+    <!-- <report
+        id="employee_termination_report"
+        model="hr.separation"
+        string="Employment Termination"
+        report_type="qweb-pdf"
+        file="nl_separation.employee_separation_template"
+        name="nl_separation.employee_separation_template"
+        menu="False"
+        paperformat="nl_separation.paperformat_certificate"
+    /> -->
+
+    <report
+        id="exit_interview_report"
+        model="hr.separation"
+        string="Exit Interview Form"
+        report_type="qweb-pdf"
+        file="nl_separation.exit_interview_template"
+        name="nl_separation.exit_interview_template"
+        paperformat="nl_separation.paperformat_certificate"
+    />
+	   
+
+</odoo>

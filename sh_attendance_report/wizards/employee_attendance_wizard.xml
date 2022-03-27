@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="employee_attendance_wizard_view" model="ir.ui.view">
+        <field name="name">Employee Attendance Wizard</field>
+        <field name="model">employee.attendance.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Employee Attendance Wizard">
+                <group>
+                    <group>
+                        <field name="date" />
+                        <field name="print_by" widget="radio"/>
+                    </group>
+                    <group>
+                        <field name="office_id"/>
+                        <field name="unit_ids"  widget="many2many_tags"/>
+                        <field name="employee_id" string="Employees" widget="many2many_tags_avatar" avatar_field="image_1920" />
+                    </group>
+                </group>
+
+                <footer>
+                    <button name="employee_attendance_excel" string="Excel" type="object" class="oe_highlight" />
+                    <button string="Cancel" class="oe_highlight" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_employee_attendance_wizard_form" model="ir.actions.act_window">
+        <field name="name">Employee Attendance Wizard</field>
+        <field name="view_id" ref="employee_attendance_wizard_view" />
+        <field name="view_mode">form</field>
+        <field name="res_model">employee.attendance.wizard</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_employee_attendance_report" name="Employee Attendance" parent="hr_attendance.menu_hr_attendance_report" sequence="2" action="action_employee_attendance_wizard_form" />
+</odoo>

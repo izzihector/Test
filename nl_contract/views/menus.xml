@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+   <record id="action_hr_contract_open_ended" model="ir.actions.act_window">
+      <field name="name">Contracts</field>
+      <field name="res_model">hr.contract</field>
+      <field name="view_mode">kanban,tree,form,activity</field>
+      <field name="domain">[('employment_type', '=', 'open_ended')]</field>
+      <field name="context">{'search_default_current':1, 'search_default_group_by_state': 1}</field>
+      <field name="search_view_id" ref="hr_contract.hr_contract_view_search" />
+      <field name="help" type="html">
+         <p class="o_view_nocontent_smiling_face">Create a new contract</p>
+      </field>
+   </record>
+   <record id="action_hr_contract_short_term" model="ir.actions.act_window">
+      <field name="name">Contracts</field>
+      <field name="res_model">hr.contract</field>
+      <field name="view_mode">kanban,tree,form,activity</field>
+      <field name="domain">[('employment_type', '=', 'casual_contract')]</field>
+      <field name="context">{'search_default_current':1, 'search_default_group_by_state': 1}</field>
+      <field name="search_view_id" ref="hr_contract.hr_contract_view_search" />
+      <field name="help" type="html">
+         <p class="o_view_nocontent_smiling_face">Create a new contract</p>
+      </field>
+   </record>
+   <record id="action_hr_contract_fixed_term" model="ir.actions.act_window">
+      <field name="name">Contracts</field>
+      <field name="res_model">hr.contract</field>
+      <field name="view_mode">kanban,tree,form,activity</field>
+      <field name="domain">[('employment_type', '=', 'fixed_term')]</field>
+      <field name="context">{'search_default_current':1, 'search_default_group_by_state': 1}</field>
+      <field name="search_view_id" ref="hr_contract.hr_contract_view_search" />
+      <field name="help" type="html">
+         <p class="o_view_nocontent_smiling_face">Create a new contract</p>
+      </field>
+   </record>
+   <record id="action_hr_contract_project_based" model="ir.actions.act_window">
+      <field name="name">Contracts</field>
+      <field name="res_model">hr.contract</field>
+      <field name="view_mode">kanban,tree,form,activity</field>
+      <field name="domain">[('employment_type', '=', 'project_based')]</field>
+      <field name="context">{'search_default_current':1, 'search_default_group_by_state': 1}</field>
+      <field name="search_view_id" ref="hr_contract.hr_contract_view_search" />
+      <field name="help" type="html">
+         <p class="o_view_nocontent_smiling_face">Create a new contract</p>
+      </field>
+   </record>
+   <record id="action_hr_contract_field_project_staff1" model="ir.actions.act_window">
+      <field name="name">Contracts</field>
+      <field name="res_model">hr.contract</field>
+      <field name="view_mode">kanban,tree,form,activity</field>
+      <field name="domain">[('employment_type', '=', 'fps1')]</field>
+      <field name="context">{'search_default_current':1, 'search_default_group_by_state': 1}</field>
+      <field name="search_view_id" ref="hr_contract.hr_contract_view_search" />
+      <field name="help" type="html">
+         <p class="o_view_nocontent_smiling_face">Create a new contract</p>
+      </field>
+  </record>
+
+  <record id="action_hr_contract_field_project_staff12" model="ir.actions.act_window">
+    <field name="name">Contracts</field>
+    <field name="res_model">hr.contract</field>
+    <field name="view_mode">kanban,tree,form,activity</field>
+    <field name="domain">[('employment_type', '=', 'fps1_2')]</field>
+    <field name="context">{'search_default_current':1, 'search_default_group_by_state': 1}</field>
+    <field name="search_view_id" ref="hr_contract.hr_contract_view_search"/>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">
+        Create a new contract
+      </p>
+    </field>
+</record>
+
+
+<record id="salary_grade_tree_view" model="ir.ui.view">
+    <field name="name">salary.grade.tree.view</field>
+    <field name="model">salary.grade</field>
+    <field name="arch" type="xml">
+        <tree string="Grade">
+          <field name="name" />
+          <field name="contract"/>
+          <field name="step_ids" widget="many2many_tags"/>
+        </tree>
+     </field>
+  </record>
+
+
+  <record id="salary_grade_view" model="ir.ui.view">
+            <field name="name">salary.grade.form</field>
+            <field name="model">salary.grade</field>
+            <field name="arch" type="xml">
+                <form string="Salary Grade">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/> 
+                            </group>
+                            <group>
+                                <field name="contract" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Grade Step" name="steps" >
+                                <field name="step_ids" >
+                                    <tree string="Steps" editable="top">
+                                        <field name="name" />
+                                        <field name="value"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook> 
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    <record id="office_form" model="ir.ui.view">
+        <field name="name">office_form</field>
+        <field name="model">office</field>
+        <field name="arch" type="xml">
+            <form string="Office">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                        </group>
+                        <group>
+                            <field name="name_in_dari" />
+                            <field name="active" invisible="1" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- search view Office -->
+     <record id="office_search" model="ir.ui.view">
+        <field name="name">office.search.view</field>
+        <field name="model">office</field>
+        <field name="arch" type="xml">
+            <search>
+               <field name="name" />
+                <filter name="archived" string="Archived" domain="[('active', '=', False)]" />
+            </search>
+        </field>
+    </record> 
+
+
+    <record id="salary_step_tree_view" model="ir.ui.view">
+      <field name="name">salary.step.tree.view</field>
+      <field name="model">salary.step</field>
+      <field name="arch" type="xml">
+         <tree string="Step">
+            <field name="name" />
+            <field name="value" />
+         </tree>
+      </field>
+   </record>
+   <record id="action_hr_contract_salary_grade" model="ir.actions.act_window">
+      <field name="name">Salary Grade</field>
+      <field name="res_model">salary.grade</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+         <p class="o_view_nocontent_smiling_face">Create a new contract</p>
+      </field>
+   </record>
+   <record id="action_hr_contract_salary_step" model="ir.actions.act_window">
+      <field name="name">Salary Steps</field>
+      <field name="res_model">salary.step</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+         <p class="o_view_nocontent_smiling_face">Create a new contract</p>
+      </field>
+   </record>
+   <record id="action_hr_employee_office" model="ir.actions.act_window">
+      <field name="name">Office</field>
+      <field name="res_model">office</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+         <p class="o_view_nocontent_smiling_face">Create a new Office</p>
+      </field>
+   </record>
+   <record id="action_hr_employee_district" model="ir.actions.act_window">
+      <field name="name">District</field>
+      <field name="res_model">district</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+         <p class="o_view_nocontent_smiling_face">Create a new Dictirct</p>
+      </field>
+   </record>
+   <record id="action_hr_employee_unit" model="ir.actions.act_window">
+      <field name="name">Unit</field>
+      <field name="res_model">hr.unit</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+         <p class="o_view_nocontent_smiling_face">Create a new Unit</p>
+      </field>
+   </record>
+   <record id="action_hr_contract_project" model="ir.actions.act_window">
+      <field name="name">Project</field>
+      <field name="res_model">contract.project</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+         <p class="o_view_nocontent_smiling_face">Create a new Project</p>
+      </field>
+   </record>
+
+   <menuitem
+   id="hr.menu_human_resources_configuration_employee"
+   name="Employee"
+   parent="hr.menu_human_resources_configuration"
+   groups="hr.group_hr_manager,nl_master.group_hr_employee_read_only"
+   sequence="1"/>
+
+   <menuitem
+      id="hr.menu_view_employee_category_form"
+      name="Tags"
+      action="hr.open_view_categ_form"
+      parent="hr.menu_human_resources_configuration_employee"
+      groups="hr.group_hr_manager,nl_master.group_hr_employee_read_only"
+      sequence="1"/>
+      
+   <menuitem id="hr_main_contract_menu" name="Contracts" parent="hr.menu_hr_root" sequence="4" groups="hr_contract.group_hr_contract_manager,nl_master.group_hr_employee_read_only" />
+   <menuitem id="hr_menu_contract_regular" name="Regular Staff" parent="hr_main_contract_menu" groups="hr_contract.group_hr_contract_manager,nl_master.group_hr_employee_read_only" sequence="0" />
+   <menuitem id="hr_menu_contract_all" name="All" action="hr_contract.action_hr_contract" parent="hr_main_contract_menu" groups="hr_contract.group_hr_contract_manager,nl_master.group_hr_employee_read_only" sequence="9" />
+   <menuitem id="hr_contract.hr_menu_contract" name="Open Ended" action="action_hr_contract_open_ended" parent="hr_menu_contract_regular" groups="hr_contract.group_hr_contract_manager,nl_master.group_hr_employee_read_only" sequence="2" />
+   <menuitem id="hr_contract_short_term" name="Casual and Service" action="action_hr_contract_short_term" parent="hr_menu_contract_regular" groups="hr_contract.group_hr_contract_manager,nl_master.group_hr_employee_read_only" sequence="3" />
+   <menuitem id="hr_contract_fixed_term" name="Fixed Term" action="action_hr_contract_fixed_term" parent="hr_menu_contract_regular" groups="hr_contract.group_hr_contract_manager,nl_master.group_hr_employee_read_only" sequence="4" />
+   <menuitem id="hr_contract_project_based" name="Project Based" action="action_hr_contract_project_based" parent="hr_menu_contract_regular" groups="hr_contract.group_hr_contract_manager,nl_master.group_hr_employee_read_only" sequence="5" />
+   <menuitem id="hr_contract_field_project_staff_parent" name="Field Project Staff" parent="hr_main_contract_menu" groups="hr_contract.group_hr_contract_manager,nl_master.group_hr_employee_read_only" sequence="6" />
+   <menuitem id="hr_contract_field_project_staff_parent" name="Field Project Staff" parent="hr_main_contract_menu" groups="hr_contract.group_hr_contract_manager,nl_master.group_hr_employee_read_only" sequence="6" />
+   <menuitem id="hr_contract_field_project_staff_cat1_2" name="FPS Category 1/2 Normal" action="action_hr_contract_field_project_staff12" parent="hr_contract_field_project_staff_parent" groups="hr_contract.group_hr_contract_manager,nl_master.group_hr_employee_read_only" sequence="7" />
+   <menuitem id="hr_contract_field_project_staff_cat1" name="FPS Category 2 Education" action="action_hr_contract_field_project_staff1" parent="hr_contract_field_project_staff_parent" groups="hr_contract.group_hr_contract_manager,nl_master.group_hr_employee_read_only" sequence="7" />
+   <menuitem id="hr_contract.hr_menu_extend_contract" name="Contract Extension" groups="hr_contract.group_hr_contract_manager,nl_master.group_hr_employee_read_only" action="action_contract_to_extend" parent="hr_main_contract_menu" sequence="10" />
+   <menuitem id="hr_contract_contract_salary" name="Contract" parent="hr.menu_human_resources_configuration" sequence="101" />
+   <menuitem id="hr_contract_salary_grade" name="Salary Grades" action="action_hr_contract_salary_grade" parent="hr_contract_contract_salary" groups="hr_contract.group_hr_contract_manager,nl_master.group_hr_employee_read_only" sequence="1" />
+   <menuitem id="hr_contract_salary_step" name="Salary Steps" action="action_hr_contract_salary_step" parent="hr_contract_contract_salary" groups="hr_contract.group_hr_contract_manager,nl_master.group_hr_employee_read_only" sequence="2" />
+   <menuitem name="Contract Approvers &amp; Signatories" id="contract_approvers" groups="hr.group_hr_manager,nl_master.group_hr_employee_read_only" parent="hr_contract_contract_salary" action="nl_contract.action_contract_approver"  sequence="3"/>
+   <menuitem id="hr_employee_dictrict" name="Districts" action="action_hr_employee_district" parent="hr.menu_human_resources_configuration_employee" groups="hr.group_hr_manager,nl_master.group_hr_employee_read_only" sequence="1" />
+   <menuitem id="hr_employee_office" name="Offices" action="action_hr_employee_office" parent="hr.menu_human_resources_configuration_employee" groups="hr.group_hr_manager,nl_master.group_hr_employee_read_only" sequence="1" />
+   <menuitem id="hr_employee_unit" name="Units" action="action_hr_employee_unit" parent="hr.menu_human_resources_configuration_employee" groups="hr.group_hr_manager,nl_master.group_hr_employee_read_only" sequence="1" />
+   <menuitem id="hr_contract_project" name="Projects" action="action_hr_contract_project" parent="hr.menu_human_resources_configuration_employee" groups="hr.group_hr_manager,nl_master.group_hr_employee_read_only" sequence="2" />
+   <menuitem name="Provinces" id="province_menu" groups="hr.group_hr_manager,nl_master.group_hr_employee_read_only" parent="hr.menu_human_resources_configuration_employee" action="nl_contract.action_province" />   
+   <menuitem name="Contract Terms &amp; Conditions" id="contract_terms_conditions" groups="hr.group_hr_manager,nl_master.group_hr_employee_read_only" parent="hr_contract_contract_salary" action="nl_contract.action_contract_terms_conditions" />
+</odoo>

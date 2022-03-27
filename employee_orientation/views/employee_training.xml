@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_employee_training_tree" model="ir.ui.view">
+            <field name="name">employee.training.tree</field>
+            <field name="model">employee.training</field>
+            <field name="arch" type="xml">
+                <tree string="Employee Training Program">
+                    <field name="program_name"/>
+                    <field name="date_from" />
+                    <field name="date_to" />
+                    <field name="program_convener"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_employee_training_form" model="ir.ui.view">
+            <field name="name">employee.training.form</field>
+            <field name="model">employee.training</field>
+            <field name="arch" type="xml">
+                <form string="Employee Training Program">
+                    <header>
+                        <button name="confirm_send_mail" string="Send Invites" type="object" class="oe_highlight" states="confirm"/>
+                        <button name="confirm_event" string="Confirm Event" type="object" states="new" class="btn-primary" />
+                        <button name="complete_event" string="Event Complete" type="object" states="confirm"  class="btn-primary"/>
+                        <button name="cancel_event" string="Cancel Event" type="object" states="confirm"/>
+                        <button name="print_event" string="Print Certificates"  type="object"  class="oe_highlight" attrs="{'invisible': [('state', 'not in', 'complete')]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="new,confirm,complete"/>
+                    </header>
+                    <sheet>
+                        <h1 class="oe_title">
+                            <field name="program_name" placeholder="Training Program" />
+                        </h1>
+                        <group>
+                            <group name="training_details" string="Training Details">
+                                <label for="date_from" string="Training Duration" class="mt-3" />
+                                <div class="mt-3"><field name="date_from" class="oe_inline"/> <span class="px-3">to</span> <field name="date_to" class="oe_inline"/></div>
+                                <field name="venue" />
+                                <field name="program_convener"/>
+                            </group>
+                            <group name="trainee_details" string="Trainee Details">
+                                <group colspan="2">
+                                    <field name="mode" />
+                                    <field name="unit_id" attrs="{'invisible': [('mode', '!=', 'unit')], 'required': [('mode', '=', 'unit')]}" />
+                                    <field name="office_id" attrs="{'invisible': [('mode', '!=', 'office')], 'required': [('mode', '=', 'office')]}" />
+                                    <field name="department_id" attrs="{'invisible': [('mode', '!=', 'department')], 'required': [('mode', '=', 'department')]}" />
+                                </group>
+                            </group>
+                        </group>
+                        <notebook colspan="4">
+                            <page name="checklist_lines" string="Participant's List">
+                                <field name="employee_id" widget="many2many">
+                                    <tree delete="true">
+                                        <field name="name"/>
+                                        <field name="job_id"/>
+                                        <field name="parent_id"/>
+                                        <field name="certificates" />
+                                    </tree>
+<!--                                    <field name="product_updatable" invisible="1"/>-->
+                                </field>
+                            </page>
+                            <page name="note_book"
+                                string="Notes">
+                                <field name="note_id" colspan="4" nolabel="1" />
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="view_employee_training_search" model="ir.ui.view">
+            <field name="name">employee.training.search</field>
+            <field name="model">employee.training</field>
+            <field name="arch" type="xml">
+                <search string="Employee Training Program">
+                    <field name="program_name"/>
+                    <newline/>
+                </search>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_employee_training">
+            <field name="name">Employee Training Program</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">employee.training</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_employee_training_search" />
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+             <field name="help" type="html">
+                <field class="oe_view_nocontent_create">
+                    Create Employee Training Program.
+                </field>
+             </field>
+        </record>
+        <menuitem
+            id="menu_employee_training_child"
+            name="Training Program"
+            parent="hr.menu_hr_root"
+            action="action_employee_training"
+            sequence="91"
+            />
+       <record id="hr_employee_view_for" model="ir.ui.view">
+            <field name="name">hr.employee.inherit.form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form" />
+            <field name="priority">30</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='parent_id']" position="after">
+                    <field name="certificates" editable="true" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="email_employee_training_application" model="mail.template">
+            <field name="name">Training Application Email</field>
+            <field name="subject">Training Application</field>
+            <field name="model_id" ref="model_employee_training"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="body_html"></field>
+        </record>
+
+    </data>
+</odoo>

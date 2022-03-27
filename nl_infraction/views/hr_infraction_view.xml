@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="hr_infraction_view_kanban" model="ir.ui.view">
+        <field name="name">hr.infraction.kanban</field>
+        <field name="model">hr.infraction</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_small_column" default_group_by="state" records_draggable="false" sample="1">
+                <field name="employee_id" />
+                <field name="subject" />
+                <field name="category_id" />
+                <field name="warning" />
+                <field name="infraction_date" />
+                <field name="state" />
+                <progressbar field="activity_state" colors='{"confirmed": "success", "in_progress": "warning", "cancel": "danger"}'/>
+                <templates>
+                <t t-name="kanban-box">
+                    <div class="oe_kanban_card oe_kanban_global_click">
+                        <div class="o_dropdown_kanban dropdown" t-if="!selection_mode" groups="base.group_user">
+                            <a class="dropdown-toggle o-no-caret btn" role="button" data-toggle="dropdown" data-display="static" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                <span class="fa fa-ellipsis-v"/>
+                            </a>
+                            <div class="dropdown-menu" role="menu">
+                                <t t-if="widget.editable"><a role="menuitem" type="edit" class="dropdown-item">Edit Infraction</a></t>
+                                <t t-if="widget.deletable"><a role="menuitem" type="delete" class="dropdown-item">Delete</a></t>
+                            </div>
+                        </div>
+                        <div class="oe_kanban_content">
+                            <div class="o_hr_contract_state">
+                                <strong class="o_kanban_record_title">
+                                    <field name="employee_id"/>
+                                </strong>
+                            </div>
+                            <div class="text-muted o_kanban_record_subtitle o_hr_contract_job_id">
+                                <field name="infraction_date"/>
+                            </div>
+                            <div class="oe_kanban_bottom_right">
+                                <span class="float-right">
+                                    <field name="category_id"/>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="oe_clear"/>
+                    </div>
+                </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+    <record id="tree_view_infraction_document" model="ir.ui.view">
+        <field name="name">infraction.document.form.view</field>
+        <field name="model">infraction.document</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" filename="file_name"/>
+                <field name="file_name"/>
+            </tree>    
+        </field>
+    </record>
+
+    <record id="hr_infraction_document_form" model="ir.ui.view">
+        <field name="name">hr.infraction.document.form</field>
+        <field name="model">infraction.document</field>
+        <field name="arch" type="xml">
+            <form string="Infraction Document">
+                <sheet>
+                    <group>
+                        <field name="file_name" required="1" />
+                    </group>
+                    <group>
+                        <field name="name" required="1" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record> 
+
+
+    <record id="tree_view_infraction_document" model="ir.ui.view">
+        <field name="name">infraction.document.form.view</field>
+        <field name="model">infraction.document</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" filename="file_name"/>
+                <field name="file_name"/>
+            </tree>    
+        </field>
+    </record>
+
+
+    <record id="action_infraction_documct" model="ir.actions.act_window">
+        <field name="name">Infraction Document</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">infraction.document</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="tree_view_infraction_document"/>
+        <field name="context">{'default_infraction_id': active_id}</field>
+        <field name="domain">[('infraction_id', '=', active_id)]</field>
+    </record>
+
+
+    <!-- Tree view for infraction category -->
+     <record id="hr_infraction_category_tree" model="ir.ui.view">
+        <field name="name">hr.infraction.category.tree</field>
+        <field name="model">hr.infraction.category</field>
+        <field name="arch" type="xml">
+            <tree string="Infraction Categories">
+                <field name="name" />
+                <field name="code" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="hr_infraction_category_form" model="ir.ui.view">
+        <field name="name">hr.infraction.category.form</field>
+        <field name="model">hr.infraction.category</field>
+        <field name="arch" type="xml">
+            <form string="Infraction Category" version="7.0">
+                <sheet>
+                    <group>
+                        <field name="name" string="Name" required="1" />
+                        <field name="code" string="Code" required="1" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record> 
+
+    <!-- Action for infraction category -->
+     <record id="open_hr_infraction_category" model="ir.actions.act_window">
+        <field name="name">Categories</field>
+        <field name="res_model">hr.infraction.category</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu for infraction in configuration -->
+     <menuitem id="menu_hr_inf" name="Infraction" parent="hr.menu_human_resources_configuration"
+        sequence="5"/>
+
+    <!-- Menu for infraction category -->
+     <menuitem action="open_hr_infraction_category" id="menu_hr_infraction_category"
+        parent="menu_hr_inf" /> 
+
+    <!-- Tree view of Infraction -->
+    <record id="hr_infraction_treeview" model="ir.ui.view">
+        <field name="name">hr.infraction.tree</field>
+        <field name="model">hr.infraction</field>
+        <field name="arch" type="xml">
+            <tree string="Employee Infractions">
+                <field name="employee_id" />
+                <field name="employee_type" />
+                <field name="subject" />
+                <field name="category_id" />
+                <field name="warning" />
+                <field name="infraction_date" />
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form view of Infraction -->
+    <record id="hr_infraction_formview" model="ir.ui.view">
+        <field name="name">hr.infraction.form</field>
+        <field name="model">hr.infraction</field>
+        <field name="arch" type="xml">
+            <form string="Employee Infraction">
+                <header>
+                    <button name="submit" type="object" string="Submit"
+                        states="draft" groups="hr.group_hr_user" class="oe_highlight" />
+                    <button name="noaction" type="object" string="No Further Action"
+                        states="hr" groups="hr.group_hr_user" class="oe_highlight" />
+                        
+                        <button name="%(nl_infraction.action_action_wizard)d" type="action"
+                        string="Action" groups="hr.group_hr_manager,nl_contract.group_ceo,hr.group_hr_user" states="hr"
+                        class="oe_highlight"  />
+                    <field name="state" widget="statusbar" />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                            <button name="%(action_infraction_documct)d"
+                                class="oe_stat_button"
+                                icon="fa-file"
+                                type="action"
+                                string="Document">
+                            </button>
+                        </div>
+                    <div class="oe_title">
+                        <h5>
+                            <field name="name" string="Infraction ID" readonly='1'/>
+                        </h5>
+                        <h1>
+                            <field name="subject" default_focus="1" class="ml-2" placeholder="Subject" required='1'/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="employee_id" required="1" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                            <field name="category_id" widget="selection" required="1" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}"/>
+                        </group>
+                        <group>
+                            <field name="infraction_date" required="1" />
+                            <field name="warning" required="1" />
+                        </group>
+                    </group>
+                    <notebook>
+                            <page string="Description" name="description" >
+                                <field name="memo" />
+                            </page>
+                            <page string="Action(s)" name="action" >
+                                <field name="action_ids" attrs="{'readonly': [('state', '!=', 'draft')]}">
+                                    <tree string="Actions" editable="bottom">
+                                        <field name="type" />
+                                        <field name="date" />
+                                        <field name="memo" />
+                                        
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook> 
+                </sheet>
+
+                <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- infraction sequence number -->
+    <record model="ir.sequence" id="seq_infraction">
+        <field name="name">Infraction</field>
+        <field name="prefix">INF%(y)s%(month)s%(day)s</field>
+        <field name="code">hr.infraction</field>
+        <field name="padding">6</field>
+        <field name="company_id" eval="False" />
+    </record>
+
+
+    <!-- Action for Infraction -->
+    <record id="open_hr_infraction_top_menu_action" model="ir.actions.act_window">
+        <field name="name">Infractions</field>
+        <field name="res_model">hr.infraction</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_group_employee_id': 1}</field>
+    </record>
+    
+    <record id="view_hr_infraction_search" model="ir.ui.view">
+        <field name="name">view.hr.infraction.search</field>
+        <field name="model">hr.infraction</field>
+        <field name="arch" type="xml">
+            <search string="HR Infrarction">
+                <field name="employee_id" />
+                <field name="warning" />
+                <field name="category_id" />
+                <field name="infraction_date" />
+                <group expand="0" string="Group By">
+                    <filter name="group_employee_id" string="Employee" context="{'group_by':'employee_id'}"/>
+                    <filter name="category_id" domain="[]" context="{'group_by':'category_id'}" string="Category" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+    <!-- Menu Parent -->
+    <menuitem id="menu_hr_infraction_root" name="Infractions"
+        parent="hr.menu_hr_root" action="open_hr_infraction_top_menu_action" groups="hr.group_hr_user,nl_master.group_hr_employee_read_only" sequence="27" />
+
+
+
+    <!-- Tree view for Action -->
+     <record id="hr_infraction_action_tree" model="ir.ui.view">
+        <field name="name">hr.infraction.action.tree</field>
+        <field name="model">hr.infraction.action</field>
+        <field name="arch" type="xml">
+            <tree string="Infraction Actions">
+                <field name="employee_id" />
+                <field name="type" />
+                <field name="memo" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form view for Action -->
+    <record id="hr_infraction_action_form" model="ir.ui.view">
+        <field name="name">hr.infraction.action.form</field>
+        <field name="model">hr.infraction.action</field>
+        <field name="arch" type="xml">
+            <form string="Infraction Action Form" create="false" edit="false">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="date"  />
+                            <field name="employee_id" required="1"/>
+                            <field name="warning" required="1"/>
+                        </group>
+                        <group>
+                            <field name="type" required="1" />
+                            <field name="memo"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree view for Action -->
+    <record id="hr_infraction_action_tree" model="ir.ui.view">
+        <field name="name">hr.infraction.action.tree</field>
+        <field name="model">hr.infraction.action</field>
+        <field name="arch" type="xml">
+            <tree string="Infraction Action Tree" create="false" edit="false">
+                <field name="date"/>
+                <field name="warning" />
+                <field name="employee_id" /> 
+                <field name="type" />
+                <field name="memo"/>
+                <field name="infraction_id" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- search view for Action -->
+     <record id="hr_infraction_action_Search" model="ir.ui.view">
+        <field name="name">hr.infraction.action.search</field>
+        <field name="model">hr.infraction.action</field>
+        <field name="arch" type="xml">
+            <search string="Search Action">
+                <filter name="fil_warning_id" domain="[]" string="Warning"
+                    context="{'group_by':'warning'}" />
+                <filter name="employee_id" string="Employee" domain="[]"
+                    context="{'group_by':'employee_id'}" />
+                <filter name="date" string="Date" domain="[]"
+                    context="{'group_by':'date'}" />
+                <field name="type" />
+                <filter name="fil_transfer" domain="[('type','=','tranfer')]"
+                    string="Transfer" />
+                <filter name="fil_suspension" domain="[('type','=','suspension')]"
+                    string="Suspension" />
+                <filter name="fil_dismissal" domain="[('type','=','dismissal')]"
+                    string="Dismissal" />
+            </search>
+        </field>
+    </record>
+ 
+    <!-- Action for action -->
+    <record id="open_hr_infraction_actions" model="ir.actions.act_window">
+        <field name="name">Infraction Actions</field>
+        <field name="res_model">hr.infraction.action</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_fil_warning_id':1,'search_default_employee_id':'1'}</field>        
+    </record>
+
+    <!-- Menu for action -->
+    <!-- <menuitem id="menu_hr_infraction_action_main" action="open_hr_infraction_actions"
+        parent="menu_hr_infraction_root" groups="hr.group_hr_manager" sequence="3"/>
+ -->
+
+
+    <!-- inherit form view of Employee -->
+     <record id="view_employee_form" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit.infraction</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='hr_settings']" position="before">
+                <page name='disciplinary_information' string="Disciplinary Information" groups="hr.group_hr_user,nl_master.group_hr_employee_read_only">
+                    <group string="Actions">
+                        <field name="infraction_action_ids" readonly="1" nolabel="1">
+                            <tree string="Actions">
+                                <field name="infraction_id" options='{"no_open": True}'/>
+                                <field name="warning" />
+                                <field name="type" />
+                                <field name="date" />
+                                <field name="memo" />
+                            </tree>
+                            <form string="Actions">
+                                <group>
+                                    <group>
+                                        <field name="infraction_id"/>
+                                        <field name="type" />
+                                    </group>
+                                    <group>
+                                        <field name="date" />
+                                        <field name="memo" />
+                                    </group>
+                                </group>
+                            </form>
+                        </field>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

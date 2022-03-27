@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Sequences for Separation -->
+    <record id="seq_onsite" model="ir.sequence">
+        <field name="name">Separation</field>
+        <field name="code">hr.separation</field>
+        <field name="prefix">SEP%(year)s</field>
+        <field name="padding">4</field>
+    </record>
+
+</odoo>

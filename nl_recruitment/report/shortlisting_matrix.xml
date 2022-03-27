@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+        <report 
+            id="action_print_shortlisting_matrix"
+            model="hr.job.announcement"
+            string="Shortlisting Matrix"
+            report_type="qweb-pdf"
+            name="nl_recruitment.employment_shortlisting_matrix"
+            file="nl_recruitment.employment_shortlisting_matrix"
+        />
+
+        <record id="paperformat_employment_shortlisting_matrix" model="report.paperformat">
+            <field name="name">Employment Shortlisting Matrix Paper Format</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">15</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">10</field>
+            <field name="margin_right">10</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">20</field>
+            <field name="dpi">150</field>
+        </record>
+        <record id="action_print_shortlisting_matrix" model="ir.actions.report">
+            <field name="paperformat_id" ref="nl_recruitment.paperformat_employment_shortlisting_matrix"/>
+        </record>
+
+    <template id="employment_shortlisting_matrix_template">
+		<t t-call="web.basic_layout">
+			<style>
+				@font-face {
+                    font-family: 'georgia';
+					font-family: 'arial';
+                       src: url(/nl_contract/static/src/fonts/georgia.ttf);
+					   src: url(/nl_contract/static/src/fonts/arial-ce.ttf);
+                      }
+					  .emp_info {
+						padding-left:25px;
+					 }
+                
+					 p{
+						 font-size:26px;
+                 font-family: 'georgia' !important;
+					 }
+					 td{
+						 font-size:26px;
+                 font-family: 'georgia' !important;
+					 }
+					 th{
+						 font-size:26px;
+                 font-family: 'georgia' !important;
+					 }
+					 .contract-details{
+						 margin-left:25px;
+						 margin-right:25px;
+					 }
+					 .identifier{
+						font-size:26px;
+                        font-family: 'georgia' !important;
+						font-weigth:bolder;
+
+					}
+					.identifier-data{
+						font-size:26px;
+                         font-family: 'georgia' !important;
+						font-weigth:bold;
+						
+
+					}
+					.employee-info{
+						margin-left:15px;
+					}	
+					li{
+                 font-family: 'georgia' !important;
+						font-size:26px;
+					}
+					.b{
+						font-size:26px;
+						font-family: 'georgia' !important;
+					}
+					.border{
+						border:1.4px solid black !important;
+						padding:5px;
+					}
+			</style>
+            <div style="width:100%;">	
+                <img t-att-src="'/nl_contract/static/description/sca.png'" alt="Logo"/>
+                <p style="float:right; width:200px">Annex 4D</p>
+                <br/>
+                <h1 style="margin-top:10px" class="text-center"><b>Shortlisting Matrix</b></h1>
+                <br />
+                <div>
+                    <table style="width: 100%;" cellpadding="2">
+                        <tr class="border">
+                            <thead class="border">
+                                <th class="border" style="width:200px">Post &amp; Location</th>
+                                <th class="border" style="width:200px">Shortlisting Panel:</th> 
+                                <th class="border" style="width:440px">Scoring index:</th> 
+                                <th class="border" style="width:100px">Date:</th>               
+                            </thead>
+                        </tr>
+                        <tr class="border">
+                            <td class="border" style="width:200px"><span t-esc="o.job_id.name"/><br/><span t-esc="o.office_id.name"/></td> 
+                            <td class="border" style="width:200px">
+                                <t t-set="count" t-value="1"/>
+                                <t t-foreach="o.panel_members" t-as="member">
+                                    <span t-esc="count"/>.<span t-esc="member.name"/><br/>
+                                    <t t-set="count" t-value="count+1"/>
+                                </t>
+                            </td> 
+                            <td class="border" style="width:440px">To be used to score the criteria against candidate’s qualifications according to the CV and/or written test sufficiently:<br/>
+                                                                    <span style="color:red">0-1:</span> Poor (Evidence that they are not competent to carry out most aspects of the job effectively)<br/>
+                                                                    <span style="color:red">2-3:</span> Below expected (Evidence that competence is below that which is expected and required of the job)<br/>
+                                                                    <span style="color:red">4-5:</span> A minor shortfall (Evidence that there is some room for improvement in competence)<br/>
+                                                                    <span style="color:red">6-8:</span>  Competent (Evidence that they are competent to do the job satisfactorily)<br/>
+                                                                    <span style="color:red">9 – 10</span> Better than Competent (Evidence that this is an area of strength that could be built on)
+                            </td> 
+                            <td class="border" style="width:100px"><span t-esc="o.vacancy_start_date"/></td>          
+                        </tr>
+                    </table>
+                </div><br/><br/>
+                <div>
+                    <table style="width: 100%;" cellpadding="2">
+                        <tr class="border">
+                            <thead class="border">
+                                <th class="border" style="width:200px">Candidate Name</th>
+                                <th class="border" style="width:200px">Education ()</th> 
+                                <th class="border" style="width:300px">Relevant experience ()</th> 
+                                <th class="border" style="width:100px">Comments (eligible for test/interview)</th>     
+                                <t t-foreach="o.panel_members" t-as="member">
+                                    <th class="border" style="width:50px"><span t-esc="member.name"/></th>
+                                </t> 
+
+                                <th class="border" style="width:100px">Average</th>        
+                            </thead>
+                        </tr>
+                        <t t-foreach="o.application_ids" t-as="applicant">
+                            <t t-if="applicant.stage_id.state_mode in ['shortlisted','written_test','interview','offer_proposal','offer_signed']">
+                                <tr class="border">
+                                    <td class="border" style="width:200px"><span t-esc="applicant.name"/></td> 
+                                    <td class="border" style="width:200px">
+                                    <t t-if="applicant.highest_qualification == '0'">
+                                        <span>Illiterate</span>
+                                    </t>
+                                    <t t-if="applicant.highest_qualification == '1'">
+                                        <span>Primary</span>
+                                    </t>
+                                    <t t-if="applicant.highest_qualification == '2'">
+                                        <span>Grade 12</span>
+                                    </t>
+                                    <t t-if="applicant.highest_qualification == '3'">
+                                        <span>Grade 14</span>
+                                    </t>
+                                    <t t-if="applicant.highest_qualification == '4'">
+                                        <span>Bachelore</span>
+                                    </t>
+                                    <t t-if="applicant.highest_qualification == '5'">
+                                        <span>Master</span>
+                                    </t>
+                                    <t t-if="applicant.highest_qualification == '6'">
+                                        <span>Doctorate</span>
+                                    </t>
+                                    </td> 
+                                    <td class="border" style="width:300px"><span t-esc="applicant.total_years_of_experience"/></td> 
+                                    <td class="border" style="width:100px">Yes</td>
+                                    <t t-foreach="o.panel_members" t-as="member">
+                                        <t t-if="applicant.score_ids">
+                                            <t t-foreach="applicant.score_ids" t-as="score">
+                                                <t t-if="score.user_id.id == member.id">
+                                                    <td class="border" style="width:50px"><span t-esc="score.shortlisting_score"/></td> 
+                                                </t>
+                                            </t>
+                                        </t>
+                                        <t t-if="not applicant.score_ids">
+                                            <td class="border" style="width:50px"></td>
+                                        </t>
+                                    </t> 
+                                    <td class="border" style="width:100px"><span t-esc="round(applicant.total_shortlisting_score, 2)"/></td>         
+                                </tr>
+                            </t>
+                        </t>
+                    </table>
+                </div><br/><br/>
+                <div>
+                    <div>
+                        <div style="float:left; font-size: 25px; width: 400px"><p><b>The written test will be on </b></p></div>
+                        <div style="float:left; border-bottom:1px solid black; width:200px; font-size: 25px; margin-left: 10px"><span t-esc="o.written_test_date.strftime('%Y-%m-%d')"/></div>
+                        <div style="float:left; font-size: 25px">at</div>
+                        <div style="float:left; border-bottom:1px solid black; width:700px; font-size: 25px;"><span style="margin-left: 20px" t-esc="o.office_id.name"/></div>  
+                        <div style="float:left; font-size: 25px">at</div>
+                        <div style="float:left; border-bottom:1px solid black; width:250px; font-size: 25px;"><span style="margin-left: 20px" t-esc="o._get_date_as_utc(o.written_test_date.strftime('%Y-%m-%d %H:%M:%S'))"/></div>        
+                    </div><br/><br/> <br/> 
+                    <div>
+                        <div style="float:left; font-size: 25px; width: 400px"><p><b>The interview will be on</b></p></div>
+                        <div style="float:left; border-bottom:1px solid black; width:200px; font-size: 25px; margin-left: 10px"><span t-esc="o.interview_date.strftime('%Y-%m-%d')"/></div>
+                        <div style="float:left; font-size: 25px">at</div>
+                        <div style="float:left; border-bottom:1px solid black; width:700px; font-size: 25px;"><span style="margin-left: 20px" t-esc="o.office_id.name"/></div>  
+                        <div style="float:left; font-size: 25px">at</div>
+                        <div style="float:left; border-bottom:1px solid black; width:250px; font-size: 25px;"><span style="margin-left: 20px" t-esc="o._get_date_as_utc(o.interview_date.strftime('%Y-%m-%d %H:%M:%S'))"/></div>             
+                    </div>
+                </div><br/><br/> <br/> 
+                <p>Panel members Agreement on Shortlisting and interview scheduling.</p><br/>
+                <div>
+                    <table style="width: 100%;" cellpadding="2">
+                        <tr class="border">
+                            <th class="border" style="width:200px">Name:</th>   
+                            <t t-foreach="o.panel_members" t-as="member">
+                                <td class="border" style="width:100px"><span t-esc="member.name"/></td>  
+                            </t>  
+                        </tr>
+                        <tr class="border">
+                            <th class="border" style="width:200px">Designation/Position:</th>   
+                            <t t-foreach="o.panel_members" t-as="member">
+                                <td class="border" style="width:100px"><span t-esc="member.employee_id.job_id.name"/></td>  
+                            </t>  
+                        </tr>
+                    </table>
+                    <p style="float:right">Version May 2021</p>
+                </div>
+            </div>		
+		</t>
+	</template>
+
+
+    <template id="employment_shortlisting_matrix">
+		<t t-call="web.html_container">
+			<t t-foreach="docs" t-as="o">
+				<t t-call="nl_recruitment.employment_shortlisting_matrix_template"/>
+			</t>
+		</t>
+	</template>
+
+
+	</data>
+</odoo>
+

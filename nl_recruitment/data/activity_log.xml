@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+ 
+        <record id="mail_hr_manager_approval" model="mail.activity.type">
+            <field name="name">Job Position Approval</field>
+            <field name="icon">fa-sun-o</field>
+            <field name="res_model_id" ref="nl_recruitment.model_hr_job"/>
+        </record>
+
+        <record id="mail_director_approval" model="mail.activity.type">
+            <field name="name">Job Position Approval</field>
+            <field name="icon">fa-sun-o</field>
+            <field name="res_model_id" ref="nl_recruitment.model_hr_job"/>
+        </record>
+
+
+        <record id="mt_job_applicant_scored" model="mail.message.subtype">
+            <field name="name">Applicant Scored</field>
+            <field name="res_model">hr.applicant</field>
+            <field name="default" eval="True"/>
+            <field name="relation_field">applicant_id</field>
+        </record>
+
+</odoo>

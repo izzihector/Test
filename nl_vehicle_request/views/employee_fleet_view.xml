@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sequence_employee_fleet" model="ir.sequence">
+        <field name="name">Vehicle Request Code</field>
+        <field name="code">employee.fleet</field>
+        <field eval="4" name="padding" />
+        <field name="prefix">VR</field>
+    </record>
+
+    <!-- USER -->
+    <record model='ir.ui.view' id='employee_fleet_form_view'>
+        <field name="name">employee.fleet.form</field>
+        <field name="model">employee.fleet</field>
+        <field name="arch" type="xml">
+            <form string="Employee Fleet Request">
+                <header>
+                    <button name='send' string="Send Request" type="object" class='oe_highlight' states="draft"/>
+                    <button name='confirm' string="Confirm" type="object" states="request"
+                        groups="fleet.fleet_group_manager"/>
+                    <button name='reject' string="Reject" type="object" states="request"
+                        groups="fleet.fleet_group_manager"/>
+                    <button name='cancel' string="Cancel" type="object" states="draft,request,confirm"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,request,confirm"/>
+                </header>
+                <sheet>
+                    <h1>
+                        <field name="name" readonly="1"/>
+                    </h1>
+                    <h1>
+                        <field name="employee" placeholder="Requested By" options="{'no_create': True}"
+                            attrs="{'readonly': [('active_groups','!=', True)]}"/>
+                    </h1>
+                    <group>
+                        <group string="Date and Time">
+                            <field name="active_groups" invisible="1"/>
+                            <field name="request_date" attrs="{'readonly': [('active_groups','!=', True)]}"/>
+                            <field name="date_from" attrs="{'readonly': [('active_groups','!=', True)]}"/>
+                            <field name="date_to" attrs="{'readonly': [('active_groups','!=', True)]}"/>
+                            <field name="purpose" attrs="{'readonly': [('active_groups','!=', True)]}"/>
+                        </group>
+                        <group string="Trip Information">
+                            <field name="trip_type" widget="radio" options="{'horizontal': true}" 
+                                attrs="{'readonly': [('active_groups','!=', True)]}"/>
+                            <field name="pickup_location" attrs="{'readonly': [('active_groups','!=', True)]}"/>
+                            <field name="drop_location" attrs="{'readonly': [('active_groups','!=', True)]}"/>
+                            <field name="vehicle_type" attrs="{'readonly': [('active_groups','!=', True)]}"/>
+                        </group>
+                        <group attrs="{'invisible': [('state','not in', ('request','confirm'))]}">
+                            <field name="fleet" options="{'no_create': True}"
+                                domain="[]" attrs="{'readonly': [('active_groups','!=', True)]}"/>
+                            <field name="driver_id" attrs="{'readonly': [('active_groups','!=', True)]}"/>
+                        </group>
+                    </group>
+                    <separator string="Add Additional Employees on Trip"/>
+                    <field name="employee_ids" attrs="{'readonly': [('active_groups','!=', True)]}">
+                        <tree>
+                            <field name="name"/>
+                            <field name="department_id"/>
+                        </tree>
+                    </field>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record model='ir.ui.view' id='employee_fleet_tree_view'>
+        <field name="name">employee.fleet.tree</field>
+        <field name="model">employee.fleet</field>
+        <field name="arch" type="xml">
+            <tree decoration-info="state == 'draft'" decoration-danger="state == 'reject'">
+                <field name="name"/>
+                <field name="employee"/>
+                <field name="fleet"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model='ir.ui.view' id='employee_fleet_search_view'>
+        <field name="name">employee.fleet.search</field>
+        <field name="model">employee.fleet</field>
+        <field name="arch" type="xml">
+            <search string="Custody">
+                <field name="name"/>
+                <field name="employee"/>
+                <field name="request_date"/>
+                <field name="fleet"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="state"/>
+                <filter name="today" string="Today" domain="[('request_date', '=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00'))]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="status" domain="[]" context="{'group_by':'state'}"/>
+                    <filter string="Employee" name="employee" domain="[]" context="{'group_by':'employee'}"/>
+                    <filter string="Vehicle" name="vehicle" domain="[]" context="{'group_by':'fleet'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_employee_fleet" model="ir.actions.act_window">
+        <field name="name">Vehicle Request</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">employee.fleet</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="employee_fleet_search_view"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a New Vehicle Request.
+            </p>
+        </field>
+    </record>
+
+    <menuitem 
+        id="employee_fleet_menu"
+        name="Vehicle Request"
+        parent="hr.menu_hr_root"
+        sequence="4"
+        groups="base.group_user"/>
+    <menuitem 
+        id="employee_fleet_sub_menu"
+        name="Vehicle Request"
+        parent="employee_fleet_menu"
+        sequence="1"
+        groups="base.group_user"
+        action="action_employee_fleet"/>
+
+    <!-- MANAGER -->
+    <record id="action_employee_fleet_manager" model="ir.actions.act_window">
+        <field name="name">Vehicle Request</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">employee.fleet</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="employee_fleet_search_view"/>
+        <field name="context">{'search_default_state': 'request', 'search_default_today': 1}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a New Vehicle Request.
+            </p>
+        </field>
+    </record>
+
+    <menuitem 
+        id="employee_fleet_manager_menu"
+        name="Vehicle Request"
+        parent="fleet.menu_root"
+        sequence="4"
+        groups="fleet.fleet_group_user"/>
+    <menuitem 
+        id="employee_fleet_manager_sub_menu"
+        name="Vehicle Request"
+        parent="employee_fleet_manager_menu"
+        sequence="1"
+        groups="fleet.fleet_group_user"
+        action="action_employee_fleet_manager"/>
+
+
+</odoo>

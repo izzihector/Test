@@ -1,0 +1,377 @@
+<odoo>
+    
+    <record id="employee_appraisal_form" model="ir.ui.view">
+        <field name="name">employee.appraisal.form</field>
+        <field name="model">employee.appraisal</field>
+        <field name="arch" type="xml">
+            <form string="Appraisal">
+                <field name="active" invisible='1' />
+                <field name="meeting_id" invisible="1"/>
+                <field name="p7_overall_rating_not_applicable" invisible="1"/>
+                <header>
+                    <button name="view_full_appraisal_form" string="View Appraisal" type="object" class="oe_highlight" groups="nl_appraisal.group_appraiser" />
+                    <button name="create_pip" string="Initiate PIP" states="done" type="object" class="oe_highlight" groups="nl_appraisal.group_appraiser" />
+                    <!-- Admin Staff -->
+                    <button name="move_to_cancel" type="object" string="Cancel Appraisal" attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('appraisal_type', '=', 'field_staff')]}"  groups="nl_appraisal.group_appraisal_admin" class="oe_highlight" confirm="Are you sure?"/>
+                    <button name="move_to_objective_settings" type="object" string="Move To Objective Setting" attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('appraisal_type', '=', 'field_staff')]}"  groups="nl_appraisal.group_appraisal_admin" class="oe_highlight" confirm="Are you sure?"/>
+                    <button name="move_to_self_review" type="object" string="Move to Self Assessment"  attrs="{'invisible': ['|', ('state', 'not in', ['performance_period', '2nd_supervisor_review', 'final_comments', 'done']), ('appraisal_type', '=', 'field_staff')]}" groups="nl_appraisal.group_appraisal_admin" class="oe_highlight" confirm="Are you sure?"/>
+                    <button name="move_to_sup_review" type="object" string="Move to Supervisor Assessment"  attrs="{'invisible': ['|', ('state', 'not in', ['2nd_supervisor_review', 'final_comments', 'done']), ('appraisal_type', '=', 'field_staff')]}" groups="nl_appraisal.group_appraisal_admin" class="oe_highlight" confirm="Are you sure?"/>
+                    <button name="move_to_draft" type="object" string="Reset to Draft" attrs="{'invisible': ['|', ('state', '=', 'draft'), ('appraisal_type', '=', 'field_staff')]}"  groups="nl_appraisal.group_appraisal_admin" class="oe_highlight" confirm="Are you sure?"/>
+                    <!-- Field Staff -->
+                    <button name="move_to_cancel_field" type="object" string="Cancel Appraisal" attrs="{'invisible': ['|', ('field_state', '!=', 'draft'), ('appraisal_type', '!=', 'field_staff')]}"  groups="nl_appraisal.group_appraisal_admin" class="oe_highlight" confirm="Are you sure?"/>
+                    <button name="move_to_supervisor_review_field" type="object" string="Move To Supervisor Assessment" attrs="{'invisible': ['|', ('field_state', '!=', 'draft'), ('appraisal_type', '!=', 'field_staff')]}"  groups="nl_appraisal.group_appraisal_admin" class="oe_highlight" confirm="Are you sure?"/>
+                    <button name="move_to_field_draft" type="object" string="Reset to Draft" attrs="{'invisible': ['|', ('field_state', '=', 'draft'), ('appraisal_type', '!=', 'field_staff')]}"  groups="nl_appraisal.group_appraisal_admin" class="oe_highlight" confirm="Are you sure?"/>
+                    
+                    <field name="field_state" widget="statusbar" statusbar_visible="draft,supervisor_review,done" attrs="{'invisible': [('appraisal_type', '!=', 'field_staff')]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="objective_setting,supervisor_review,2nd_supervisor_review,self_review,final_comments,done" attrs="{'invisible': [('appraisal_type', '=', 'field_staff')]}"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="action_calendar_event" icon="fa-calendar" type="object">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value" attrs="{'invisible': [('meeting_id', '=', False)]}">1 Meeting</span>
+                                <span class="o_stat_value" attrs="{'invisible': [('meeting_id', '!=', False)]}">No Meeting</span>
+                                <span class="o_stat_text"><field name="date_final_interview" readonly="1"/></span>
+                            </div>
+                        </button>
+                        <button class="oe_stat_button" name="action_open_discussion" icon="fa-calendar" type="object" style="width: 226px;">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value">Discussions and Events</span>
+                                <span class="o_stat_text"><field name="discussion_ids_count" readonly="1"/></span>
+                            </div>
+                        </button>
+                        <button class="oe_stat_button" name="action_open_pips" icon="fa-bar-chart-o" type="object">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value">PIPs</span>
+                                <span class="o_stat_text"><field name="pip_id_count" readonly="1"/></span>
+                            </div>
+                        </button>
+                    </div>
+                    <group>
+                        <!-- Part 1 -->
+                        <group string="General Infomration" class="o_group_col_12">
+                            <group>
+                            <field name="display_state"  invisible="1"/>
+                                <field name="employee_id" string="Employee Name" 
+                                    attrs="{ 'readonly' : ['|', '|', ('disable_appraisal_type','=', True), '&amp;', ('appraisal_type', '!=', 'field_staff'), ('state', '!=', 'draft'), '&amp;', ('appraisal_type', '=', 'field_staff'), ('field_state', '!=', 'draft') ] }" 
+                                    options="{'no_create': True, 'no_create_edit':True}"/>
+                                <field name="job_id"/>
+                                <field name="unit_id"/>
+                                <field name="department_id"/>
+                                <field name="disable_appraisal_type" invisible="1"/>
+                                <field name="appraisal_type" 
+                                    attrs="{ 'readonly' : ['|', '|', ('disable_appraisal_type','=', True), '&amp;', ('appraisal_type', '!=', 'field_staff'), ('state', '!=', 'draft'), '&amp;', ('appraisal_type', '=', 'field_staff'), ('field_state', '!=', 'draft') ] }"/>
+                            </group>
+                            <group>
+                                <field name="employee_id_no"/>
+                                <field name="office_id" string="Office/Region"/>
+                                <field name="manager_id" string="Line mgr/Sup"/>
+                                <field name="manager_job_id" string="Manager Posistion"/>
+                                <field name="second_manager_id" string="2nd Line mgr/Sup"/>
+                                <field name="second_manager_job_id" string="2nd Manager Posistion"/>
+                            </group>
+                            <group class="o_group_col_12">
+                                <div class="row">
+                                    <div class="font-weight-bold col-3 pl-2" style="padding:0">Review Period</div>
+                                    <div class="font-weight-bold col-4">From: <field name="review_period_start_date"  
+                                        attrs="{ 'readonly' : ['|', '&amp;', ('appraisal_type', '!=', 'field_staff'), ('state', '!=', 'draft'), '&amp;', ('appraisal_type', '=', 'field_staff'), ('field_state', '!=', 'draft') ] }"/></div>
+                                    <div class="font-weight-bold col-4">To: <field name="review_period_end_date"  
+                                        attrs="{ 'readonly' : ['|', '&amp;', ('appraisal_type', '!=', 'field_staff'), ('state', '!=', 'draft'), '&amp;', ('appraisal_type', '=', 'field_staff'), ('field_state', '!=', 'draft') ] }"/></div>
+                                </div>
+                            </group>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Evaluation Result" name="evaluation_result">
+                            <group>
+                                <field name="p7_overall_rating" string="Final Rating" readonly="1" attrs="{ 'invisible': [('p7_overall_rating_not_applicable', '=', True)] }"/>
+                                <field name="p7_overall_result" string="Final Result" readonly="1"/>
+                                <field name="p7_emp_contract_rec" string="Evaluation Result" attrs="{ 'invisible': [('appraisal_type', '=', 'field_staff')] }" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+      </record>
+
+    <!-- tree view Office  -->
+    <record id="employee_appraisal_tree" model="ir.ui.view">
+        <field name="name">>employee.appraisal.tree</field>
+        <field name="model">employee.appraisal</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="employee_id" />
+                <field name="office_id" />
+                <field name="manager_id" />
+                <field name="second_manager_id" />
+                <field name="review_period_start_date" />
+                <field name="review_period_end_date" />
+                <field name="appraisal_type" />
+                <field name="display_state" />
+                
+            </tree>
+        </field>
+    </record> 
+
+    <!-- search view -->
+    <record id="employee_appraisal_search" model="ir.ui.view">
+        <field name="name">>employee.appraisal.search</field>
+        <field name="model">employee.appraisal</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="employee_id" />
+                <field name="manager_id" />
+                <field name="second_manager_id" />
+                <field name="office_id" />
+                <field name="department_id" />
+                <field name="unit_id" />
+                <field name="display_state" />
+                <separator />
+                <filter name="archived" string="Archived" domain="[('active', '=', False)]" />
+                <filter string="Current Year" name="current_year" domain="[('review_period_start_date','&lt;=',(context_today()+relativedelta(years=1)).strftime('%Y-2-28')), ('review_period_start_date','&gt;=',(context_today()).strftime('%Y-03-01'))]"/>
+                <filter string="Previous Year" name="prev_year" domain="[('review_period_start_date','&lt;=',(context_today()).strftime('%Y-2-28')), ('review_period_start_date','&gt;=',(context_today()-relativedelta(years=1)).strftime('%Y-03-01'))]"/>
+                <filter string="Next Year" name="next_year" domain="[('review_period_start_date','&lt;=',(context_today()+relativedelta(years=2)).strftime('%Y-2-28')), ('review_period_start_date','&gt;=',(context_today()+relativedelta(years=1)).strftime('%Y-03-01'))]"/>
+                <separator />
+                <filter name="final_result_1" string="Exceptional/outstanding" domain="[('p7_overall_rating_not_applicable', '=', False), ('p7_overall_rating', '&gt;=', 4.5), ('p7_overall_rating', '&lt;=', 5)]" />
+                <filter name="final_result_2" string="Exceeds Expected Performance" domain="[('p7_overall_rating', '&gt;=', 3.5), ('p7_overall_rating', '&lt;=', 4.4)]" />
+                <filter name="final_result_3" string="Meets Expected Performance" domain="[('p7_overall_rating_not_applicable', '=', False), ('p7_overall_rating_not_applicable', '=', False), ('p7_overall_rating', '&gt;=', 2.5), ('p7_overall_rating', '&lt;=', 3.4)]" />
+                <filter name="final_result_4" string="Required performance improvement" domain="[('p7_overall_rating_not_applicable', '=', False), ('p7_overall_rating', '&gt;=', 1.5), ('p7_overall_rating', '&lt;=', 2.5)]" />
+                <filter name="final_result_5" string="Unsatisfactory/Unacceptable performance" domain="[('p7_overall_rating_not_applicable', '=', False), ('p7_overall_rating', '&gt;=', 1), ('p7_overall_rating', '&lt;=', 1.4)]" />
+                <filter name="final_result_6" string="Not Applicable" domain="[('p7_overall_rating_not_applicable', '=', True)]" />
+                <group expand="0" string="Group By">
+                    <filter string="Office" name="office_id" domain="[]" context="{'group_by': 'office_id'}"/>
+                    <filter string="Appraisal Type" name="appraisal_type" domain="[]" context="{'group_by': 'appraisal_type'}"/>
+                    <filter string="State" name="state" domain="[]" context="{'group_by': 'display_state'}"/>
+                    <filter string="Final Result" name="final_result" domain="[]" context="{'group_by': 'p7_overall_result'}"/>
+                </group>
+            </search>
+        </field>
+    </record> 
+
+    <record model="ir.actions.act_window" id="employee_appraisal_action">
+        <field name="name">Performance Appraisal</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">employee.appraisal</field>
+        <field name="view_mode">tree,form</field>
+        <field name="target">current</field>
+        <field name="context">{'default_appraisal_type': 'admin_staff'}</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Create New Appraisal Record.
+          </p>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="employee_appraisal_action_admin_staff">
+        <field name="name">Annual Performance Review</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">employee.appraisal</field>
+        <field name="view_mode">tree,form</field>
+        <field name="target">current</field>
+        <field name="domain">[('appraisal_type', '!=', 'field_staff')]</field>
+        <field name="context">{'default_appraisal_type': 'admin_staff'}</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Create New Appraisal Record.
+          </p>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="employee_appraisal_action_field_staff">
+        <field name="name">Entry Level/Support Staff</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">employee.appraisal</field>
+        <field name="view_mode">tree,form</field>
+        <field name="target">current</field>
+        <field name="domain">[('appraisal_type', '=', 'field_staff')]</field>
+        <field name="context">{'default_appraisal_type': 'field_staff'}</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Create New Appraisal Record.
+          </p>
+        </field>
+    </record>
+
+     <!-- tree view Office  -->
+    <record id="probation_appraisal_tree" model="ir.ui.view">
+        <field name="name">>appraisal.appraisal.tree</field>
+        <field name="model">probation.appraisal</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="employee_id" />
+                <field name="job_id" />
+                <field name="department_id" />
+                <field name="manager_id" />
+                <field name="start_date" />
+                <field name="end_date" />
+                <field name="state" />
+            </tree>
+        </field>
+    </record> 
+
+    <record id="probation_appraisal_action" model="ir.actions.act_window">
+        <field name="name">Probation Appraisals</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">probation.appraisal</field>
+        <field name="view_mode">tree,form</field>
+        <field name="target">current</field>
+        <field name="domain"></field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Create New Probation Appraisal Record.
+          </p>
+        </field>
+    </record>
+
+    <record id="move_appraisal_objective_setting" model="ir.actions.server">
+        <field name="name">Move to Objective Setting</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_employee_appraisal"/>
+        <field name="binding_model_id" ref="model_employee_appraisal"/>
+        <field name="groups_id" eval="[(4, ref('nl_appraisal.group_appraisal_admin'))]"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.with_context(triggred_from_batch_send=True).move_to_batch_objective_settings()
+        </field>
+    </record>
+    <record id="move_appraisal_self_assessment" model="ir.actions.server">
+        <field name="name">Move to Self Assessment</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_employee_appraisal"/>
+        <field name="binding_model_id" ref="model_employee_appraisal"/>
+        <field name="groups_id" eval="[(4, ref('nl_appraisal.group_appraisal_admin'))]"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.with_context(triggred_from_batch_send=True).move_to_batch_self_review()
+        </field>
+    </record>
+
+    <!-- Discussion part -->
+    <record model="ir.actions.act_window" id="action_open_appraisal_discussion">
+        <field name="name">Employee Appraisal Discusstion and Events</field>
+        <field name="res_model">employee.appraisal.discussion</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="employee_appraisal_discussion_view_form" model="ir.ui.view">
+        <field name="name">employee.appraisal.discussion.view.form</field>
+        <field name="model">employee.appraisal.discussion</field>
+        <field name="arch" type="xml">
+            <form string="Discussion &amp; Events">
+                <header>
+                <button name="move_to_in_progress" type="object" string="Move to in progress" states="draft" groups="nl_appraisal.group_appraisal_admin" class="oe_highlight" confirm="Are you sure?"/>
+                <button name="move_to_done" type="object" string="Move to done" states="in_progress" groups="nl_appraisal.group_appraisal_admin" class="oe_highlight" confirm="Are you sure?"/>
+                    <field name="state" widget="statusbar" />
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="discussion_date" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="appraisal_id" invisible="1" />
+                        </group>
+                        <group>
+                            <field name="description" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="result" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                    </group>
+                    <group string="Discussion/Action Items">
+                        <field name="line_ids" nolabel="1" attrs="{'readonly': [('state', '=', 'done')]}">
+                            <tree editable="bottom">
+                                <field name="name" />
+                                <field name="discussion_line_date" />
+                            </tree>
+                        </field>
+                    </group>
+                    <group>
+                        <field name="attachment_id" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="employee_appraisal_discussion_view_tree" model="ir.ui.view">
+        <field name="name">employee.appraisal.discussion.view.tree</field>
+        <field name="model">employee.appraisal.discussion</field>
+        <field name="arch" type="xml">
+            <tree string="Discussion and Events">
+                <field name="name" />
+                <field name="discussion_date" />
+                <field name="description" />
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+
+
+    <menuitem
+        id="menu_nl_appraisal_main"
+        name="Appraisal"
+        web_icon="nl_appraisal,static/description/mainIcon.png"
+        sequence="75"/>
+
+    <menuitem
+        id="menu_nl_appraisal"
+        name="Appraisals"
+        parent="nl_appraisal.menu_nl_appraisal_main"
+        sequence="1"/>
+    <menuitem
+        id="menu_nl_appraisal_all"
+        name="All"
+        action="employee_appraisal_action"
+        parent="nl_appraisal.menu_nl_appraisal"
+        sequence="1"/>
+    <menuitem
+        id="menu_nl_appraisal_admin_staff"
+        name="Annual Performance Review"
+        action="employee_appraisal_action_admin_staff"
+        parent="nl_appraisal.menu_nl_appraisal"
+        sequence="2"/>
+    <menuitem
+        id="menu_nl_appraisal_field_staff"
+        name="Entry Level/Support Staff"
+        action="employee_appraisal_action_field_staff"
+        parent="nl_appraisal.menu_nl_appraisal"
+        sequence="3"/>
+    <!-- <menuitem
+        id="menu_nl_appraisal_other"
+        name="Other"
+        parent="nl_appraisal.menu_nl_appraisal"
+        sequence="4"/> -->
+    <menuitem
+        id="menu_nl_appraisal_probation_appraisal"
+        name="Probation Appraisals"
+        action="probation_appraisal_action"
+        parent="nl_appraisal.menu_nl_appraisal_main"
+        sequence="2"/>
+
+    <!-- <record id="payroll_hr_employee_view_form_extended_appraisal" model="ir.ui.view">
+        <field name="name">payroll.hr.employee.view.form.extended.appraisal</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr_payroll.payroll_hr_employee_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <field name="has_valid_appraisal" invisible="1"/>
+                <div class="alert alert-info" attrs="{ 'invisible': [('has_valid_appraisal', '=', True)] }"> The system could not detect any appraisal records for this employee for this appraisal year. Please review the employee's appraisal records. </div>
+            </xpath>
+        </field>
+    </record> -->
+
+</odoo>
+
+
+

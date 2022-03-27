@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="mail_payroll_create_notification" model="mail.activity.type">
+        <field name="name">New payroll</field>
+        <field name="icon">fa-sun-o</field>
+    </record>
+
+</odoo>

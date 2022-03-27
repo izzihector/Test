@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mail_ceo_contract_approval" model="mail.activity.type">
+        <field name="name">Contract Approval</field>
+        <field name="icon">fa-sun-o</field>
+        <field name="res_model_id" ref="nl_contract.model_hr_contract"/>
+    </record>
+
+    <record id="mail_coo_contract_approval" model="mail.activity.type">
+        <field name="name">Contract Approval</field>
+        <field name="icon">fa-sun-o</field>
+        <field name="res_model_id" ref="nl_contract.model_hr_contract"/>
+    </record>
+
+    <record id="mail_contract_probation_expiration" model="mail.activity.type">
+        <field name="name">Contract Expiration</field>
+        <field name="icon">fa-sun-o</field>
+        <field name="res_model_id" ref="nl_contract.model_hr_contract"/>
+    </record>
+
+    <record id="update_contract_step_and_rade" model="ir.cron">
+        <field name="name">Update Contract step and Grade</field>
+        <field name="model_id" ref="model_hr_contract"/>
+        <field name="state">code</field>
+        <field name="code">model.update_step_grade()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="False"/>
+    </record>
+
+
+    <record id="update_contract_terms_and_conditions" model="ir.cron">
+        <field name="name">Update Contract Terms and Conditions</field>
+        <field name="model_id" ref="model_hr_contract"/>
+        <field name="state">code</field>
+        <field name="code">model.update_contract_terms_and_conditions()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="False"/>
+    </record>
+
+    <record id="notify_follower_one_week_before_contract_probation_expiration" model="ir.cron">
+        <field name="name">Notify Followers One Week Before Contract Expiration</field>
+        <field name="model_id" ref="model_hr_contract"/>
+        <field name="state">code</field>
+        <field name="code">model.contract_probation_expiration_notification()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="True"/>
+    </record>
+
+
+    <record id="update_probation_period_in_terms_conditions" model="ir.cron">
+        <field name="name">Update Probation Period in Terms and Conditions</field>
+        <field name="model_id" ref="model_hr_contract"/>
+        <field name="state">code</field>
+        <field name="code">model.set_probation_period_in_terms_conditions()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="False"/>
+    </record>
+
+    <record id="update_contract_tax_information" model="ir.cron">
+        <field name="name">Update Contract Tax Information</field>
+        <field name="model_id" ref="model_hr_contract"/>
+        <field name="state">code</field>
+        <field name="code">model.update_contract_tax_information()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="False"/>
+    </record>
+</odoo>

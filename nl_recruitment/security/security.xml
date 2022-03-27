@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- <record id="group_panel_members" model="res.groups">
+            <field name="name">Panel Members</field>
+        </record>
+
+        <record id="panel_members_rule" model="ir.rule">
+            <field name="name">Hr Job: Users View and edit its record</field>
+            <field name="model_id" ref="model_hr_job"></field>
+            <field name="groups" eval="[(4, ref('group_panel_members'))]"/>
+            <field name='perm_create' eval='False'/>
+            <field name='perm_read' eval='True'/>
+            <field name='perm_unlink' eval='False'/>
+            <field name='perm_write' eval='True'/>
+            <field name="domain_force">
+                [('panel_members','=',user.id)]
+            </field>
+        </record>
+        
+        <record id="panel_members_rule2" model="ir.rule">
+            <field name="name">Panel member see his own application data</field>
+            <field name="model_id" ref="model_hr_applicant"></field>
+            <field name="groups" eval="[(4, ref('group_panel_members'))]"/>
+            <field name='perm_create' eval='True'/>
+            <field name='perm_read' eval='True'/>
+            <field name='perm_unlink' eval='True'/>
+            <field name='perm_write' eval='True'/>
+            <field name="domain_force">
+                [("job_id.panel_members",'=',user.id)]
+            </field>
+        </record> -->
+
+
+
+        <record id="group_hr_recruitment_panel_member" model="res.groups">
+            <field name="name">Panel Members</field>
+            <field name="category_id" ref="base.module_category_human_resources_recruitment"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        <record id="hr_recruitment.group_hr_recruitment_user" model="res.groups">
+            <field name="implied_ids" eval="[(4, ref('hr.group_hr_user')), (4, ref('nl_recruitment.group_hr_recruitment_panel_member'))]"/>
+        </record>
+
+        <!-- Record rules for job announcements -->
+        <record id="hr_job_announcement_public" model="ir.rule">
+            <field name="name">Job Announcement: Public</field>
+            <field name="model_id" ref="nl_recruitment.model_hr_job_announcement"/>
+            <field name="domain_force">[('website_published', '=', True)]</field>
+            <field name="groups" eval="[(4, ref('base.group_public'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        <record id="hr_job_announcement_portal" model="ir.rule">
+            <field name="name">Job Announcement: Portal</field>
+            <field name="model_id" ref="nl_recruitment.model_hr_job_announcement"/>
+            <field name="domain_force">[('website_published', '=', True)]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        
+        <record id="hr_job_announcement_panel" model="ir.rule">
+            <field name="name">Job Announcement: Recruitment Panel Users Can Access Announcement Records Based On The announcements they are added as Panel members</field>
+            <field name="model_id" ref="nl_recruitment.model_hr_job_announcement"/>
+            <field name = "domain_force"> [('panel_members.id', 'in', [user.id])] </field>
+            <field name="groups" eval="[(4, ref('nl_recruitment.group_hr_recruitment_panel_member'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <record id="hr_job_announcement_officer" model="ir.rule">
+            <field name="name">Job Announcement: Officer Can Access Announcement Records Based On His/Her Allowed Offices</field>
+            <field name="model_id" ref="nl_recruitment.model_hr_job_announcement"/>
+            <field name = "domain_force"> [('office_id.id', 'in', user.office_ids.ids)] </field>
+            <field name="groups" eval="[(4, ref('hr_recruitment.group_hr_recruitment_user')), (3, ref('base.group_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Applicant record rules -->
+        <record id="hr_applicant_panel_members" model="ir.rule">
+            <field name="name">Recruitment Panel User Can Access Applicant Records Based On the applicants whose announcment job has the current user as panel member</field>
+            <field name="model_id" ref="nl_recruitment.model_hr_applicant"/>
+            <field name = "domain_force"> [('job_announcement_id.panel_members.id', 'in', [user.id])] </field>
+            <field name="groups" eval="[(4, ref('nl_recruitment.group_hr_recruitment_panel_member'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        <record id="hr_applicant_base_user_rule" model="ir.rule">
+            <field name="name">User Can Access Applicant Records Based On His/Her Allowed Offices</field>
+            <field name="model_id" ref="nl_recruitment.model_hr_applicant"/>
+            <field name = "domain_force"> [('job_announcement_id.office_id.id', 'in', user.office_ids.ids)] </field>
+            <field name="groups" eval="[(4, ref('hr_recruitment.group_hr_recruitment_user')), (3, ref('base.group_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+    </data>
+</odoo>

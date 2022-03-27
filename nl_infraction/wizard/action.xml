@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Form view of Infraction Action Wizard -->
+    <record id="hr_infraction_action_wizard_form" model="ir.ui.view">
+        <field name="name">hr.infraction.action.wizard.form</field>
+        <field name="model">hr.infraction.action.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                 <sheet>
+                     <header>
+                         <h2>Please choose the appropriate action from the list below</h2>
+                     </header>
+                     <group>
+                         <field name="action_type" required="1"/>
+                     </group>
+                     <group string="Departmental Transfer" attrs="{'invisible': [('action_type','!=','transfer')]}">
+                         <group>
+                             <field name="new_job_id" widget="selection" attrs="{'required': [('action_type','in','transfer')]}"/>
+                         </group>
+                     </group>
+                     <group string="Suspension" attrs="{'invisible': [('action_type','!=','suspension')]}">
+                     </group>
+                     <group string="Dismissal" attrs="{'invisible': [('action_type','!=','dismissal')]}">
+                     </group>
+                     <group>
+                         <field name="effective_date" attrs="{'invisible': [('action_type','=',False)]} "/>
+                     </group>
+                     <separator string="Notes"/>
+                     <field name="memo" nolabel="1"/>
+                 </sheet>
+                 <footer>
+                    <button name="wiz_action" string="Proceed" type="object" class="oe_highlight"/>  
+                    <button special="cancel" string="Cancel" class="oe_link"/>
+               </footer>
+              </form>
+        </field>
+    </record>
+
+    <!-- Action of Infraction Action Wizard -->
+    <record id="action_action_wizard" model="ir.actions.act_window">
+        <field name="name">Action</field>
+        <field name="res_model">hr.infraction.action.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="hr_infraction_action_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

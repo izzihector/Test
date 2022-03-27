@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<report id="report_vehicle_reservation_slip" string="Vehicle Reservation Slip" model="employee.fleet" report_type="qweb-pdf" name="nl_vehicle_request.vehicle_reservation_slip" />
+
+	<template id="vehicle_reservation_slip">
+		<t t-call="web.html_container">
+			<t t-foreach="docs" t-as="o">
+				<t t-call="web.external_layout">
+					<div class="page">
+						<br></br>
+						<br></br>
+						<div width="100%">
+							
+							<div class="text-center" style="margin-top:30px;">
+								
+								<h1 class="h1">VEHICLE RESERVATION SLIP</h1>
+							</div>
+
+							<div>
+								<h3 class="h3">
+									<t t-esc="o.name"/>
+								</h3>
+							</div>
+						</div>
+
+						<table class="table table-bordered mb-5" width="100%">
+							<tr>
+								<thead class="thead-light">
+									<th class="border-0 font-weight-bold">Date and Time</th>
+									<th style="border-left: none;"></th>
+									<th class="border-0 font-weight-bold">Trip Information</th>
+									<th class="border-0"></th>
+								</thead>
+							</tr>
+
+							<tr>
+								<td class="font-weight-bold">Requested Date:</td>
+								<td >
+									<span t-esc="o.request_date"/>
+								</td>
+
+								<td class="font-weight-bold">Trip Type:</td>
+								<td >
+									<span t-esc="o._get_trip_type(o.trip_type)"/>
+								</td>
+							</tr>
+
+							<tr>
+								<td class="font-weight-bold">Requested By:</td>
+								<td >
+									<span t-esc="o.employee.name"/>
+								</td>
+
+								<td class="font-weight-bold">Pickup Location:</td>
+								<td >
+									<span t-esc="o.pickup_location"/>
+								</td>
+							</tr>
+
+							<tr>
+								<td class="font-weight-bold">From:</td>
+								<td >
+									<span t-esc="o._get_from_and_to_timestamp_as_utc(o.date_from)"/>
+								</td>
+								<td class="font-weight-bold">Drop Location:</td>
+								<td >
+									<span t-esc="o.drop_location"/>
+								</td>
+							</tr>
+
+							<tr>
+								<td class="font-weight-bold">To:</td>
+								<td >
+									<span t-esc="o._get_from_and_to_timestamp_as_utc(o.date_to)"/>
+								</td>
+								<td class="font-weight-bold">Vehicle Type:</td>
+								<td >
+									<t t-if="o.driver_id">
+										<span t-esc="o.vehicle_type"/>
+									</t>
+								</td>
+							</tr>
+
+							<tr>
+								<td class="font-weight-bold">Purpose:</td>
+								<td >
+									<span t-esc="o.purpose"/>
+								</td>
+								<td class="font-weight-bold">Driver:</td>
+								<td >
+									<t t-if="o.driver_id">
+										<span t-esc="o.driver_id.name"/>
+									</t>
+								</td>
+							</tr>
+
+							<tr>
+								<td class="font-weight-bold">Vehicle:</td>
+								<td class="border-0">
+									<t t-if="o.fleet">
+										<span t-esc="o.fleet.name"/>
+									</t>
+								</td>
+								<td class="border-0"></td>
+								<td style="border-left: none;"></td>
+							</tr>
+						</table>
+
+						<table class="table table-bordered">
+							<thead class="thead-light">
+								<tr class="text-center">
+									<h3 class="h3">PASSENGERS:</h3>
+								</tr>
+
+								<tr>
+									<th class="font-weight-bold">#</th>
+									<th class="font-weight-bold">First Name</th>
+									<th class="font-weight-bold">Department</th>
+								</tr>
+							</thead>
+
+							<t t-set="counter" t-value="1"/>
+							<t t-foreach="o.employee_ids" t-as="e">
+								<tr>
+									<td>
+										<t t-esc="counter"/>
+									</td>
+									<td>
+										<span t-esc="e.name"/>
+									</td>
+									<td>
+										<t t-if="e.department_id">
+											<span t-esc="e.department_id.name"/>
+										</t>
+									</td>
+									<t t-set="counter" t-value="counter+1"/>
+								</tr>
+							</t>
+						</table>
+						<p style="page-break-after:always"/>
+					</div>
+
+				</t>
+			</t>
+		</t>
+	</template>
+</odoo>

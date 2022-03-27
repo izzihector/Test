@@ -1,0 +1,51 @@
+.announcement_main {
+    background-color: white !important;
+    border-radius: 7px;
+    margin: 0 auto;
+    margin-top: 12px;
+    margin-bottom: 15px;
+    padding: 15px;
+    box-shadow: 1px 1px 7px -3px #ececec;
+}
+
+.announcement_main .custom_color {
+    color: #797979;
+}
+.announcement_main .__extra_info > div {
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 15px;
+    padding-top: 15px;
+}
+.row {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.announcement_main .__heading {
+    color: #675462;
+}
+.announcement_main .__company_info {
+    padding-left: 30px;
+}
+.announcement_main .__company_info small{
+    color: #777;
+    font-size: 15px;
+}
+.announcement_main .button {
+    background-color: #675462;
+    border-color: #675462;
+    color: white;
+}
+.announcement_main .button:hover {
+    background-color: #675462;
+    border-color: #675462;
+    color: white;
+}
+.letter-spacing-sm {
+    letter-spacing: 1px;
+}
+
+.fourth-button:disabled {
+    background: gray !important;
+    cursor: not-allowed !important;
+}

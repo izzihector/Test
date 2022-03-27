@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+        <report id="action_acknoledgement_letter" string="Statement of Acknoledgement" model="hr.employee" report_type="qweb-pdf" name="nl_employee.acknoledgement_letter_template" file="nl_employee.acknoledgement_letter_template" print_report_name="'Statement of Acknolegement - %s' % (object.name)" />
+
+        <template id="template_header">
+            <div class="header">
+                <table width="100%">
+                    <tr>
+                        <td style="float:left;text-align:left;">
+                            <img t-att-src="'/nl_employee/static/description/sca.jpg'" alt="Logo" style="height:60px;" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </template>
+
+        <template id="confidentiality_main_info">
+            <t t-call="nl_employee.template_header" />
+            <t t-raw="0" />
+        </template>
+
+
+        <template id="acknoledgement_letter_template">
+			<t t-call="web.html_container">
+            	<t t-foreach="docs" t-as="o">
+            		<t t-call="nl_employee.confidentiality_main_info">
+	            		<div class="page" style="padding: 30px;">
+	            			<style>
+                                .paragraph{
+                                			font-size:20px;
+                                			padding:5px;
+                                }
+                        	</style>
+	            			<div class="row">
+	            				<h2 style="text-align:center;"><u>EMPLOYEE STATEMENT OF ACKNOWLEDGEMENT FOR SCA POLICIES</u></h2>
+	            			</div>
+
+                            <div>
+                                <p>I <u><span t-esc="o.name"/></u> hereby acknowledge that I have read and understand the SCA policies listed below:</p>
+                                
+                                <!-- <p>This policy is not intended to detail every situation that could give rise to a conflict of interest.  A person with ordinary good judgment should know whether a particular activity involves an actual or potential conflict.  Where there is doubt, the matter should be brought to the attention of the individual’s immediate supervisor or HR, the Line Director or Country Director who will act as appropriate.  In general, employees should refrain from:  offering, soliciting, or accepting gifts, except those of a nominal value, in return for an advantageous position; engaging in conduct that interferes with the primary time and effort obligation to SCA or divides his or her loyalty, or discredits SCA's name; or, disclosing confidential or proprietary information about SCA to third parties. Upon discovery of a potential conflict, either in procurement or hiring or any other area of organizational interest, the employee should make prompt disclosure to the supervisor or HR (as appropriate), but no later than 30 days after becoming aware of an anticipated or actual occurrence.  Employees who have a conflict of interest in any matter shall refrain from participating in the consideration of the proposed transaction such as Recruitments, Procurement, among others.  </p> -->
+                                <ol>
+                                    <li>Code of Conduct </li>
+                                    <li>Harassment at workplace policy</li>
+                                    <li>Child protection policy</li>
+                                    <li>Staff handbook / Project staff Handbook (tick the applicable policy)</li>
+                                </ol>
+                                <p>I further acknowledge that I have read and understand all my obligations, duties, and responsibilities in each of the policies. </p>
+                                <p>I understand that violations of any SCA policies may result in disciplinary action including suspension and termination of my contract. </p>
+                                <p>I certify that this is a true and correct statement by my signature below:  </p>
+                                <table width="100%" style="margin-top:13%">
+                                    <tr style="border-bottom:2px solid black">
+                                        <td style="border:none">Employee Name:</td>
+                                        <td style="border-bottom:1px solid grey">
+                                            <t t-if="o.name">
+                                                
+                                                <span t-esc="o.name" />
+                                                
+                                            </t>
+                                        </td>
+
+                                        <td style="border:none;">Father’s Name:</td>
+                                        <td style="border-bottom:1px solid grey">
+                                            <t t-if="o.father_name">
+                                                <span t-esc="o.father_name" />
+                                            </t>
+                                        </td>
+                                    </tr>
+
+                                    <tr style="border-bottom:2px solid black">
+                                        
+                                        <td style="border:none;">Position:</td>
+                                        <td style="border-bottom:1px solid grey">
+                                            <t t-if="o.job_id.name">
+                                                <span t-esc="o.job_id.name" />
+                                            </t>
+                                        </td>
+
+                                        <td style="border:none">Signature,Date:</td>
+                                        <td style="border-bottom:1px solid grey">
+                                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/> 
+                                        </td>
+                                    </tr>
+
+                                    <tr style="border-bottom:2px solid black">
+                                        
+                                        <td style="border:none;">Witness name:</td>
+                                        <td style="border-bottom:1px solid grey">
+                                            <!-- <t t-if="o.job_id.name">
+                                                <span t-esc="o.job_id.name" />
+                                            </t> -->
+                                            <span></span>
+                                        </td>
+
+                                        <td style="border:none">Position:</td>
+                                        <td style="border-bottom:1px solid grey">
+                                            <span></span>
+                                        </td>
+                                    </tr>
+
+                                    <tr style="border-bottom:2px solid black">
+                                        
+                                        <td style="border:none">Signature,Date:</td>
+                                        <td style="border-bottom:1px solid grey">
+                                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/> 
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+            		</t>
+            	</t>			
+			</t>
+		</template>
+	</data>
+</odoo>

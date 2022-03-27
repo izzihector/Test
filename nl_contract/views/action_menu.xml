@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="confirm_contract_by_ceo_action_server" model="ir.actions.server">
+        <field name="name">Approve</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_hr_contract"/>
+        <field name="binding_model_id" ref="model_hr_contract"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.ceo_confirm_contract()
+        </field>
+    </record>
+
+
+</odoo>

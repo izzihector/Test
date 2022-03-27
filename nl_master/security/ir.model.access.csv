@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_hr_leave,access.hr.leave,hr_holidays.model_hr_leave,nl_master.group_time_off_read_only,1,0,0,0
+access_hr_leave_allocation,access.hr.leave.allocation,hr_holidays.model_hr_leave_allocation,nl_master.group_time_off_read_only,1,0,0,0
+access_mail_activity_type,access.mail.activity.type,mail.model_mail_activity_type,nl_master.group_time_off_read_only,1,0,0,0
+access_hr_leave_type,access.hr.leave.type,hr_holidays.model_hr_leave_type,nl_master.group_time_off_read_only,1,0,0,0
+access_hr_leave_report_all,access.hr.leave.report.all,nl_leave.model_hr_leave_report_all,nl_master.group_time_off_read_only,1,1,1,1
+access_employee_leave_balance,access.employee.leave.balance,nl_employee.model_employee_leave_balance,nl_master.group_time_off_read_only,1,1,1,1
+access_hr_leave_report,access.hr.leave.report,hr_holidays.model_hr_leave_report,nl_master.group_time_off_read_only,1,0,0,0
+access_hr_leave_report_calendar,access.hr.leave.report.calendar,hr_holidays.model_hr_leave_report_calendar,nl_master.group_time_off_read_only,1,0,0,0
+access_late_hours_exception_user,late.hours.exception.user,model_late_hours_exception,base.group_user,1,0,0,0
+access_late_hours_exception_hr,late.hours.exception.hr,model_late_hours_exception,hr.group_hr_user,1,1,1,1
+access_late_hours_exception_system,late.hours.exception.system,model_late_hours_exception,base.group_system,1,1,1,1
+access_hr_attendance_logs,nl_appraisal.attendance.logs,model_hr_attendance_logs,,1,1,1,0

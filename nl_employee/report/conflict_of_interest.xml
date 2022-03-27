@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+        <report id="action_conflict_of_interest" string="Conflict of Interest Policy" model="hr.employee" report_type="qweb-pdf" name="nl_employee.conflict_of_interest_template" file="nl_employee.conflict_of_interest_template" print_report_name="'Conflict of Interest - %s' % (object.name)" />
+		
+
+        <template id="template_header">
+            <div class="header">
+                <table width="100%">
+                    <tr>
+                        <td style="float:left;text-align:left;">
+                            <img t-att-src="'/nl_employee/static/description/sca.jpg'" alt="Logo" style="height:60px;" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </template>
+
+        <template id="confidentiality_main_info">
+            <t t-call="nl_employee.template_header" />
+            <t t-raw="0" />
+        </template>
+
+
+        <template id="conflict_of_interest_template">
+			<t t-call="web.html_container">
+            	<t t-foreach="docs" t-as="o">
+            		<t t-call="nl_employee.confidentiality_main_info">
+	            		<div class="page" style="padding: 30px;">
+	            			<style>
+                                .paragraph{
+                                			font-size:20px;
+                                			padding:5px;
+                                }
+                        	</style>
+	            			<div class="row">
+	            				<h2 style="text-align:center;"><u>CONFLICT OF INTEREST POLICY</u></h2>
+	            			</div>
+
+                            <div>
+                                <p>It is the policy of Swedish Committee for Afghanistan (SCA) to prohibit its employees from engaging in any activity, practice, or act which conflicts with, or appears to conflict with, the interests of SCA. Each employee is required to disclose any interest or involvement when participating in a transaction of the organization in which another party to the transaction includes himself, a close relative <b>(Father, Mother, Husband, Wife, Brother, Sister, Son, Daughter, Brother-in-Law, Sister-in-law, Father-in-Law, Mother-in-Law, Son in Law, Daughter in Law, Uncle, Aunt, Nephew, Niece, cousin.as stipulated in section 2.2 of the SHB)</b> or an organization with which the employee, or a close relative, is affiliated. </p>
+                                
+                                <p>This policy is not intended to detail every situation that could give rise to a conflict of interest.  A person with ordinary good judgment should know whether a particular activity involves an actual or potential conflict.  Where there is doubt, the matter should be brought to the attention of the individual’s immediate supervisor or HR, the Line Director or Country Director who will act as appropriate.  In general, employees should refrain from:  offering, soliciting, or accepting gifts, except those of a nominal value, in return for an advantageous position; engaging in conduct that interferes with the primary time and effort obligation to SCA or divides his or her loyalty, or discredits SCA's name; or, disclosing confidential or proprietary information about SCA to third parties. Upon discovery of a potential conflict, either in procurement or hiring or any other area of organizational interest, the employee should make prompt disclosure to the supervisor or HR (as appropriate), but no later than 30 days after becoming aware of an anticipated or actual occurrence.  Employees who have a conflict of interest in any matter shall refrain from participating in the consideration of the proposed transaction such as Recruitments, Procurement, among others.  </p>
+                                <b><u>Examples of Conflict of Interest:   </u></b>
+                                <p>The following are specific examples of the different categories into which conflict of interests may fall.  They do not constitute a complete citation of possible conflicts.    </p>
+                                <p>1. An employee or close relative has a business or financial interest in any third party, such as a supplier of goods, provider of services, or lessor of property; dealing with SCA.  </p>
+                                <p>2. An employee or close relative holds office, serves on a board, participates in management, or is employed by any third party dealing with SCA.   </p>
+                                <p>3. An employee or his/her close relative derives remuneration or other financial gain from a transaction involving SCA.  </p>
+                                <p>4. An employee or his/her close relative receives personal gifts, bequests, or loans from third parties dealing with SCA.  An exception is made for gifts of nominal value of up to <b>$ 30</b>.  </p>
+                                <p>5. An employee hires or retains as a consultant an employee's close relative in a position within the same department as the employee, or directly or indirectly under the employee’s supervision; or where the employee may substantially influence the relative's pay, career progression, or performance. </p>
+                                <p>6. An employee fails to declare the number of relatives (and the nature of relations) in employment within SCA at the time of hire which may result in employment beyond f the maximum allowed - 3. Current employee should also declare annually in the PAR report In case any relatives joined within the year in review.  </p>
+                                <p>7. An employee, engages in any outside employment or activity that will materially encroach on an employee's obligation to SCA; compete with SCA's activities; involve any use of SCA's equipment supplies or facilities; or imply SCA's sponsorship or support of the outside employment or activity. </p>
+                                <p>Failure on the part of the employee to abide by this policy will be considered a major misconduct and the employee will be terminated immediately from employment with SCA.  </p>
+                                <br/>
+                                <br/>
+                                <p>I agree and will abide by the Conflict-of-Interest policy stated above:</p>
+                                <table width="100%">
+                                
+                                    <tr>
+                                        <td style="border:none">Employee Name:</td>
+                                        <td style="border-bottom:1px solid grey">
+                                            <t t-if="o.name">
+                                                
+                                                <span t-esc="o.name" />
+                                                
+                                            </t>
+                                        </td>
+
+                                        <td style="border:none;">Month-Day-Year</td>
+                                        <td style="border-bottom:1px solid grey">
+                                            
+                                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%m-%d-%Y')"/> 
+                                            
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        
+                                        <td style="border:none;">Employee's Signature:</td>
+                                        <td style="border-bottom:1px solid grey">
+                                           
+                                            <span></span>
+                                        </td>
+
+                                        <td style="border:none">Date:</td>
+                                        <td style="border-bottom:1px solid grey">
+                                            <span></span>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                        </div>
+            		</t>
+            	</t>			
+			</t>
+		</template>
+	</data>
+</odoo>

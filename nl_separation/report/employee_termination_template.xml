@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+
+        <template id="termination_letter_template_header">
+            <div class="header">
+                <table width="100%">
+                    <tr>
+                        <td style="float:left;text-align:left;">
+                            <img t-att-src="'/nl_employee/static/description/sca.jpg'" alt="Logo" style="height:60px;" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </template>
+
+        <template id="termination_letter_main_info">
+            <t t-call="nl_separation.termination_letter_template_header" />
+            <t t-raw="0" />
+        </template>
+
+		<template id="employee_separation_template1">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+        			<t t-call="nl_separation.termination_letter_main_info">
+                        <div class="page">
+                            <style>
+                                span, td, p{
+                                    font-size: 18px;
+                                }
+                            </style>
+                            <br/><br/>
+                            <!-- <img t-att-src="'/nl_employee/static/description/sca.jpg'" alt="Logo" style="float:center;height:80px;width:170px;margin-left:390px;"/> -->
+                            <h5 class="text-center" style="text-align:center;font-size:20px;"><b>Human Resources Department</b></h5>
+                            <br/><br/>
+                            <div>
+                                <span style="float:left"><span t-esc="context_timestamp(datetime.datetime.now()).strftime('%b %d, %Y')"/> </span><br/><br/><br/>
+                                <span t-field="o.employee_id"/><br/>
+                                <span t-field="o.job_id"/><br/>
+                                <span t-field="o.department_id"/><br/><br/>
+                                <span>Subject:  <b> Termination of Employment</b></span><br/><br/>
+                                <span>Dear  <span t-field="o.employee_id"/>, </span><br/><br/>
+                                <p>Where there has been a violation of the organizational policy, the action And policy should be referred to when providing justification for the dismissal. <br/><br/> For the above reasons, your contract of employment will be terminated with effect from  <span t-field="o.relieve_date"/> . Please clear all your outstanding dues which you may have with all Departments/the Organization. </p>
+                            </div>
+                            <br/>
+                            <table  width="100%">
+                                <tr>
+                                    <td width="50%" class="text-left" style="text-align:left;">
+                                        <div><br/><br/><br/><b><span t-field="o.company_id.head_of_hr"/></b><br/>Head of HR, SCA </div>
+                                    </td>
+                                </tr>
+                            </table>
+            
+                        </div>
+                    </t>
+                </t>
+            </t>
+		</template>
+	</data>
+</odoo>

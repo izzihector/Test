@@ -1,0 +1,137 @@
+*{
+	padding: 0;
+	margin: 0;
+}
+
+body{
+	background: #B8BEDD;
+    background-image: linear-gradient(to top, #006983 0%, #006983 100%);
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.container {
+font-family: 'Comfortaa', cursive;
+
+margin: 100px auto;
+	
+}
+
+h1 {
+	text-align: center;
+	margin: 1em auto;
+	color: #344055;
+}
+
+
+.member {
+	background-image: linear-gradient(to top, rgba(236, 234, 235, 0.79) 0%, rgba(255, 255, 255, 0.72) 100%);
+	background: rgba(255, 255, 255, 0.95);
+	width: auto;
+	max-width: 600px;
+	height: 400px;
+	border-radius: 7px;
+	margin: auto;
+	text-align: center;
+	padding: 20px 10px;
+	position: relative;
+	top: 0;
+	left: 0;
+}
+
+.member .img-member {
+	border-radius: 50%;
+/* 	border: 5px solid #B8BEDD; */
+	margin-top: -80px;
+/* 	position: absolute; */
+/* 	top: -75px; */
+}
+
+.member .name-member {
+	color: #344055;
+	margin: 7px 0 7px 0;
+	}
+
+.fa-check {
+	color: #FFF;
+	border-radius: 50%; 
+	background: #49C628;
+	padding: 4px;
+	font-size: 16px;
+	margin-left:5px;
+/* 	border: 1px solid greenyellow; */
+}
+
+.member .expertise-member {
+	color: #888098;
+	margin-top: 0;
+	font-size: 14px;
+	margin: 7px 0 7px 0;
+
+}
+
+button.btn {
+	background-image: linear-gradient( 135deg, #43CBFF 10%, #9708CC 100%);
+	box-shadow: 0px 0px 15px 0px #63458A;
+	background-attachment: fixed;
+	background-size: cover;
+	border-radius: 20px;
+	padding: 12px 30px;
+	margin: 20px 0;
+	outline: none;
+	border: none;
+	color: #FFF;
+	
+	cursor: pointer;
+	transition: all 0.3s linear;
+}
+button.btn:hover {
+		box-shadow: 0px 5px 5px 0px rgba(217, 217, 217, 0.99);
+	
+}
+button.btn:active {
+	box-shadow: 0px 0px 0px 0px #63458A;
+	transform: translateY(4px);
+	
+}
+
+.span {
+	margin: 1px;
+	padding: 12px 22px;
+	border-radius: 8px;
+	display: inline-block;
+	transition: 0.3s linear;
+	background: rgba(255, 255, 255, 0.8);
+	box-shadow: 0px 5px 10px 0px rgba(217, 217, 217, 0.82);
+	cursor: pointer;
+	color: #373F51;
+	font-size: 14px;
+}
+.span:hover{
+	box-shadow: 0px 5px 5px 0px rgba(217, 217, 217, 0.99);
+}
+
+.span p {margin-top: 5px; display: inline-block; color: #999999;}
+
+
+
+
+
+blockquote {
+	text-align: center;
+	margin-top: 20px;
+	line-height: 1.5;
+	color: #344055;
+	font-size: 15px;
+}
+
+.message {
+background-image: linear-gradient( 135deg, rgba(91, 226, 55, 0.92) 10%, #49C628 100%);
+	color: #fff;
+	transition: .5s linear;
+}
+
+.message:hover {
+/* 	opacity: .90; */
+	background: #49C628;
+}

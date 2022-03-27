@@ -1,0 +1,613 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<template id="exit_interview_template">
+			<t t-call="web.html_container">
+            	<t t-foreach="docs" t-as="o">
+            		<t t-call="web.basic_layout">
+	            		<div class="page" >
+	            			<style>
+                                .text-center{
+                                    text-align:center;
+                                }
+                              
+
+ 
+input {
+  position: relative !important;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  margin: 8px;
+  box-sizing: content-box;
+  overflow: hidden;
+}
+input:before {
+  content: '';
+  display: block;
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #ccc;
+  transition: 0.2s border-color ease;
+}
+input:checked:before {
+  border-color: #12CBC4;
+  transition: 0.5s border-color ease;
+}
+input:disabled:before {
+  border-color: #ccc;
+  background-color: #ccc;
+}
+input:after {
+  content: '';
+  display: block;
+  position: absolute;
+  box-sizing: content-box;
+  top: 20px;
+  left: 30px;
+  fill:red;
+  transform-origin: 50% 50%;
+  background-color: #12CBC4;
+  width: 16px;
+  height: 16px;
+  border-radius: 100vh;
+  transform: translate(-50%, -50%) scale(0);
+}
+input[type="radio"]:before {
+  border-radius: 100vh;
+}
+input[type="radio"]:after {
+  width: 16px;
+  height: 16px;
+  border-radius: 100vh;
+  transform: translate(-50%, -50%) scale(0);
+}
+input[type="radio"]:checked:after {
+  -webkit-animation: toggleOnRadio 0.2s ease forwards;
+          animation: toggleOnRadio 0.2s ease forwards;
+          background-color:red;
+}
+input[type="checkbox"]:before {
+  border-radius: 4px;
+}
+input[type="checkbox"]:after {
+  width: 9.6px;
+  height: 16px;
+  border-radius: 0;
+  transform: translate(-50%, -85%) scale(0) rotate(45deg);
+  background-color: transparent;
+  box-shadow: 4px 4px 0px 0px #12CBC4;
+}
+input[type="checkbox"]:checked:after {
+  -webkit-animation: toggleOnCheckbox 0.2s ease forwards;
+          animation: toggleOnCheckbox 0.2s ease forwards;
+}
+input[type="checkbox"].filled:before {
+  border-radius: 4px;
+  transition: 0.2s border-color ease, 0.2s background-color ease;
+}
+input[type="checkbox"].filled:checked:not(:disabled):before {
+  background-color: #12CBC4;
+}
+input[type="checkbox"].filled:not(:disabled):after {
+  box-shadow: 4px 4px 0px 0px white;
+}
+@-webkit-keyframes toggleOnCheckbox {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -85%) scale(0) rotate(45deg);
+  }
+  70% {
+    opacity: 1;
+    transform: translate(-50%, -85%) scale(0.9) rotate(45deg);
+  }
+  100% {
+    transform: translate(-50%, -85%) scale(0.8) rotate(45deg);
+  }
+}
+@keyframes toggleOnCheckbox {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -85%) scale(0) rotate(45deg);
+  }
+  70% {
+    opacity: 1;
+    transform: translate(-50%, -85%) scale(0.9) rotate(45deg);
+  }
+  100% {
+    transform: translate(-50%, -85%) scale(0.8) rotate(45deg);
+  }
+}
+@-webkit-keyframes toggleOnRadio {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  70% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+}
+@keyframes toggleOnRadio {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  70% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+}
+
+
+
+                            </style>
+                           
+                            <img t-att-src="'/nl_employee/static/description/sca.jpg'" alt="Logo" style="opacity:0; height:0; width:0;"/>
+                            <img t-att-src="'/nl_employee/static/description/sca.jpg'" alt="Logo" style="float:left;height:60px;"/><br/><br/><br/><br/>
+                             <h5 class="text-center" style="text-align:center;font-size:20px;"><b>Human Resource Management<br/>Confidential Exit Interview Form</b></h5>
+                            <hr style="height:1px;width:100%;background-color:#000"/>
+                            <table width="100%" colspan="12">
+                                <tr>
+                                    <td colspan="3"><b>Employee Name: </b></td>
+                                    <td colspan="3"><span t-esc="o.employee_id.name"/></td>
+                                    <td colspan="3"><b>Job Title: </b></td>
+                                    <td colspan="3"><span t-esc="o.job_id.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3"><b>Dept/Region: </b></td>
+                                    <td colspan="3"> <span t-esc="o.department_id.name"/></td>
+                                    <td colspan="3"><b>Hired Date: </b></td>
+                                    <td colspan="3"> <span t-esc="o.join_date"/></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3"><b>Separation Date (official): </b></td>
+                                    <td colspan="3"> <span t-esc="o.relieve_date"/></td>
+                                    <td colspan="3"><b>Supervisor Name: </b></td>
+                                    <td colspan="3"> <span t-esc="o.manager_id.name"/></td>
+                                </tr>
+                            </table>
+                            <hr style="height:1px;width:100%;background-color:#000"/>
+                            <b>The reason(s) that you are leaving your position in (Swedish Committee for Afghanistan) is/are:  (note all that apply)</b>
+                            <table width="100%">
+                                <tr>
+                                    <td width="50%"><t t-if="o.exit_interview_form_id.better_employement_elsewhere"><i class="fa fa-check" style="border:1px solid black;margin-left:9px;margin-right:9px"></i> Better employment elsewhere </t>
+                                                    <t t-if="not o.exit_interview_form_id.better_employement_elsewhere"><input name="better_employement_elsewhere" type="checkbox" > Better employment elsewhere </input></t></td>
+                                    <td width="50%"><t t-if="o.exit_interview_form_id.diffucilt_with_work"><i class="fa fa-check" style="border:1px solid black;margin-left:9px;margin-right:9px"></i> Difficulty with work &amp; family balance </t>
+                                                    <t t-if="not o.exit_interview_form_id.diffucilt_with_work"><input name="diffucilt_with_work" type="checkbox"> Difficulty with work &amp; family balance </input></t></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><t t-if="o.exit_interview_form_id.limited_career"><i class="fa fa-check" style="border:1px solid black;margin-left:9px;margin-right:9px"></i> Limited career advancement </t>
+                                                    <t t-if="not o.exit_interview_form_id.limited_career"><input name="limited_career" type="checkbox"> Limited career advancement </input></t></td>
+                                    <td width="50%"><t t-if="o.exit_interview_form_id.pay_compensation"><i class="fa fa-check" style="border:1px solid black;margin-left:9px;margin-right:9px"></i> Pay/Compensation issues</t>
+                                                    <t t-if="not o.exit_interview_form_id.pay_compensation"><input name="pay_compensation" type="checkbox"> Pay/Compensation issues </input></t></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><t t-if="o.exit_interview_form_id.benefits"><i class="fa fa-check" style="border:1px solid black;margin-left:9px;margin-right:9px"></i> Benefits/entitlements issues </t>
+                                                    <t t-if="not o.exit_interview_form_id.benefits"><input name="benefits" type="checkbox"> Benefits/entitlements issues </input></t></td>
+                                    <td width="50%"><t t-if="o.exit_interview_form_id.dissatisfied_job"><i class="fa fa-check" style="border:1px solid black;margin-left:9px;margin-right:9px"></i> Dissatisfied with job duties </t>
+                                                    <t t-if="not o.exit_interview_form_id.dissatisfied_job"><input name="dissatisfied_job" type="checkbox"> Dissatisfied with job duties </input></t></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><t t-if="o.exit_interview_form_id.dissatisfied_working_condition"><i class="fa fa-check" style="border:1px solid black;margin-left:9px;margin-right:9px"></i> Dissatisfied with working conditions </t>
+                                                    <t t-if="not o.exit_interview_form_id.dissatisfied_working_condition"><input name="dissatisfied_working_condition" type="checkbox"> Dissatisfied with working conditions </input></t></td>
+                                    <td width="50%"><t t-if="o.exit_interview_form_id.supervision_issues"><i class="fa fa-check" style="border:1px solid black;margin-left:9px;margin-right:9px"></i> Supervision issues </t>
+                                                    <t t-if="not o.exit_interview_form_id.supervision_issues"><input name="supervision_issues" type="checkbox"> Supervision issues </input></t></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%"><t t-if="o.exit_interview_form_id.own_security"><i class="fa fa-check" style="border:1px solid black;margin-left:9px;margin-right:9px"></i> Concerned about own security </t>
+                                                    <t t-if="not o.exit_interview_form_id.own_security"><input name="own_security" type="checkbox"> Concerned about own security </input></t></td>
+                                    <td width="50%"><t t-if="o.exit_interview_form_id.higher_education"><i class="fa fa-check" style="border:1px solid black;margin-left:9px;margin-right:9px"></i>Continuation of higher education </t>
+                                                    <t t-if="not o.exit_interview_form_id.higher_education"><input name="higher_education" type="checkbox"> Continuation of higher education </input></t></td>
+                                </tr>
+
+                            </table>
+                            <br/><br/>
+                            <b>What did you think of your supervisor on the following points? </b>
+                            <table width="100%" class="table table-bordered mb-1">
+                                <tr>
+                                    <td width="2%" class="border-0 font-weight-bold">No</td><td width="40%" class="border-0 font-weight-bold">Questions</td><td width="10%" class="font-weight-bold text-center">1</td><td width="10%" class="font-weight-bold text-center">2</td><td width="10%" class="font-weight-bold text-center">3</td><td width="10%" class="font-weight-bold text-center">4</td><td width="10%" class="font-weight-bold text-center">5</td>
+                                </tr>
+                                <tr>
+                                    <td width="2%">1</td>
+                                    <td width="40%">How would you rate SCA as a place of work  </td>
+                                    <td width="5%" class="text-center"><t t-if="o.exit_interview_form_id.place_of_work=='1'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.place_of_work=='1'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.place_of_work=='2'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.place_of_work=='2'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.place_of_work=='3'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.place_of_work=='3'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.place_of_work=='4'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.place_of_work=='4'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.place_of_work=='5'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.place_of_work=='5'"><span> </span></t></td>
+                                </tr>
+                                <tr>
+                                    <td width="2%">2</td>
+                                    <td width="40%">Working conditions, office, transportation, guesthouse, and other physical facilities were  </td>
+                                    <td width="5%" class="text-center"><t t-if="o.exit_interview_form_id.working_condition=='1'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.working_condition=='1'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.working_condition=='2'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.working_condition=='2'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.working_condition=='3'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.working_condition=='3'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.working_condition=='4'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.working_condition=='4'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.working_condition=='5'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.working_condition=='5'"><span> </span></t></td>
+                                </tr>
+                                <tr>
+                                    <td width="2%">3</td>
+                                    <td width="40%">Your relationship with your supervisor was  </td>
+                                    <td width="5%" class="text-center"><t t-if="o.exit_interview_form_id.supervisor_relationship=='1'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.supervisor_relationship=='1'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.supervisor_relationship=='2'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.supervisor_relationship=='2'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.supervisor_relationship=='3'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.supervisor_relationship=='3'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.supervisor_relationship=='4'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.supervisor_relationship=='4'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.supervisor_relationship=='5'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.supervisor_relationship=='5'"><span> </span></t></td>
+                                </tr>
+                                <tr>
+                                    <td width="2%">4</td>
+                                    <td width="40%">Your understanding of your Job description (duties, responsibilities, and performance standards) was  </td>
+                                    <td width="5%" class="text-center"><t t-if="o.exit_interview_form_id.understand_job=='1'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.understand_job=='1'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.understand_job=='2'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.understand_job=='2'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.understand_job=='3'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.understand_job=='3'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.understand_job=='4'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.understand_job=='4'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.understand_job=='5'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.understand_job=='5'"><span> </span></t></td>
+                                </tr>
+                                <tr>
+                                    <td width="2%">5</td>
+                                    <td width="40%">The level of involvement in setting your work goals and objectives with your supervisor was  </td>
+                                    <td width="5%" class="text-center"><t t-if="o.exit_interview_form_id.goals_and_objectives=='1'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.goals_and_objectives=='1'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.goals_and_objectives=='2'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.goals_and_objectives=='2'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.goals_and_objectives=='3'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.goals_and_objectives=='3'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.goals_and_objectives=='4'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.goals_and_objectives=='4'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.goals_and_objectives=='5'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.goals_and_objectives=='5'"><span> </span></t></td>
+                                </tr>
+                                <tr>
+                                    <td width="2%">6</td>
+                                    <td width="40%">The extent to which you are informed ahead of time regarding changes to your work was  </td>
+                                    <td width="5%" class="text-center"><t t-if="o.exit_interview_form_id.ahead_of_time=='1'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.ahead_of_time=='1'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.ahead_of_time=='2'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.ahead_of_time=='2'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.ahead_of_time=='3'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.ahead_of_time=='3'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.ahead_of_time=='4'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.ahead_of_time=='4'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.ahead_of_time=='5'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.ahead_of_time=='5'"><span> </span></t></td>
+                                </tr>
+
+
+                                <tr>
+                                    <td width="2%">7</td>
+                                    <td width="40%">When you did a job well, the recognition you received was</td>
+                                    <td width="5%" class="text-center"><t t-if="o.exit_interview_form_id.well_done_recognition=='1'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.well_done_recognition=='1'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.well_done_recognition=='2'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.well_done_recognition=='2'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.well_done_recognition=='3'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.well_done_recognition=='3'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.well_done_recognition=='4'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.well_done_recognition=='4'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.well_done_recognition=='5'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.well_done_recognition=='5'"><span> </span></t></td>
+                                </tr>
+
+                                <tr>
+                                    <td width="2%">8</td>
+                                    <td width="40%">The extent to which constructive feedback was given to help you grow and improve your performance was</td>
+                                    <td width="5%" class="text-center"><t t-if="o.exit_interview_form_id.constructive_feedback=='1'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.constructive_feedback=='1'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.constructive_feedback=='2'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.constructive_feedback=='2'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.constructive_feedback=='3'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.constructive_feedback=='3'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.constructive_feedback=='4'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.constructive_feedback=='4'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.constructive_feedback=='5'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.constructive_feedback=='5'"><span> </span></t></td>
+                                </tr>
+
+                                <tr>
+                                    <td width="2%">9</td>
+                                    <td width="40%">Your supervisor’s willingness to listen to your problems and help you when you had questions and challenges was  </td>
+                                    <td width="5%" class="text-center"><t t-if="o.exit_interview_form_id.problem_solving=='1'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.problem_solving=='1'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.problem_solving=='2'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.problem_solving=='2'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.problem_solving=='3'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.problem_solving=='3'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.problem_solving=='4'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.problem_solving=='4'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.problem_solving=='5'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.problem_solving=='5'"><span> </span></t></td>
+                                </tr>
+                                <tr>
+                                    <td width="2%">10</td>
+                                    <td width="40%">The respect and confidence you had in your supervisor was  </td>
+                                    <td width="5%" class="text-center"><t t-if="o.exit_interview_form_id.respect=='1'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.respect=='1'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.respect=='2'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.respect=='2'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.respect=='3'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.respect=='3'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.respect=='4'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.respect=='4'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.respect=='5'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.respect=='5'"><span> </span></t></td>
+                                </tr>
+                                <tr>
+                                    <td width="2%">11</td>
+                                    <td width="40%">Management willingness to address staff concerns was  </td>
+                                    <td width="5%" class="text-center"><t t-if="o.exit_interview_form_id.staff_concern=='1'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.staff_concern=='1'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.staff_concern=='2'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.staff_concern=='2'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.staff_concern=='3'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.staff_concern=='3'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.staff_concern=='4'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.staff_concern=='4'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.staff_concern=='5'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.staff_concern=='5'"><span> </span></t></td>
+                                </tr>
+                                <tr>
+                                    <td width="2%">12</td>
+                                    <td width="40%">The effort expended to keep you as an employee was  </td>
+                                    <td width="5%" class="text-center"><t t-if="o.exit_interview_form_id.effort_keep=='1'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.effort_keep=='1'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.effort_keep=='2'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.effort_keep=='2'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.effort_keep=='3'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.effort_keep=='3'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.effort_keep=='4'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.effort_keep=='4'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.effort_keep=='5'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.effort_keep=='5'"><span> </span></t></td>
+                                </tr>
+                                <tr>
+                                    <td width="2%">13</td>
+                                    <td width="40%">The level of concern for employees here in __________/SCA is</td>
+                                    <td width="5%" class="text-center"><t t-if="o.exit_interview_form_id.level_of_concern=='1'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.level_of_concern=='1'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.level_of_concern=='2'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.level_of_concern=='2'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.level_of_concern=='3'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.level_of_concern=='3'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.level_of_concern=='4'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.level_of_concern=='4'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.level_of_concern=='5'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.level_of_concern=='5'"><span> </span></t></td>
+                                </tr>
+                                <tr>
+                                    <td width="2%">14</td>
+                                    <td width="40%">Compared to other international organizations in Afghanistan, the benefit package was  </td>
+                                    <td width="5%" class="text-center"><t t-if="o.exit_interview_form_id.compare=='1'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.compare=='1'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.compare=='2'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.compare=='2'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.compare=='3'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.compare=='3'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.compare=='4'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.compare=='4'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.compare=='5'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.compare=='5'"><span> </span></t></td>
+                                </tr>
+                                <tr>
+                                    <td width="2%">15</td>
+                                    <td width="40%">The pay you received was  </td>
+                                    <td width="5%" class="text-center"><t t-if="o.exit_interview_form_id.pay=='1'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.pay=='1'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.pay=='2'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.pay=='2'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.pay=='3'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.pay=='3'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.pay=='4'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.pay=='4'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.pay=='5'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.pay=='5'"><span> </span></t></td>
+                                </tr>
+                                <tr>
+                                    <td width="2%">16</td>
+                                    <td width="40%">You regarded your chances for promotion and increased pay as  </td>
+                                    <td width="5%" class="text-center"><t t-if="o.exit_interview_form_id.increment=='1'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.increment=='1'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.increment=='2'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.increment=='2'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.increment=='3'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.increment=='3'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.increment=='4'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.increment=='4'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.increment=='5'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.increment=='5'"><span> </span></t></td>
+                                </tr>
+                                <tr>
+                                    <td width="2%">17</td>
+                                    <td width="40%">To what extent were the training and development opportunities offered by SCA relevant and appropriate to your work.  </td>
+                                    <td width="5%" class="text-center"><t t-if="o.exit_interview_form_id.development=='1'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.development=='1'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.development=='2'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.development=='2'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.development=='3'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.development=='3'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.development=='4'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.development=='4'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.development=='5'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.development=='5'"><span> </span></t></td>
+                                </tr>
+                                <tr>
+                                    <td width="2%">18</td>
+                                    <td width="40%">The culture of SCA as a Learning and progressive organization is  </td>
+                                    <td width="5%" class="text-center"><t t-if="o.exit_interview_form_id.culture=='1'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.culture=='1'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.culture=='2'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.culture=='2'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.culture=='3'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.culture=='3'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.culture=='4'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.culture=='4'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.culture=='5'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.culture=='5'"><span> </span></t></td>
+                                </tr>
+                                <tr>
+                                    <td width="2%">19</td>
+                                    <td width="40%">The level of cooperation among employees in your section/unit was     </td>
+                                    <td width="5%" class="text-center"><t t-if="o.exit_interview_form_id.cooperation=='1'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.cooperation=='1'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.cooperation=='2'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.cooperation=='2'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.cooperation=='3'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.cooperation=='3'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.cooperation=='4'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.cooperation=='4'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.cooperation=='5'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.cooperation=='5'"><span> </span></t></td>
+                                </tr>
+                                <tr>
+                                    <td width="2%">20</td>
+                                    <td width="40%">The guidance and instruction you received from the HRM Unit was    </td>
+                                    <td width="5%" class="text-center"><t t-if="o.exit_interview_form_id.guidance_hr=='1'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.guidance_hr=='1'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.guidance_hr=='2'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.guidance_hr=='2'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.guidance_hr=='3'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.guidance_hr=='3'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.guidance_hr=='4'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.guidance_hr=='4'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.guidance_hr=='5'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.guidance_hr=='5'"><span> </span></t></td>
+                                </tr>
+                                <tr>
+                                    <td width="2%">21</td>
+                                    <td width="40%">The guidance and instruction you received from the Finance Unit was    </td>
+                                    <td width="5%" class="text-center"><t t-if="o.exit_interview_form_id.guidance_finance=='1'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.guidance_finance=='1'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.guidance_finance=='2'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.guidance_finance=='2'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.guidance_finance=='3'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.guidance_finance=='3'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.guidance_finance=='4'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.guidance_finance=='4'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.guidance_finance=='5'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.guidance_finance=='5'"><span> </span></t></td>
+                                </tr>
+                                <tr>
+                                    <td width="2%">22</td>
+                                    <td width="40%">The guidance and instruction you received from the Admin Unit was   </td>
+                                    <td width="5%" class="text-center"><t t-if="o.exit_interview_form_id.guidance_admin=='1'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.guidance_admin=='1'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.guidance_admin=='2'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.guidance_admin=='2'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.guidance_admin=='3'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.guidance_admin=='3'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.guidance_admin=='4'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.guidance_admin=='4'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.guidance_admin=='5'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.guidance_admin=='5'"><span> </span></t></td>
+                                </tr>
+                                <tr>
+                                    <td width="2%">23</td>
+                                    <td width="40%">The guidance and instruction you received from the Procurement &amp; Supply Unit was    </td>
+                                    <td width="5%" class="text-center"><t t-if="o.exit_interview_form_id.guidance_procurement=='1'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.guidance_procurement=='1'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.guidance_procurement=='2'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.guidance_procurement=='2'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.guidance_procurement=='3'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.guidance_procurement=='3'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.guidance_procurement=='4'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.guidance_procurement=='4'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.guidance_procurement=='5'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.guidance_procurement=='5'"><span> </span></t></td>
+                                </tr>
+                                <tr>
+                                    <td width="2%">24</td>
+                                    <td width="40%">The cooperation and advice you received from the TR &amp; ER Unit was    </td>
+                                    <td width="5%" class="text-center"><t t-if="o.exit_interview_form_id.guidance_tr=='1'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.guidance_tr=='1'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.guidance_tr=='2'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.guidance_tr=='2'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.guidance_tr=='3'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.guidance_tr=='3'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.guidance_tr=='4'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.guidance_tr=='4'"><span> </span></t></td>
+                                    <td width="10%" class="text-center"><t t-if="o.exit_interview_form_id.guidance_tr=='5'"><i class="fa fa-check"></i></t>
+                                                    <t t-if="not o.exit_interview_form_id.guidance_tr=='5'"><span> </span></t></td>
+                                </tr>
+                            </table><br/><br/>
+                            <table width="100%">
+                                <tr><td><b>Please write any specific experiences that stood out (positive or negative) in relation to Questions 1 – 24 above</b></td></tr>
+                                <tr>
+                                    <td width="60%"><span t-esc="o.exit_interview_form_id.specific_expereinces"/> </td>
+                                </tr>
+                            </table><br/>
+                            <table width="100%">
+                                <tr><td><b>Under what conditions would you have stayed? </b></td></tr>
+                                <tr>
+                                    <td width="60%"><span t-esc="o.exit_interview_form_id.conditions"/> </td>
+                                </tr>
+                            </table><br/>
+                            <table width="100%">
+                                <tr><td><b>What one thing would you have changed in SCA? </b></td></tr>
+                                <tr>
+                                    <td width="60%"><span t-esc="o.exit_interview_form_id.one_thing"/> </td>
+                                </tr>
+                            </table><br/>
+                            <table width="100%">
+                                <tr><td><b>How can SCA avoid losing good employees in the future? </b></td></tr>
+                                <tr>
+                                    <td width="60%"><span t-esc="o.exit_interview_form_id.lose_employee"/> </td>
+                                </tr>
+                            </table><br/>
+                            <table width="100%">
+                                <tr><td><b>Would you consider working with SCA in future? </b></td></tr>
+                                <tr>
+                                    <td width="60%"><span t-esc="o.exit_interview_form_id.reconsider_working"/> </td>
+                                </tr>
+                            </table><br/>
+                            <table width="100%">
+                                <tr><td><b>Any other Comments: </b></td></tr>
+                                <tr>
+                                    <td width="60%"><span t-esc="o.exit_interview_form_id.other_comments"/> </td>
+                                </tr>
+                            </table><br/>
+                            <div>
+                              <p>Sincerely,</p>
+                            </div>
+                            <div>
+                              <b>Head of HR</b><br/>
+                              <b>Kabul Management Office, SCA</b><br/>
+                              <b>Kabul, Afghanistan </b>
+
+                              <div class="text-right">
+                                <span>Version 2 – November 2020</span>
+                              </div>
+                            </div>
+					   </div>
+            		</t>
+            	</t>			
+			</t>
+		</template>
+	</data>
+</odoo>

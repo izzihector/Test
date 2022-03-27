@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- All pip Appraisals -->
+    <template id="all_pip_appraisals" name="All Subordinate Performance Plans">
+        <t t-call="portal.portal_layout">
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Subordinate Performance Plans</t>
+            </t>
+            <div t-if="not appraisals" class="alert alert-warning mt8" role="alert">No Subordinate Performance Plans Records found!</div>
+            <t t-if="appraisals" t-call="portal.portal_table">
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Department</th>
+                        <th>Unit</th>
+                        <th>Position</th>
+                        <th>Initial Meeting</th>
+                        <th>Type</th>
+                        <th>State</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="appraisals" t-as="pip">
+                        <td><t t-esc="pip.get('employee_name', '')"/></td>
+                        <td><t t-esc="pip.get('department_name', '')"/></td>
+                        <td><t t-esc="pip.get('unit_name', '')"/></td>
+                        <td><t t-esc="pip.get('position', '')"/></td>
+                        <td><t t-esc="pip.get('initial_meeting_date', '')"/></td>
+                        <td><t t-esc="all_appraisal_types.get(pip.get('appraisal_type', ''))"/></td>
+                        <td><t t-esc="all_states.get(pip.get('state', ''))"/></td>
+                        <td>
+                            <a class="btn btn-secondary btn-sm" t-attf-href="/supervisor/employee-pip-appraisals/{{ pip.get('id') }}">
+                                <i class="fa fa-view" />
+                                View
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+    <!-- My pip Appraisals -->
+    <template id="my_pip_appraisals" name="All My Performance Plans">
+        <t t-call="portal.portal_layout">
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">My Performance Improvement Plans</t>
+            </t>
+            <div t-if="not appraisals" class="alert alert-warning mt8" role="alert">No Performance Plans Appraisal Records found!</div>
+            <t t-if="appraisals" t-call="portal.portal_table">
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Department</th>
+                        <th>Unit</th>
+                        <th>Position</th>
+                        <th>Initial Meeting</th>
+                        <th>Type</th>
+                        <th>State</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="appraisals" t-as="pip">
+                        <td><t t-esc="pip.get('employee_name', '')"/></td>
+                        <td><t t-esc="pip.get('department_name', '')"/></td>
+                        <td><t t-esc="pip.get('unit_name', '')"/></td>
+                        <td><t t-esc="pip.get('position', '')"/></td>
+                        <td><t t-esc="pip.get('initial_meeting_date', '')"/></td>
+                        <td><t t-esc="all_appraisal_types.get(pip.get('appraisal_type', ''))"/></td>
+                        <td><t t-esc="all_states.get(pip.get('state', ''))"/></td>
+                        <td>
+                            <a class="btn btn-secondary btn-sm" t-attf-href="/employee/my-pip-appraisals/{{ pip.get('id') }}">
+                                <i class="fa fa-view" />
+                                View
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+
+    <!-- subordinates pip single appraisal -->
+    <template id="pip_single_appraisal" name="Subordinate Performance Plans">
+        <t t-call="portal.portal_layout">
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Subordinate Performance Plans</t>
+            </t>
+            <div class="container vue_appraisal_apps" id="vue_pip_single_appraisal_app">
+                <single-pip-appraisal-parent t-att-id="id" />
+            </div>
+            <!-- chatter -->
+            <div id="invoice_communication" class="mt-4">
+                <h2>History</h2>
+                <t t-call="portal.message_thread">
+                    <t t-set="object" t-value="appraisal_pip"/>
+                </t>
+            </div>
+        </t>
+    </template>
+    <!-- my pip appraisal -->
+    <template id="pip_my_appraisal" name="My Performance Plans">
+        <t t-call="portal.portal_layout">
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">My Performance Improvement Plans</t>
+            </t>
+            <div class="container vue_appraisal_apps" id="vue_pip_my_appraisal_app">
+                <my-pip-appraisal-parent t-att-id="id" />
+            </div>
+            <!-- chatter -->
+            <div id="invoice_communication" class="mt-4">
+                <h2>History</h2>
+                <t t-call="portal.message_thread">
+                    <t t-set="object" t-value="appraisal_pip"/>
+                </t>
+            </div>
+        </t>
+    </template>
+
+
+
+    <!-- pip View -->
+    <template id="appraisal_pip_view" name="Appraisal View">
+        <t t-call="portal.portal_layout">
+            <div style="background-color: white" class="my-4 py-lg-2 px-lg-3">
+                <a class="btn btn-secondary btn-sm btn-odoo" t-attf-href="/report/pdf/nl_appraisal.report_appraisal_pip/{{ appraisal_pip.id }}" t-if="appraisal_pip.state == 'done'">
+                    <i class="fa fa-view" /> 
+                    print
+                </a>
+                <t t-if="request.env.user.employee_id">
+                    <a class="btn btn-secondary btn-sm btn-odoo" t-attf-href="/supervisor/employee-pip-appraisals/{{ appraisal_pip.id }}" t-if="request.env.user.employee_id.id == appraisal_pip.manager_id.id">
+                        <i class="fa fa-view" />
+ 
+                        View and edit
+                    </a>
+                    <a class="btn btn-secondary btn-sm btn-odoo" t-attf-href="/employee/my-pip-appraisals/{{ appraisal_pip.id }}" t-if="request.env.user.employee_id.id == appraisal_pip.employee_id.id">
+                        <i class="fa fa-view" />
+ 
+                        View and edit
+                    </a>
+                </t>
+                <div class="mt-4 custom_font_size">
+                    <h3>General Information</h3>
+                    <div class="row bg-white mt-2">
+                        <div class="col-lg-3 headr border-grey border py-1 px-2 custom_font_size" >Employee Name:</div>
+                        <div class="col-lg-9 border-grey border odoo-cell-grey py-1 px-2 custom_font_size">
+                            <t t-esc="appraisal_pip.employee_id.name"/>
+                        </div>
+                    </div>
+                    <div class="row bg-white">
+                        <div class="col-lg-3 headr border-grey border py-1 px-2 custom_font_size">Position</div>
+                        <div class="col-lg-9 border-grey border odoo-cell-grey py-1 px-2 custom_font_size">
+                            <t t-esc="appraisal_pip.job_id.name"/>
+                        </div>
+                    </div>
+                    <div class="row bg-white">
+                        <div class="col-lg-3 headr border-grey border py-1 px-2 custom_font_size">Supervisor(s)</div>
+                        <div class="col-lg-9 border-grey border odoo-cell-grey py-1 px-2 custom_font_size">
+                            <t t-esc="appraisal_pip.manager_id.name"/>
+                        </div>
+                    </div>
+                    <div class="row bg-white">
+                        <div class="col-lg-3 headr border-grey border py-1 px-2 custom_font_size">Date of initial Meeting</div>
+                        <div class="col-lg-9 border-grey border odoo-cell-grey py-1 px-2 custom_font_size">
+                            <t t-esc="appraisal_pip.initial_meeting_date"/>
+                        </div>
+                    </div>
+                    <div class="row bg-white">
+                        <div class="col-lg-3 headr border-grey border py-1 px-2 custom_font_size">Name(s) of other attendee (s)</div>
+                        <div class="col-lg-9 border-grey border odoo-cell-grey py-1 px-2 custom_font_size"> 
+                            <span t-foreach="appraisal_pip.other_attendees " t-as="other_att">
+                                <t t-esc="other_att.name"/>, 
+                            </span> 
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Objectives part -->
+                <div class="mt-5 custom_font_size" t-if="appraisal_pip.target_ids">
+                    <div class="bg-white mt-2">
+                        <div class="row">
+                            <div class="col-lg-3 border-grey border py-1 px-2 headr" >
+                                <div class="font-weight-bold text-center mb-1">Target Area</div>
+                                <div class="d-block text-center"><small style="font-size: 13px">Detail specific area where performance standards have not been met.</small></div>
+                            </div>
+                            <div class="col-lg-3 border-grey border py-1 px-2 headr" >
+                                <div class="font-weight-bold text-center mb-1">Performance Concern</div>
+                                <div class="d-block text-center"><small style="font-size: 13px">Detail specific dates and examples of where the standards have not been met.</small></div>
+                            </div>
+                            <div class="col-lg-3 border-grey border py-1 px-2 headr" >
+                                <div class="font-weight-bold text-center mb-1">Agreed Improvement Action</div>
+                                <div class="d-block text-center"><small style="font-size: 13px">Detail what is expected of the employee in terms of their performance i.e. what does ‘good’ look like.</small></div>
+                            </div>
+                            <div class="col-lg-3 border-grey border py-1 px-2 headr" >
+                                <div class="font-weight-bold text-center mb-1">Support</div>
+                                <div class="d-block text-center"><small style="font-size: 13px">Detail what has been agreed in terms of support required to achieve the expected standard of performance</small></div>
+                            </div>
+                        </div>
+                        <div class="row" t-foreach="appraisal_pip.target_ids" t-as="obj">
+                            <div class="col-lg-3 border-grey border odoo-cell-grey"><t t-esc="obj.name" /></div>
+                            <div class="col-lg-3 border-grey border odoo-cell-grey"><t t-esc="obj.performance_concern" /></div>
+                            <div class="col-lg-3 border-grey border odoo-cell-grey"><t t-esc="obj.agreed_improvement_action" /></div>
+                            <div class="col-lg-3 border-grey border odoo-cell-grey"><t t-esc="obj.support" /></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reviews part -->
+                <div class="mt-5 custom_font_size" v-if="appraisal_pip.review_ids">
+                    <div class="bg-white mt-2">
+                        <div class="row">
+                            <div class="col-lg-1 border-grey border py-1 px-2 headr" ></div>
+                            <div class="col-lg-3 border-grey border py-1 px-2 headr" >
+                                <div class="font-weight-bold text-center mb-1">Review Date</div>
+                            </div>
+                            <div class="col-lg-6 border-grey border py-1 px-2 headr" >
+                                <div class="font-weight-bold text-center mb-1">Review Notes</div>
+                            </div>
+                            <div class="col-lg-2 border-grey border py-1 px-2 headr" >
+                                <div class="font-weight-bold text-center mb-1">Creteria</div>
+                            </div>
+                        </div>
+                        <t t-set="c_index" t-value="1"/>
+                        <div class="row" t-foreach="appraisal_pip.review_ids" t-as="obj">
+                            <div class="col-lg-1 border-grey border odoo-cell-grey"><t t-esc="c_index"/></div>
+                            <div class="col-lg-3 border-grey border odoo-cell-grey"><t t-esc="obj.review_date" /></div>
+                            <div class="col-lg-6 border-grey border odoo-cell-grey"><t t-esc="obj.notes" /></div>
+                            <div class="col-lg-2 border-grey border odoo-cell-grey"><t t-esc="creteria_dict[obj.result]" /></div>
+                            <t t-set="c_index" t-value="c_index+1"/>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Signature -->
+                <div class="mt-5 custom_font_size">
+                    <h5>This action has been agreed by:</h5>
+                    <div class="bg-white mt-2">
+                        <div class="row">
+                            <div class="col-lg-3 border-grey border py-1 px-2 headr border-bottom-white" >Signed by</div>
+                            <div class="col-lg-3 border-grey border py-1 headr px-2 border-bottom-white" >Name</div>
+                            <div class="col-lg-3 border-grey border py-1 headr px-2 border-bottom-white" >Signature</div>
+                            <div class="col-lg-3 border-grey border py-1 headr px-2 border-bottom-white" >Date</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3 border-grey border py-1 px-2 headr border-bottom-white" >Employee</div>
+                            <div class="col-lg-3 border-grey border py-1 px-2 odoo-cell-grey" ><t t-esc="appraisal_pip.employee_id.name" /></div>
+                            <div class="col-lg-3 border-grey border py-1 px-2 odoo-cell-grey" ></div>
+                            <div class="col-lg-3 border-grey border py-1 px-2 odoo-cell-grey" ><t t-esc="appraisal_pip.employee_sign_date" /></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3 border-grey border py-1 px-2 headr border-bottom-white" >Supervisor</div>
+                            <div class="col-lg-3 border-grey border py-1 px-2 odoo-cell-grey" ><t t-esc="appraisal_pip.manager_id.name" /></div>
+                            <div class="col-lg-3 border-grey border py-1 px-2 odoo-cell-grey" ></div>
+                            <div class="col-lg-3 border-grey border py-1 px-2 odoo-cell-grey" ><t t-esc="appraisal_pip.manager_sign_date" /></div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </t>
+    </template>
+
+</odoo>

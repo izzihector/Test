@@ -1,0 +1,258 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <template id="portal_my_home_menu_payslips" name="Portal layout : Leave Allocation" inherit_id="portal.portal_my_home" priority="21">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+           <t t-if="request.env.user.employee_id" t-call="portal.portal_docs_entry">
+              <t t-set="title">My Payslips</t>
+              <t t-set="url" t-value="'/my/payslips/list'" />
+              <t t-set="count" t-value="payslip_count" />
+           </t>
+        </xpath>
+     </template>
+    <template id="portal_my_payslips" name="My Payslips">
+
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True" />
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Payslips</t>
+    
+               
+            </t>
+    
+            <div t-if="not payslip_ids" class="alert alert-warning mt8" role="alert">
+                There are no Payslips avaialable at the moment.
+            </div>
+    
+            <t t-if="payslip_ids" t-call="portal.portal_table">
+                <thead>
+                    <tr>
+                        <th>Reference</th>
+                        <th>Name</th>
+                        <th>Month</th>
+                        <th>Net Salary</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr t-foreach="payslip_ids" t-as="payslip">
+                        <!-- t-options='{"widget": "date"}' -->
+                        <td><span t-esc="payslip.number" /></td>
+                        
+                      
+                        
+                          <td><span t-esc="payslip.name" /></td>
+                      
+                       
+                          <td><span t-esc="payslip.date_to.strftime('%B')" /></td>
+                          <td><span t-esc="payslip.total_net_salary" t-options='{"widget": "monetary", "display_currency": payslip.company_id.currency_id}'/></td>
+                    
+                        
+                        <td class="text-center">
+                            <t t-if="payslip.pdf_result">
+                                <a t-att-href="'data:application/pdf;base64,%s' % to_text(payslip.pdf_result)"
+                                t-att-download="payslip.name">
+                                <button type="button" class="btn btn-success btn-sm"> <span class="fa fa-download"></span> Download</button>
+                            </a>
+                            </t>
+                            <t t-if="not payslip.pdf_result">
+                            <a class="btn btn-warning btn-sm" t-attf-href="/my/payslip/download?id=#{payslip.id}">
+                                Generate
+                                
+                          </a>
+                          </t>
+                          
+                       
+                        </td>
+
+                        <td class="text-center">
+                          
+                            <a class="btn btn-success btn-sm" t-attf-href="/my/payroll/view/payslip?id=#{payslip.id}"><i class="fa fa-eye" /></a>
+                      </td>
+                       
+                    </tr>
+                </tbody>
+                
+            </t>
+        </t>
+    </template>
+
+    <template id="portal_my_payslip" name="Portal: My Payslip">
+      <t t-call="portal.portal_layout">
+        <t t-set="payslip" t-value="payslip"/>
+      
+          <div class="contianer">
+            <div class="row mt-3">
+              <div class="col-lg-4">
+                  <div class="nav nav-pills faq-nav" id="faq-tabs" role="tablist" aria-orientation="vertical">
+                      <a href="#tab1" style="border-radius:0px;" class="nav-link active" data-toggle="pill" role="tab" aria-controls="tab1" aria-selected="true">
+                          <i class="mdi mdi-help-circle"></i><span t-esc="payslip.date_from.strftime('%B')"></span> Payslip
+                      </a>
+                      <a href="#tab2" style="border-radius:0px;" class="nav-link" data-toggle="pill" role="tab" aria-controls="tab2" aria-selected="false">
+                          <i class="mdi mdi-account"></i> Contract
+                      </a>
+                  </div>
+              </div>
+              <div class="col-lg-8">
+                  <div class="tab-content" id="faq-tab-content">
+                  
+                      <div class="tab-pane show active" id="tab1" role="tabpanel" aria-labelledby="tab1">
+                          <div class="accordion" id="accordion-tab-1">
+                              <div class="card">
+                                  <div class="card-header" id="accordion-tab-1-heading-1">
+                                      <h5>
+                                          Salary Items
+                                      </h5>
+                                      <t t-if="payslip.pdf_result">
+                                        <a t-att-href="'data:application/pdf;base64,%s' % to_text(payslip.pdf_result)"
+                                        t-att-download="payslip.name">
+                                          <button type="button" style="float:right" class="btn btn-success btn-sm"> <span class="fa fa-download"></span> Download</button>
+                                        </a>
+                                    </t>
+                                    <t t-if="not payslip.pdf_result">
+                                      <a class="btn btn-warning btn-sm" style="float:right" t-attf-href="/my/payslip/download?id=#{payslip.id}&amp;redirect=self">
+                                            Generate
+                                            
+                                      </a>
+                                    </t>
+                                  </div>
+                                  <div class="collapse show" id="accordion-tab-1-content-1" aria-labelledby="accordion-tab-1-heading-1" data-parent="#accordion-tab-1">
+                                      <div class="card-body">
+                                        <table class="table table-bordered" style="table-layout: fixed; min-width:500px !important; " id="hash_config_table">
+                                          <thead style="display: table-row-group">
+                                              <tr>
+                                                  <th class="text-left" style="width: 30%" scope="col">Name</th>
+                                                  <th class="text-right" style="width: 20%" scope="col">Amount</th>
+                                                  
+                                              </tr>
+                                          </thead>
+                                          <tbody>
+                                            <tr t-foreach="payslip.line_ids.filtered(lambda line: line.appears_on_payslip)" t-as="line">
+                                              <t t-if="line.amount > 0 ">
+                                                <td style="background:none;" class="text-left"><span t-field="line.name"/></td>
+                                              <td style="background:none;" class="text-right"><span t-esc="line.total"
+                                                        t-options='{"widget": "monetary", "display_currency": payslip.company_id.currency_id}'/></td>
+                                              </t>
+                                              
+                                                    
+                                                      
+                                                  
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                  </div>
+                               
+                                </div>
+                              </div>
+                              
+                          
+                      </div>
+                      
+                          <div class="tab-pane" id="tab2" role="tabpanel" aria-labelledby="tab2">
+                              <div class="accordion" id="accordion-tab-2">
+                                  <div class="card">
+                                      <div class="card-header" id="accordion-tab-2-heading-1">
+                                        <h5>
+                                          Contract Details
+                                      </h5>
+                                      </div>
+                                      <div class="collapse show" id="accordion-tab-2-content-1" aria-labelledby="accordion-tab-2-heading-1" data-parent="#accordion-tab-2">
+                                        <div class="card-body">
+                                          <table class="table table-bordered" style="table-layout: fixed; min-width:500px !important;" id="hash_config_table">
+                                            <thead style="display: table-row-group">
+                                                
+                                            </thead>
+                                            <tbody>
+                                              <tr>
+                                                <td class="text-left" style="width: 20%; font-weight: 400;" scope="col">Start Date</td>
+                                                <td class="text-center" style="width: 30%; font-weight: 300;" scope="col"><span t-esc="payslip.contract_id.date_start"></span></td>
+                                                
+                                              </tr>
+                                              <tr>
+                                                <td class="text-left" style="width: 20%; font-weight: 400;" scope="col">End Date</td>
+                                                <td class="text-center" style="width: 30%; font-weight: 300;" scope="col"><span t-esc="payslip.contract_id.date_end or 'N/A' "></span></td>
+                                                
+                                              </tr>
+                                              <tr>
+                                                <td class="text-left" style="width: 20%; font-weight: 400;" scope="col">Job Position</td>
+                                                <td class="text-center" style="width: 30%; font-weight: 300;" scope="col"><span t-esc="payslip.contract_id.job_id.name"></span></td>
+                                                
+                                              </tr>
+                                              <tr>
+                                                <td class="text-left" style="width: 20%; font-weight: 400;" scope="col">Contract Type</td>
+                                                <td class="text-center" style="width: 30%; font-weight: 300;" scope="col"><span t-esc="payslip.contract_id.employment_type"></span></td>
+                                                
+                                              </tr>
+                                              <tr>
+                                                <td class="text-left" style="width: 20%; font-weight: 400;" scope="col">Grade and Step</td>
+                                                <td class="text-center" style="width: 30%; font-weight: 300;" scope="col"><span t-esc="payslip.contract_id.grade_and_step"></span></td>
+                                                
+                                              </tr>
+                                              <tr>
+                                                <td class="text-left" style="width: 20%; font-weight: 400;" scope="col">Department</td>
+                                                <td class="text-center" style="width: 30%; font-weight: 300;" scope="col"><span t-esc="payslip.contract_id.department_id.name"></span></td>
+                                                
+                                              </tr>
+                                            </tbody>
+                                          </table>
+                                        </div>
+
+                                      <div class="card-header" id="accordion-tab-2-heading-1">
+                                        <h5>
+                                            Salary Information
+                                        </h5>
+                                      </div>
+                                      <div class="card-body">
+                                        <table class="table table-bordered" style="table-layout: fixed; min-width:500px !important;" id="hash_config_table">
+                                          <thead style="display: table-row-group">
+                                              
+                                          </thead>
+                                          <tbody>
+                                            <tr t-if="payslip.contract_id.transport_allowance">
+                                              <td class="text-left" style="width: 20%; font-weight: 400;" scope="col">Transport Allowance</td>
+                                              <td class="text-center" style="width: 30%; font-weight: 300;" scope="col"><span t-esc="payslip.contract_id.transport_allowance" t-options='{"widget": "monetary", "display_currency": payslip.company_id.currency_id}'></span></td>
+                                              
+                                            </tr>
+                                            <tr t-if="payslip.contract_id.transport_deduction">
+                                              <td class="text-left" style="width: 20%; font-weight: 400;" scope="col">Transport Deduction</td>
+                                              <td class="text-center" style="width: 30%; font-weight: 300;" scope="col"><span t-esc="payslip.contract_id.transport_deduction" t-options='{"widget": "monetary", "display_currency": payslip.company_id.currency_id}'></span></td>
+                                              
+                                            </tr>
+                                            <tr t-if="payslip.contract_id.top_up_amount">
+                                              <td class="text-left" style="width: 20%; font-weight: 400;" scope="col">Top Up Allowance</td>
+                                              <td class="text-center" style="width: 30%; font-weight: 300;" scope="col"><span t-esc="payslip.contract_id.top_up_amount" t-options='{"widget": "monetary", "display_currency": payslip.company_id.currency_id}'></span></td>
+                                              
+                                            </tr>
+                                            
+                                            <tr>
+                                              <td class="text-left" style="width: 20%; font-weight: 400;" scope="col">Gross Salary</td>
+                                              <td class="text-center" style="width: 30%; font-weight: 300;" scope="col"><span t-esc="payslip.contract_id.wage" t-options='{"widget": "monetary", "display_currency": payslip.company_id.currency_id}'></span></td>
+                                              
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                        
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                         
+                  </div>
+              </div>
+          </div>
+          </div>
+       
+       </t>
+      
+    </template>
+
+    <template id="assets_backend_my_payslip" name="End of Service assets" inherit_id="web.assets_frontend">
+      <xpath expr="." position="inside">
+          <link rel="stylesheet" href="/nl_payroll/static/style.scss"/>
+          <!-- <script src="/nl_payroll/static/src/js/chart.js"></script> -->
+      </xpath>
+  </template>
+</odoo>

@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record model="ir.actions.act_window" id="action_hr_payroll_computation">
+        <field name="name">Payroll Computation</field>
+        <field name="res_model">hr.payroll.computation</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <record id="view_hr_payroll_computation" model="ir.ui.view">
+        <field name="name">hr.computation.tree</field>
+        <field name="model">hr.payroll.computation</field>
+        <field name="arch" type="xml">
+            <tree string="Employee attendances" editable="bottom">
+                <field name="name" options="{'no_create': True, 'no_create_edit':True}"/>
+                <field name="rule_id" options="{'no_create': True, 'no_create_edit':True}"/>
+                <field name="amount"/>
+                <field name="month" string="Month"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- <menuitem name="Computations" id="menu_computation" parent="hr_payroll.menu_hr_salary_configuration" action="action_payroll_computation"/> -->
+
+
+    <menuitem id="menu_hr_payroll_computation" name="Computations" sequence="60" parent="hr_work_entry_contract.menu_hr_payroll_root" groups="hr.group_hr_user"/>
+    <menuitem id="menu_hr_payroll_computation_action" parent="hr_work_entry_contract.menu_hr_payroll_root" action="action_hr_payroll_computation" />
+</odoo>

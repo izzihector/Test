@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="mt_employee_reference" model="mail.message.subtype">
+        <field name="name">Employee Reference Checked</field>
+        <field name="res_model">employee.references</field>
+        <field name="default" eval="True"/>
+        <field name="relation_field">empl_id</field>
+    </record>
+    <record id="mt_applicant_reference" model="mail.message.subtype">
+        <field name="name">Applicant Reference Checked</field>
+        <field name="res_model">employee.references</field>
+        <field name="default" eval="True"/>
+        <field name="relation_field">applicant_id</field>
+    </record>
+    <record id="mt_employee_medical" model="mail.message.subtype">
+        <field name="name">Employee Medial Checked</field>
+        <field name="res_model">completed.pikaz.clearance</field>
+        <field name="default" eval="True"/>
+        <field name="relation_field">pikaz_id</field>
+    </record>
+    <record id="mt_applicant_medical" model="mail.message.subtype">
+        <field name="name">Applicant Reference Checked</field>
+        <field name="res_model">completed.pikaz.clearance</field>
+        <field name="default" eval="True"/>
+        <field name="relation_field">applicant_id</field>
+    </record>
+
+</odoo>

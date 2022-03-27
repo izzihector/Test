@@ -1,0 +1,50 @@
+<odoo>
+    <record id="hr_leave_allocation_form" model="ir.ui.view">
+        <field name="name">hr.leave.allocation.form</field>
+        <field name="model">hr.leave.allocation</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_allocation_view_form_manager"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='employee_id']" position="replace">
+                <field name="employee_id" options="{'no_create': True, 'no_create_edit':True}" groups="hr_holidays.group_hr_holidays_user" attrs="{'required': [('holiday_type', '=', 'employee')], 'invisible': [('holiday_type', '!=', 'employee')]}"/>
+            </xpath>
+            <xpath expr="//field[@name='notes']" position='before' >
+                <group>
+                    <field name="created_by_carry_over" groups="base.group_no_one" invisible="1"/>
+                </group>
+            </xpath>
+            <xpath expr="//field[@name='employee_id']" position="after">
+                <field name="office_id"
+                    attrs="{'required': [('holiday_type', '=', 'office')], 'invisible': [('holiday_type', '!=', 'office')]}"/>
+            </xpath>
+            <xpath expr="//field[@name='employee_id']" position="after">
+                <field name="unit_id"
+                    attrs="{'invisible': [('holiday_type', '!=', 'employee')]}" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="hr_leave_allocation_search" model="ir.ui.view">
+        <field name="name">hr.leave.allocation.search</field>
+        <field name="model">hr.leave.allocation</field>
+        <field name="inherit_id" ref="hr_holidays.view_hr_leave_allocation_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='holiday_status_id']" position='after' >
+                <filter name="carry_over_llocations" string="Carry Over Allocations"
+                    domain="[('created_by_carry_over', '=', True)]" help="Carry Over Allocations"/>
+            </xpath>
+        </field>
+    </record>
+    <record id ="nl_leave_view_company_form" model="ir.ui.view">
+        <field name="name">res.company.view.leaave</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type ="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Leave" name="leave">
+                    <group col="2">
+                        <field name="number_per_interval"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

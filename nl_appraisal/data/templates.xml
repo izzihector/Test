@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+        <!-- Emails -->
+        <record id="appraisal_notify_template" model="mail.template">
+            <field name="name">Appraisal Notification</field>
+            <field name="model">employee.appraisal</field>
+            <field name="model_id" ref="model_employee_appraisal"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="body_html"> </field>
+        </record>
+        <record id="appraisal_pip_notify_template" model="mail.template">
+            <field name="name">Appraisal PIP Notification</field>
+            <field name="model">appraisal.pip</field>
+            <field name="model_id" ref="model_appraisal_pip"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="body_html"> </field>
+        </record>
+
+        <record id="probation_appraisal_notify_template" model="mail.template">
+            <field name="name">Probation Appraisal Notification</field>
+            <field name="model">probation.appraisal</field>
+            <field name="model_id" ref="model_probation_appraisal"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="body_html"> </field>
+        </record>
+
+    </data>
+    
+
+</odoo>

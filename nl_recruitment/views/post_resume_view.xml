@@ -1,0 +1,628 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="nl_recruit_my_academic_details">
+        <div id="myModalAcademic" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-full-height">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            Add Academic
+                            Details
+                        </h4>
+                        <button type="button"
+                                class="close"
+                                data-dismiss="modal">
+                            &amp;times;
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row panel panel-default">
+                                <div class="col-lg-12 panel-body">
+                                    <div id="infoEducation1">
+                                        <div class="row infoEducationGroup1">
+                                            <div class="form-group col-lg-6">
+                                                <label for="">
+                                                    <i class="fa fa-asterisk color_red"
+                                                       aria-hidden="true">
+                                                    </i>
+                                                    Start Year*
+                                                </label>
+                                                <input
+                                                    type="date"
+                                                    name="start_year"
+                                                    class="form-control start_year_edu"
+                                                />
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label for="">
+                                                    <i class="fa fa-asterisk color_red"
+                                                       aria-hidden="true">
+                                                    </i>
+                                                    Completion Year*
+                                                </label>
+                                                <input
+                                                    type="date"
+                                                    name="completion_year"
+                                                    class="form-control completion_year_edu"
+                                                />
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label for="">
+                                                    <i class="fa fa-asterisk color_red"
+                                                       aria-hidden="true">
+                                                    </i>
+                                                    Degree*
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="degree"
+                                                    name="degree"
+                                                    class="form-control degree_edu">
+                                                </input>
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label for="">
+                                                    <i class="fa fa-asterisk color_red"
+                                                       aria-hidden="true">
+                                                    </i>
+                                                    Specialization*
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    name="specialization"
+                                                    class="form-control specialization_edu"
+                                                />
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label for="">
+                                                    <i class="fa fa-asterisk color_red"
+                                                       aria-hidden="true">
+                                                    </i>
+                                                    University*
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="university"
+                                                    name="university"
+                                                    class="university_edu form-control">
+                                                </input>
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <input type="hidden" name="operation_type"/>
+                                                <input type="hidden" name="opr_id"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            id="add_academic"
+                            class="btn btn-primary add_academic">
+                            Save
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            data-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="nl_recruit_my_experience_details">
+        <div id="myModalExperience" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-full-height">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            Add Experience Details
+                        </h4>
+                        <button type="button"
+                                class="close"
+                                data-dismiss="modal">
+                            &amp;times;
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row panel panel-default">
+                                <div class="col-lg-12 panel-body">
+                                    <div id="infoEducation1">
+                                        <div class="row infoEducationGroup1">
+                                            <div class="form-group col-lg-6">
+                                                <label for="">
+                                                    <i class="fa fa-asterisk color_red"
+                                                       aria-hidden="true">
+                                                    </i>
+                                                    Job Title
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="job_title"
+                                                    name="job_title"
+                                                    class="form-control job_title_exp">
+                                                </input>
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label for="">
+                                                    <i class="fa fa-asterisk color_red"
+                                                       aria-hidden="true">
+                                                    </i>
+                                                    Company
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="company"
+                                                    name="company"
+                                                    class="form-control company_exp">
+                                                </input>
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label for="">
+                                                    <i class="fa fa-asterisk color_red"
+                                                       aria-hidden="true">
+                                                    </i>
+                                                    Start Date
+                                                </label>
+                                                <input
+                                                    type="date"
+                                                    name="start_date"
+                                                    class="form-control start_date_exp"
+                                                />
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label for="">
+                                                    <i class="fa fa-asterisk color_red"
+                                                       aria-hidden="true">
+                                                    </i>
+                                                    End Date
+                                                </label>
+                                                <input 
+                                                    type="date"
+                                                    name="end_date"
+                                                    class="form-control end_date_exp"
+                                                />
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <input type="hidden" name="operation_type"/>
+                                                <input type="hidden" name="opr_id"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            id="add_experience"
+                            class="btn btn-primary add_experience">
+                            Save
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            data-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="apply" inherit_id="website_hr_recruitment.apply">
+        <xpath expr="//form" position="replace">
+            <form 
+                id="resume_form_id"
+                class="form-vertical mt32 hr_recruit_extended"
+                method="post"
+                action="/jobs/thankyou"
+                enctype="multipart/form-data"
+                novalidate="false">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                <div class="col-lg-12 mt16 mb16">
+                    <div class="container">
+                        <div class="first-form-nl">
+                            <h2>Personal Information</h2>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="form-group col-lg-6">
+                                            <label for="">
+                                                <i class="fa fa-asterisk color_red"
+                                                   aria-hidden="true">
+                                                </i>
+                                                Name*
+                                            </label>
+                                            <input
+                                                type="text"
+                                                name="firstname"
+                                                class="form-control name-applicant"
+                                                required="required"
+                                            />
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            <label for="">
+                                                <i class="fa fa-asterisk color_red"
+                                                   aria-hidden="true">
+                                                </i>
+                                                Last Name*
+                                            </label>
+                                            <input
+                                                type="text"
+                                                name="last-name-applicant"
+                                                class="form-control last-name-applicant"
+                                                required="required"
+                                            />
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            <label for="">
+                                                <i class="fa fa-asterisk color_red"
+                                                   aria-hidden="true">
+                                                </i>
+                                                Father's Name*
+                                            </label>
+                                            <input
+                                                type="text"
+                                                name="applicant-father"
+                                                class="form-control father-applicant"
+                                                required="required"
+                                            />
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            <label for="">
+                                                <i class="fa fa-asterisk color_red"
+                                                   aria-hidden="true">
+                                                </i>
+                                                Date Of Birth*
+                                            </label>
+                                            <input
+                                                type="date"
+                                                name="dob-applicant"
+                                                class="form-control dob-applicant"
+                                                t-att-value="partner.name"
+                                                required="required"
+                                            />
+                                            <span class="d-none birth-error-message" style="color:red">
+                                                The minimum allowed age is 16 
+                                                required
+                                            </span>
+                                            <span class="d-none year-error-message" style="color:red">
+                                                Please enter the date of birth in the greogrian calendar. You cannot enter a date prior to 1950.
+                                            </span>
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            <label for="sel1">
+                                                <i class="fa fa-asterisk color_red"
+                                                   aria-hidden="true">
+                                                </i>
+                                                Gender*
+                                            </label>
+                                            <select
+                                                name="gender"
+                                                class="form-control gender-applicant"
+                                                required="True">
+                                                <option value="">--Select--</option>
+                                                <option value="male">Male</option>
+                                                <option value="female">Female</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            <label for="sel1">
+                                                <i class="fa fa-asterisk color_red"
+                                                   aria-hidden="true">
+                                                </i>
+                                                Marital status*
+                                            </label>
+                                            <select
+                                                name="marital"
+                                                class="form-control marital-status-applicant"
+                                                required="True">
+                                                <option value="">--Select--</option>
+                                                <option value="single">Single</option>
+                                                <option value="married">Married</option>
+                                                <option value="widower">Widower</option>
+                                                <option value="divorced">Divorced</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group col-lg-6">
+                                            <div class="children-applicant-div d-none">
+                                                <label for="">
+                                                    <i class="fa fa-asterisk color_red"
+                                                       aria-hidden="true">
+                                                    </i>
+                                                    Number of Children*
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    name="children-applicant"
+                                                    class="form-control children-applicant only_number"
+                                                    required="required"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-6 text-right offset-lg-6">
+                                            <button class="first-next btn btn-info">Next</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="second-form-nl d-none">
+                            <h2>Contact Details</h2>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="form-group col-lg-6">
+                                            <label for="">
+                                                <i class="fa fa-asterisk color_red"
+                                                   aria-hidden="true">
+                                                </i>
+                                                Current Address*
+                                            </label>
+                                            <textarea
+                                                name="current_addr"
+                                                class="form-control current-address-applicant"
+                                                t-att-value="partner.name"
+                                                required="required"
+                                            />
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            <label for="">
+                                                <i class="fa fa-asterisk color_red"
+                                                   aria-hidden="true">
+                                                </i>
+                                                Permanent Address*
+                                            </label>
+                                            <textarea
+                                                name="permanent_addr"
+                                                class="form-control permanent-address-applicant"
+                                                required="required"
+                                            />
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            <label for="">
+                                                <i class="fa fa-asterisk color_red"
+                                                   aria-hidden="true">
+                                                </i>
+                                                Contact Number*
+                                            </label>
+                                            <input
+                                                type="text"
+                                                name="contact-applicant"
+                                                class="form-control contact-applicant only_number"
+                                                required="required"
+                                            />
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            <label for="">
+                                                <i class="fa fa-asterisk color_red"
+                                                   aria-hidden="true">
+                                                </i>
+                                                Email Address*
+                                            </label>
+                                            <input
+                                                type="email"
+                                                name="email-applicant"
+                                                class="form-control email-applicant"
+                                                required="required"
+                                            />
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            <label for="">
+                                                <i class="fa fa-asterisk color_red"
+                                                   aria-hidden="true">
+                                                </i>
+                                                Tazkira Number*
+                                            </label>
+                                            <input
+                                                type="text"
+                                                name="tazkira-applicant"
+                                                class="form-control tazkira-applicant"
+                                                required="required"
+                                            />
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            <label for="">
+                                                <i class="fa fa-asterisk color_red"
+                                                   aria-hidden="true">
+                                                </i>
+                                                Passport Number (Optional)
+                                            </label>
+                                            <input
+                                                type="text"
+                                                name="passport-applicant"
+                                                class="form-control passport-applicant"
+                                            />
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            <label for="">
+                                                <i class="fa fa-asterisk color_red"
+                                                   aria-hidden="true">
+                                                </i>
+                                                Passport expiry date
+                                            </label>
+                                            <input
+                                                type="date"
+                                                name="passport-expiry-applicant"
+                                                class="form-control passport-expiry-applicant"
+                                            />
+                                        </div>
+                                        <div class="form-group col-lg-6"></div>
+                                        <div class="form-group col-lg-6">
+                                            <button class="btn btn-info second_previous">Previous</button>
+                                        </div>
+                                        <div class="form-group col-lg-6 text-right">
+                                            <button class="btn btn-info next-second">Next</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="third-form-nl d-none">
+                            <div class="row">
+                                <div class="col-lg-10">
+                                    <h2>Educational Details*</h2>
+                                    <span class="error-edu d-none" style="color:red">
+                                        Please Add Educational Details
+                                    </span>
+                                    <input type="hidden" name="education_generalized1" class="education_generalized1"/>
+                                    <input type="hidden" name="education_generalized2" class="education_generalized2"/>
+                                    <input type="hidden" name="education_generalized3" class="education_generalized3"/>
+                                    <input type="hidden" name="education_generalized4" class="education_generalized4"/>
+                                    <input type="hidden" name="education_generalized5" class="education_generalized5"/>
+                                </div>
+                                <div class="col-lg-2"></div>
+                            </div>
+                            <table id="academic_desc_table"
+                                   class="academic_desc_table table  mt32 mb32">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Start Year</th>
+                                        <th scope="col">Completion Year</th>
+                                        <th scope="col">Degree</th>
+                                        <th scope="col">Specialization</th>
+                                        <th scope="col">University</th>
+                                        <th>
+                                            <button
+                                                type="button"
+                                                class="btn new_academic"
+                                                disabled="disabled">
+                                                <i class="fa fa-pencil-square-o"></i>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button
+                                                type="button"
+                                                class="btn"
+                                                disabled="disabled">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            <div class="col-lg-6 offset-lg-6 text-right">
+                                <button type="button" class="btn academic_btn btn-info">
+                                    Add New
+                                </button>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-10">
+                                    <h2>Experience Details</h2>
+                                    <span class="error-exp d-none" style="color:red">
+                                        Please Add Experience Details
+                                    </span>
+                                    <input type="hidden" name="experience_generalized1"
+                                           class="experience_generalized1"/>
+                                    <input type="hidden" name="experience_generalized2"
+                                           class="experience_generalized2"/>
+                                    <input type="hidden" name="experience_generalized3"
+                                           class="experience_generalized3"/>
+                                    <input type="hidden" name="experience_generalized4"
+                                           class="experience_generalized4"/>
+                                    <input type="hidden" name="experience_generalized5"
+                                           class="experience_generalized5"/>
+                                </div>
+                                <div class="col-lg-2"></div>
+                            </div>
+                            <table id="experience_desc_table"
+                                   class="experience_desc_table table  mt32 mb32">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Job Title</th>
+                                        <th scope="col">Company</th>
+                                        <th scope="col">Start Date</th>
+                                        <th scope="col">End Date</th>
+                                        <th>
+                                            <button
+                                                type="button"
+                                                class="btn btn-edit-exp-info"
+                                                disabled="disabled">
+                                                <i class="fa fa-pencil-square-o"></i>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button
+                                                type="button"
+                                                class="btn"
+                                                disabled="disabled">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            <div class="col-lg-6 offset-lg-6 text-right">
+                                <button
+                                    type="button"
+                                    class="btn experience_btn btn-info">
+                                    Add New
+                                </button>
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="">
+                                    <i class="fa fa-asterisk color_red"
+                                       aria-hidden="true">
+                                    </i>
+                                    Upload your resume here
+                                </label>
+                                <input type="file" name="candidate-resume" class="resume-nl candidate-resume mt64"/>
+                                <input type="hidden" name="candidate-resume-holder" class="candidate-resume-holder"/>
+                                <input type="hidden" name="job_id" class="job" t-att-value="job.id"/>
+                            </div>
+                            <div class="row mt64">
+                                <div class="col-lg-6">
+                                    <button class="btn btn-info third_previous">Previous</button>
+                                </div>
+                                <div class="col-lg-6 text-right">
+                                    <input type="submit" value="Submit Application" class="do-submit btn btn-info"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <t t-call="nl_recruitment.nl_recruit_my_academic_details"/>
+            <t t-call="nl_recruitment.nl_recruit_my_experience_details"/>
+        </xpath>
+    </template>
+
+    <template id="thankyou">
+        <t t-call="website.layout">
+            <div class="oe_structure">
+                <div class="container">
+                    <h1>Thank you!</h1>
+                    <p>Your job post has been successfully registered,</p>
+                </div>
+                <section class="oe_dark">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12 text-center mt16 mb16">
+                                <a href="https://www.netlinks.af" class="btn btn-primary btn-lg">
+                                    Continue To Our Website
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+</odoo>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="nl_contract" name="nl_contract assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+        	<script type="text/javascript" src="/nl_contract/static/src/js/web_disable_drag_drop_kanban.js"/>
+        </xpath>
+    </template>
+</odoo>

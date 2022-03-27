@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        
+        <report
+                id="nl_payroll_report_master"
+                model="generate.payroll.master"
+                string="Payroll Report"
+                report_type="xlsx"
+                name="nl_payroll.nl_payroll_report_master"
+                file="Payroll Report"
+                attachment_use="False"
+                />
+        <report
+                id="nl_payroll_report_payslip"
+                model="hr.payslip"
+                string="Pasylips Payroll Report"
+                report_type="xlsx"
+                name="nl_payroll.nl_payroll_report_payslip"
+                file="Payslips Payroll Report"
+                attachment_use="False"
+                />
+
+</odoo>

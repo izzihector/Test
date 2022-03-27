@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="employee_appraisal_pip_form" model="ir.ui.view">
+        <field name="name">employee.appraisal.pip</field>
+        <field name="model">appraisal.pip</field>
+        <field name="arch" type="xml">
+            <form string="Performance Improvement Plan">
+                <field name="active" invisible='1' />
+                <header>
+                    <button name="view_full_pip_form" string="View PIP" type="object" class="oe_highlight" groups="nl_appraisal.group_appraiser" />
+                    <button name="move_to_planning" type="object" string="Move To Planning" attrs="{'invisible': [('state', '!=', 'draft')]}"  groups="nl_appraisal.group_appraisal_admin" class="oe_highlight" confirm="Are you sure?"/>
+                    <button name="move_to_assessment" type="object" string="Move To Assessment" attrs="{'invisible': [('state', '!=', 'performance_period')]}"  groups="nl_appraisal.group_appraisal_admin" class="oe_highlight" confirm="Are you sure?"/>
+                    <button name="move_to_draft" type="object" string="Reset to Draft" attrs="{'invisible': [('state' , 'in', ['draft'])]}"  groups="nl_appraisal.group_appraisal_admin" class="oe_highlight" confirm="Are you sure?"/>
+                    <button name="move_to_cancel" type="object" string="Cancel" attrs="{'invisible': [('state' , 'not in', ['draft'])]}"  groups="nl_appraisal.group_appraisal_admin" class="oe_highlight" confirm="Are you sure?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <group>
+                        <!-- Part 1 -->
+                        <group string="General Infomration" class="o_group_col_12">
+                            <group>
+                                <field name="general_apparisal_id" invisible="1"/>
+                                <field name="probation_apparisal_id" invisible="1"/>
+                                <field name="source_appraisal" attrs="{ 'readonly': [('state', '!=', 'draft')] }" string="Employee Appraisal"/>
+                                <field name="employee_id" string="Employee Name" attrs="{ 'readonly': [('state', '!=', 'draft')] }"/>
+                                <field name="appraisal_type" readonly="1" force_save='1'/>
+                                <field name="job_id"/>
+                                <field name="manager_id" string="Supervisor(s)"/>
+                            </group>
+                            <group>
+                                <field name="initial_meeting_date" attrs="{ 'readonly': [('state', '!=', 'draft')] }"/>
+                                <field name="other_attendees" attrs="{ 'readonly': [('state', '!=', 'draft')] }" widget="many2many_tags"/>
+                            </group>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="targets" string="Targets">
+                            <field name="target_ids" readonly="1">
+                                <tree editable="bottom">
+                                    <field name="name" placeholder="Example - Organizational skills difficulty organizing workload daily"/>
+                                    <field name="performance_concern" 
+                                        placeholder="Example - Two deadlines missed (insert details) and complaint received from Department X who did not receive a response to an email sent twice on (insert dates)"/>
+                                    <field name="agreed_improvement_action" 
+                                        placeholder="Example - To effectively manage workload daily, meet deadlines efficiently, prioritize tasks and respond to emails in a timely manner. Measured by management observation of performance of tasks." />
+                                    <field name="support" placeholder="Example - Operate daily ‘To Do’ check list and a diary. To respond to emails received within 3 working days. "/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="review" string="Reviews">
+                            <field name="review_ids" readonly="1">
+                                <tree editable="bottom">
+                                    <field name="review_date" placeholder="Example - To be reviewed in 4 weeks (insert date)."/>
+                                    <field name="notes" 
+                                        placeholder="Example - Outlook training completed on (insert date), daily to do lists being written. Responding to emails faster, but further improvement needed. Work shadowing will continue. Review in 2 Weeks."/>
+                                    <field name="result" />
+                                    <field name="finalized" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- tree view Office  -->
+    <record id="employee_appraisal_pip_tree" model="ir.ui.view">
+        <field name="name">>employee.appraisal.pip.tree</field>
+        <field name="model">appraisal.pip</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="appraisal_type" />
+                <field name="source_appraisal" />
+                <field name="employee_id" />
+                <field name="office_id" />
+                <field name="manager_id" />
+                <field name="second_manager_id" />
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+
+        <!-- search view -->
+    <record id="employee_appraisal_pip_search" model="ir.ui.view">
+        <field name="name">>employee.appraisal.pip.search</field>
+        <field name="model">appraisal.pip</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="employee_id" />
+                <field name="manager_id" />
+                <field name="second_manager_id" />
+                <field name="office_id" />
+                <field name="department_id" />
+                <field name="unit_id" />
+                <field name="state" />
+                <separator />
+                <filter name="archived" string="Archived" domain="[('active', '=', False)]" />
+                <group expand="0" string="Group By">
+                    <filter string="Office" name="office_id" domain="[]" context="{'group_by': 'office_id'}"/>
+                    <!-- <filter string="Appraisal Type" name="appraisal_type" domain="[]" context="{'group_by': 'appraisal_type'}"/> -->
+                    <filter string="State" name="state" domain="[]" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record> 
+
+
+    <record id="appraial_pip_action" model="ir.actions.act_window">
+        <field name="name">Performance Improvement Plan</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">appraisal.pip</field>
+        <field name="view_mode">tree,form</field>
+        <field name="target">current</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            Create New Performance Improvement Plan.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_nl_appraisal_appraisal_pip" name="PIP" action="appraial_pip_action" parent="nl_appraisal.menu_nl_appraisal_main" sequence="3"/>
+
+</odoo>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Infraction Category -->
+    <record id="infraction_category_confidentiality" model="hr.infraction.category">
+        <field name="code">Confidentiality</field>
+        <field name="name">Confidentiality</field>
+    </record>
+    <record id="infraction_category_security" model="hr.infraction.category">
+        <field name="code">Security</field>
+        <field name="name">Security</field>
+    </record>
+    <record id="infraction_category_harassment" model="hr.infraction.category">
+        <field name="code">Harassment and Abuse</field>
+        <field name="name">Harassment and Abuse</field>
+    </record>
+    <record id="infraction_category_child_sageguard" model="hr.infraction.category">
+        <field name="code">Child Safeguarding Standards</field>
+        <field name="name">Child Safeguarding Standards</field>
+    </record>
+    <record id="infraction_category_difference_opinion" model="hr.infraction.category">
+        <field name="code">Difference of Opinion</field>
+        <field name="name">Difference of Opinion</field>
+    </record>
+    <record id="infraction_category_political" model="hr.infraction.category">
+        <field name="code">Political Activity</field>
+        <field name="name">Political Activity</field>
+    </record>
+    <record id="infraction_category_care" model="hr.infraction.category">
+        <field name="code">CARE</field>
+        <field name="name">Improper care for Company equipment/materials</field>
+    </record>
+    <record id="infraction_category_life" model="hr.infraction.category">
+        <field name="code">ENDLIFE</field>
+        <field name="name">Intentional endangerment of life or property</field>
+    </record>
+    <record id="infraction_category_safety" model="hr.infraction.category">
+        <field name="code">SAFETY</field>
+        <field name="name">Disregard of safety and accident prevention rules</field>
+    </record>
+    <record id="infraction_category_rule" model="hr.infraction.category">
+        <field name="code">RULE</field>
+        <field name="name">Disregard for Company rules and regulations</field>
+    </record>
+    <record id="infraction_category_instruct" model="hr.infraction.category">
+        <field name="code">INSTRUCT</field>
+        <field name="name">Not following instructions</field>
+    </record>
+    <record id="infraction_category_abuse" model="hr.infraction.category">
+        <field name="code">ABUSE</field>
+        <field name="name">Abusive behaviour towards others</field>
+    </record>
+    <record id="infraction_category_harm" model="hr.infraction.category">
+        <field name="code">HARM</field>
+        <field name="name">Bodily harm to others</field>
+    </record>
+    <record id="infraction_category_theft" model="hr.infraction.category">
+        <field name="code">THEFT</field>
+        <field name="name">Theft of materials, equipment or property</field>
+    </record>
+    <record id="infraction_category_damage" model="hr.infraction.category">
+        <field name="code">DAMAGE</field>
+        <field name="name">Damage to Company materials, property or equipment</field>
+    </record>
+    <record id="infraction_category_intox" model="hr.infraction.category">
+        <field name="code">INTOX</field>
+        <field name="name">Reporting to work in a state of intoxication</field>
+    </record>
+    <record id="infraction_category_medical" model="hr.infraction.category">
+        <field name="code">MEDEXAM</field>
+        <field name="name">Refusal of lawful medical examination</field>
+    </record>
+
+    <!-- Alert-related subtypes for messaging / Chatter -->
+    <record id="mt_alert_infraction_confirmed" model="mail.message.subtype">
+        <field name="name">Infraction - Confirmed</field>
+        <field name="res_model">hr.infraction</field>
+        <field name="description">Infraction submitted</field>
+    </record>
+
+    <record id="mt_alert_infraction_action" model="mail.message.subtype">
+        <field name="name">Infraction - Action Taken</field>
+        <field name="res_model">hr.infraction</field>
+        <field name="description">Action has been taken</field>
+    </record>
+
+    <record id="mt_alert_infraction_noaction" model="mail.message.subtype">
+        <field name="name">Infraction - No Action Taken</field>
+        <field name="res_model">hr.infraction</field>
+        <field name="description">No further action necessary</field>
+    </record>
+
+    <record id="mail_hr_manager_activity" model="mail.activity.type">
+        <field name="name">Warning Approval</field>
+        <field name="icon">fa-sun-o</field>
+    </record>
+
+    <record id="mail_ceo_warning_activity" model="mail.activity.type">
+        <field name="name">Warning Approval</field>
+        <field name="icon">fa-sun-o</field>
+    </record>
+
+</odoo>

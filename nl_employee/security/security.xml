@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Record Rule:- Employee Can see own profile -->
+    <!-- <record id="hr_employee_group" model="ir.rule">
+        <field name="name">Employee Can see own profile</field>
+        <field name="model_id" ref="hr.model_hr_employee_public"/>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        <field name="domain_force">[('user_id' ,'=', user.id)]</field>
+        <field name='perm_create' eval='True'/>
+        <field name='perm_read' eval='True'/>
+        <field name='perm_unlink' eval='False'/>
+        <field name='perm_write' eval='True'/>
+    </record> -->
+
+    <!-- Record Rule:- Employee Can see own and Department profile -->
+    <!-- <record id="hr_employee_department" model="ir.rule">
+        <field name="name">Employee Can see own and Department profile</field>
+        <field name="model_id" ref="hr.model_hr_employee_public"/>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        <field name="domain_force">['|',('department_id.member_ids.user_id', 'in', [user.id]), ('department_id.member_ids.parent_id.user_id', 'in', [user.id])]</field>
+        <field name='perm_create' eval='True'/>
+        <field name='perm_read' eval='True'/>
+        <field name='perm_unlink' eval='False'/>
+        <field name='perm_write' eval='True'/>
+    </record> -->
+
+    <!-- Record Rule:- Offices Can see all employee profile -->
+    <record id="hr_officer_group" model="ir.rule">
+        <field name="name">Offices Can see all employee profile</field>
+        <field name="model_id" ref="hr.model_hr_employee_public"/>
+        <field name="groups" eval="[(4, ref('hr.group_hr_manager'))]"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name='perm_create' eval='True'/>
+        <field name='perm_read' eval='True'/>
+        <field name='perm_unlink' eval='True'/>
+        <field name='perm_write' eval='True'/>
+    </record>
+
+    <!-- Record Rule:- Employee Can See Only records on Allowed Offices -->
+    <record id = "employee_record_based_on_allowed_province" model = "ir.rule"> 
+        <field name = "name">User Can Read Employee/Contract Based on his/her Own Allowed Offices</field> 
+        <field name = "model_id" ref = "model_hr_employee" /> 
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        <field name = "perm_read" eval = "True" /> 
+        <field name = "perm_write" eval = "True" /> 
+        <field name = "perm_create" eval = "False" /> 
+        <field name = "perm_unlink" eval = "False" /> 
+        <field name = "domain_force"> [('office_id.id', 'in',user.office_ids.ids)] </field>
+    </record>
+
+    <record id = "employee_record_based_on_allowed_offices" model = "ir.rule"> 
+        <field name = "name">User Can Read Employee Public Based on his/her Own Allowed Offices</field> 
+        <field name = "model_id" ref = "hr.model_hr_employee_public" /> 
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        <field name = "perm_read" eval = "True" /> 
+        <field name = "perm_write" eval = "True" /> 
+        <field name = "perm_create" eval = "False" /> 
+        <field name = "perm_unlink" eval = "False" /> 
+        <field name = "domain_force"> [('office_id.id', 'in',user.office_ids.ids)] </field>
+    </record>
+
+</odoo>

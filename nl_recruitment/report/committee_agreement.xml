@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+        <report id="action_member_agreement_letter" string="Committee Member Agreement" model="hr.job.announcement" report_type="qweb-pdf" name="nl_recruitment.member_agreement_letter_template" file="nl_recruitment.member_agreement_letter_template" print_report_name="'Undrestanding of Agreement - %s' % (object.job_id.name)" />
+
+        <template id="template_header">
+            <div class="header">
+                <table width="100%">
+                    <tr>
+                        <td style="float:left;text-align:left;">
+                            <img t-att-src="'/nl_employee/static/description/sca.jpg'" alt="Logo" style="height:60px;" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </template>
+
+        <template id="confidentiality_main_info">
+            <t t-call="nl_employee.template_header" />
+            <t t-raw="0" />
+        </template>
+
+
+        <template id="member_agreement_letter_template">
+			<t t-call="web.html_container">
+            	<t t-foreach="docs" t-as="o">
+            		<t t-call="nl_recruitment.confidentiality_main_info">
+	            		<div class="page" style="padding: 30px;">
+	            			<style>
+                                .paragraph{
+                                			font-size:20px;
+                                			padding:5px;
+                                }
+
+                        	</style>
+	            			<div class="row">
+	            				<h3 style="text-align:center;"><u>EMPLOYEE COMMITTEE MEMBER UNDRESTANDING OF AGREEMENT</u></h3>
+	            			</div>
+
+                            <div>
+                                <p>As Employment Committee members, we hereby adhere to the SCA Conflict of Interest Policy, Recruitment guideline and the SHB to ensure transparency, impartiality and confidentially in this assigned recruitment process.</p>
+
+                                <br/><br/>
+                                <ul>
+                                    <li>Confidentiality as per SHB article 10 on confidentiality - we will ensure not to disclose any discussion/decisions of the process nor information of any internal / external candidates.</li>
+                                    <li>Conflict of interest as per SHB article 2.2 - we hereby declare that no candidates for this position is of family relations defined as per SHB.</li>
+                                </ul>
+                                <br/><br/>
+                                
+                                <div>
+                                    <div style="float:left; width: 200px"><b>Position of recruitment:</b></div>
+                                    <div style="width:300px; border-bottom:1px solid black; float:left; margin-left:10px;"><span t-esc="o.job_id.name" /></div><br/><br/>
+                                    <div style="float:left; width: 200px"><b>Duration of recruitment:</b></div>
+                                    <div style="float:left; margin-left:30px"><b>From:</b></div>
+                                    <div style="width:200px; border-bottom:1px solid black; float:left; margin-left:10px;"><span t-esc="o.vacancy_start_date" /></div><br/><br/>
+                                    <div style="margin-left:200px; float:left"><b>To:</b></div>
+                                    <div style="float:left; margin-left:20px; width:210px; border-bottom:1px solid black;"><span t-esc="o.vacancy_deadline" /><b></b></div>
+                                </div>
+
+                                <p style="margin-top:50px">By signing this form, we acknowledge and adhere to the undrestanding of this agreement.</p><br/><br/>
+                                <b>Employment Committee Members:</b>
+                                <t t-set="count" t-value="1" />
+                                <t t-foreach="o.panel_members" t-as="member">
+                                    <div style="margin-top:30px">
+                                        <div style="float:left"><t t-esc="count"/>).Name: </div>
+                                        <div style="float:left; border-bottom:1px solid black; width:160px;"><span t-esc="member.name"/></div>
+                                        <div style="float:left">Signature:</div>
+                                        <div style="float:left; border-bottom:1px solid black; width:160px; margin-top:15px"></div>
+                                        <div style="float:left">Date:</div>
+                                        <div style="float:left; border-bottom:1px solid black; width:160px; margin-top:15px"></div>
+                                    </div><br/><br/>
+                                    <t t-set="count" t-value="count+1" />
+                                </t>
+                                
+                                <br/><br/><br/>
+
+                                <div class="row" style="text-align:center">
+                                    <b>(A copy of this agreement will be filed in HR as part of the recruitment documents)</b>
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+            		</t>
+            	</t>			
+			</t>
+		</template>
+	</data>
+</odoo>
+

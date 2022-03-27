@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="nl_recruitment_website" inherit_id="website.assets_frontend" name="assets of website">
+        <xpath expr="//link[last()]" position="after">
+            <link rel="stylesheet" type="text/css" href="/nl_recruitment/static/src/css/style.css"/>
+            <!-- <script type="text/javascript" src='/nl_recruitment/static/src/js/main.js'></script> -->
+        </xpath>
+    </template>
+
+    <template id="layout_inherit" inherit_id="portal.frontend_layout">
+        <xpath expr="//header/nav" position="attributes">
+            <attribute name="id">nav</attribute>
+        </xpath>
+    </template>
+
+</odoo>

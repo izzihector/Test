@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <report 
+        id="action_print_offer_letter"
+        model="hr.applicant"
+        string="Employment Offer Letter"
+        report_type="qweb-pdf"
+        name="nl_recruitment.offer_letter_template"
+        file="nl_recruitment.offer_letter_template"
+        attachment="'Offer Letter - %s' % (object.name)"
+        menu="False"
+        print_report_name="'Offer Letter - %s' % (object.name)"
+    />
+
+
+    <record id="paperformat_contracts" model="report.paperformat">
+		<field name="name">Contract Details Paper Format</field>
+		<field name="default" eval="True" />
+		<field name="format">A4</field>
+		<field name="orientation">Portrait</field>
+		<field name="margin_top">15</field>
+		<field name="margin_bottom">10</field>
+		<field name="margin_left">10</field>
+		<field name="margin_right">10</field>
+		<field name="header_line" eval="False" />
+		<field name="header_spacing">20</field>
+		<field name="dpi">150</field>
+	</record>
+
+    <record id="action_print_offer_letter" model="ir.actions.report">
+        <field name="paperformat_id" ref="nl_recruitment.paperformat_contracts"/>
+    </record>
+
+    <template id="report_footer_custom" >
+        <t t-name="custom_footer">
+            <div class ="footer o_standard_footer" style="padding-top: 30px !important;">
+                <t t-if="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id"></t>
+                </t>
+                <t t-if="not o or not 'company_id' in o">
+                    <t t-set="company" t-value="res_company"></t>
+                </t>
+                <div class="row"><hr/>
+                    <div class="col-xs-2">
+                        <span class="page" />
+                        /
+                        <span class="topage" />
+                    </div>
+                    
+                        <p style="margin-left:1250px">Version May 2021</p>
+                    
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="external_layout">
+        <!-- Multicompany -->
+        <t t-if="not o and doc">
+            <t t-set="o" t-value="doc"/>
+        </t>
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id"></t>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"></t>
+        </t>
+        <t t-raw="0" />
+        <t t-call="nl_recruitment.report_footer_custom" />
+    </template>
+
+    <template id="employment_offer_letter_template">
+        <t t-call="nl_recruitment.external_layout"/> 
+        <t t-call="web.basic_layout">
+            <div class="page">
+                <style>
+                    <!-- @font-face {
+                        font-family: 'georgia';
+                        font-family: 'arial';
+                        src: url(/nl_contract/static/src/fonts/georgia.ttf);
+                        src: url(/nl_contract/static/src/fonts/arial-ce.ttf);
+                    } -->
+                    .emp_info {
+						padding-left:25px;
+					 }
+                
+					 p{
+						font-size:20px;
+                        <!-- font-family: 'georgia' !important; -->
+					 }
+					 .contract-details{
+						 margin-left:25px;
+						 margin-right:25px;
+					 }
+					 .identifier{
+						font-size:20px;
+                        <!-- font-family: 'georgia' !important; -->
+						font-weigth:bolder;
+
+					}
+					.identifier-data{
+						font-size:20px;
+                         <!-- font-family: 'georgia' !important; -->
+						font-weigth:bold;
+						
+
+					}
+					.border{
+						border:1.4px solid black !important;
+						padding:5px;
+					}
+					.employee-info{
+						margin-left:15px;
+					}	
+					li{
+                        <!-- font-family: 'georgia' !important; -->
+						font-size:20px;
+					}
+                </style>
+                <img t-att-src="image_data_uri(res_company.logo)" alt="Logo" style="height:100px;" />
+                <br/>
+                <br/>
+                <br/>
+                <h3 class="text-center p-3" style="color: #0a6a9c"><b>Offer Letter</b></h3>
+                <div>
+                    <span class="identifier">Dear <span class="identifier" t-field="o.name"/></span>,<br/><br/>
+                </div>
+                <p style="text-align:left;">
+                    Based on Recruitment Committee Decision, we are happy to inform you that SCA has decided to offer you the position of (<b><span t-field="o.job_id.name"/></b>)
+                </p>
+                <p>The Appointment is described as follows:</p>
+                <table style="width: 100%;" cellpadding="2">
+                            
+                    <tr class="border" style="border:3px solid balck">
+
+                        <td class="border"><strong> <span class="identifier">Duty Station:</span></strong></td>
+                        <td class="border"><span class="identifier" t-esc="o.office_id.name" /></td>
+
+                    </tr>
+
+                    <tr class="border">
+                        <td class="border"><strong> <span class="identifier">Grade and Step:</span></strong></td>
+                        <td class="border">
+                            <t t-if="o.salary_step">
+                                <span class="identifier" t-esc="o.salary_grade.name" />-<span class="identifier" t-esc="o.salary_step.name" />
+                            </t>
+                            <t t-else="">
+                                <span class="identifier">Not Applicable </span>
+                            </t>
+                        </td>
+
+                    </tr>
+
+                    <tr class="border">
+                        <td class="border"><strong> <span class="identifier">Pension:</span></strong></td>
+                        <td class="border">AFN <span class="identifier" t-esc="'{:,}'.format(o.pension_amount)" /></td>
+                    </tr>
+
+                    <tr class="border">
+                        <td class="border"><strong> <span class="identifier">Total Gross Salary:</span></strong></td>
+                        <td class="border">AFN <span class="identifier" t-esc="'{:,}'.format(o.salary_expected)" /></td>
+                    </tr>
+
+                    <tr class="border">
+                        <td class="border"><strong> <span class="identifier">Starting Date:</span></strong></td>
+                        <td class="border"><span class="identifier"  t-esc="o.date_start"  /></td>
+
+                    </tr>
+
+                    <tr class="border">
+                        <t t-set="prob_period" t-value="{'one_month': '1 Month', 'two_month': '2 Month(s)' ,'three_month': '3 Month(s)'}"/>
+                        <td class="border"><strong> <span class="identifier">Probation Period:</span></strong></td>
+                        <td class="border"><span class="identifier"  t-esc="prob_period.get(o.probation_period, '')" /></td>
+                    </tr>
+
+                    <tr class="border">
+                        <td class="border"><strong> <span class="identifier">Other Benefits based on type of contracts:</span></strong></td>
+                        <td class="border"><span class="identifier"  t-esc="o.other_benifits" /></td>
+
+
+                    </tr>
+
+                    <tr class="border">
+                        <t  t-set="emp_types" t-value="{'open_ended': 'Open Ended', 'casual_contract': 'Casual and Service', 'fixed_term': 'Fixed Term', 'project_based': 'Project Based', 'fps1_2': 'FPS Category 1/2 Normal', 'fps1': 'FPS Category 2 Education', 'other': 'Other'}"/>
+                        <td class="border"><strong> <span class="identifier">The Position is:</span></strong></td>
+                        <td class="border"><span class="identifier"  t-esc="emp_types.get(o.employment_type, '')" /></td>
+
+                    </tr>
+                        
+                </table>
+
+                <br/><br/>
+                <p style="text-align:left; pading-top:12px; padding-bottom: 12px">
+                    Please note that the offer will be valid after successful Medical check-up conducted by SCA.
+                </p><br/>
+                <p style="text-align:left;">
+                    Your soonest response and acceptance would be highly appreciated.
+                </p>
+                <p style="text-align:left;">
+                    <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d-%B-%Y')" />
+                </p>
+                <br/>
+
+                <p style="text-align:left;">
+                    Sincerely,
+                </p>
+                <br/>
+
+                <div class="row">
+
+                    <div class="col-4">
+                        <div style="height: 200px; border-bottom: 1px solid grey; width: 90%; margin-bottom: 5px"></div>
+                        <div>
+                            <p><t t-esc="o.job_announcement_id.user_id.name"/></p>
+                            <p>Human Resources</p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div style="height: 200px; border-bottom: 1px solid grey; width: 90%; margin-bottom: 5px"></div>
+                        <div>
+                            <p><span t-esc="o.recruitment_officer.name"/></p>
+                            <p>Head of Unit/Recruitment Manager</p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div style="height: 200px; border-bottom: 1px solid grey; width: 90%; margin-bottom: 5px"></div>
+                        <div>
+                            <p><span t-esc="o.name"/></p>
+                            <p>Date:</p>
+                        </div>
+                    </div>
+                
+                </div>
+
+
+
+            </div>
+            <div class="clearfix"></div>
+            <div class="float-right mt-4 d-block" style="font-size: 13px">
+                Version May 2021
+            </div>
+        </t>
+    </template>
+
+    <template id="offer_letter_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="nl_recruitment.employment_offer_letter_template"/>
+            </t>
+        </t>
+    </template>
+</odoo>

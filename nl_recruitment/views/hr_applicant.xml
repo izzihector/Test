@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.actions.act_window" id="action_open_applicant_score_model">
+        <field name="name">Applicant Score Model Action</field>
+        <field name="res_model">hr.applicant.score.wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    <record model="ir.actions.act_window" id="action_open_applicant_interview_score_model">
+        <field name="name">Applicant Interview Score Model Action</field>
+        <field name="res_model">hr.applicant.interview.score.wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="hr_recruitment.crm_case_categ0_act_job">
+        <field name="view_mode">kanban,tree,form,pivot</field>
+    </record>
+
+    <record id="hr_recruitment.action_hr_sec_graph_view_act_job" model="ir.actions.act_window.view">
+        <field name="act_window_id" ref=""/>
+    </record>
+
+    <record id="crm_case_pivot_view_job_extended" model="ir.ui.view">
+        <field name="name">hr.applicant.pivot</field>
+        <field name="model">hr.applicant</field>
+        <field name="inherit_id" ref="hr_recruitment.crm_case_pivot_view_job"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='color']" position="after">
+                <field name="gender" type="row"/>
+            </xpath>
+            <xpath expr="//field[@name='stage_id']" position="replace">
+                <field name="office_id" type="col"/>
+                <field name="stage_id" type="col"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="nl_hr_applicant_view_form" model="ir.ui.view">
+        <field name="name">nl.hr.applicant.view.form</field>
+        <field name="model">hr.applicant</field>
+        <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_form"/>
+        <field name="arch" type="xml">
+             <xpath expr="//header" position="inside">
+                <button name="send_offer_letter" string="Send Offer Letter" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('active', '=', False), ('stage_state_mode', '!=', 'offer_proposal')]}" groups="hr_recruitment.group_hr_recruitment_user"/>
+                <button name="disqualify_record" string="Disqualify" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('active', '=', False), ('stage_state_mode', 'in', ['offer_proposal', 'offer_signed', 'disqualified'])]}" groups="hr_recruitment.group_hr_recruitment_user"/>
+                <button name="%(action_open_applicant_score_model)d" string="Shortlisting Score"   type="action" class="oe_highlight" attrs="{'invisible': ['|', ('active', '=', False), ('stage_state_mode', '!=', 'shortlisted')]}" context="{'default_applicant_id': id, 'default_user_id': uid}" groups="nl_recruitment.group_hr_recruitment_panel_member"/>
+                <button name="%(action_open_applicant_interview_score_model)d" string="Interview Score" type="action" class="oe_highlight" attrs="{'invisible': ['|', ('active', '=', False), ('stage_state_mode', '!=', 'interview')]}" context="{'default_applicant_id': id, 'default_user_id': uid}" groups="nl_recruitment.group_hr_recruitment_panel_member"/>
+            </xpath>
+           
+            <xpath expr="//button[@name='create_employee_from_applicant']" position="replace">
+                <button string="Create Employee" name="create_employee_from_applicant" type="object" class="oe_highlight o_create_employee" attrs="{'invisible': ['|',('emp_id', '!=', False), '|', ('active', '=', False), ('stage_state_mode', '!=', 'offer_signed')]}" groups="hr_recruitment.group_hr_recruitment_user"/>
+            </xpath>
+            <xpath expr="//button[@name='archive_applicant']" position="replace">
+                <button string="Refuse" name="archive_applicant" type="object" attrs="{'invisible': ['|', ('active', '=', False), ('stage_state_mode', 'not in', ['offer_proposal', 'offer_signed'])]}"  groups="hr_recruitment.group_hr_recruitment_user"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button style="border-left: 1px solid #ced4da;" name="action_view_sign_requests"
+                  type="object"
+                  class="oe_stat_button"
+                
+                  icon="fa-file-pdf-o"
+                
+                >
+                <field name="sign_counts" widget="statinfo" string="Offer Letter" />
+                </button>
+            </xpath>
+            <xpath expr="//label[@for='partner_name']" position="replace"></xpath>
+            <xpath expr="//field[@name='partner_name']" position="replace"></xpath>
+            <xpath expr="//group/group[1]" position="replace">
+                <group name="personel_info" string="Applicant's Details">
+                    <field name="id" invisible="1"/>
+                    <field name="father_name"/>
+                    <field name="is_current_user_recruitment_admin" invisible="1"/>
+                    <field name="stage_state_mode" invisible="1"/>
+                    <field name="stage_state_sequence" invisible="1"/>
+                    <field name="old_stage_state_sequence" invisible="1"/>
+                    <field name="dob"/>
+                    <field name="gender"/>
+                    <field name="nationality" />
+                    <field name="email" widget="email" required='1' string="Personel Email"/>
+                    <field name="partner_mobile" widget="phone" string="Personal Mobile"/>
+                    <field name="emp_id"  invisible="1"/>
+                    <field name="partner_id" invisible="1"/>
+                    <field name="refuse_reason_id" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <field name="job_id" invisible="1"/>
+                    <field name="company_id" invisible="1"/>
+                    <field name="active" invisible="1"/>
+                    <field name="application_date" readonly="1"/>
+                </group>
+            </xpath>
+            <xpath expr="//group/group[2]" position="replace">
+                <group string="Contract">
+                    <field name="job_announcement_id"  required='1'/>
+                    <field name="employment_type"/>
+                    <field name="date_start" />
+                    <field name="probation_period" />
+                    <field name="salary_grade" domain="[('contract', '=', employment_type)]"/>
+                    <field name="salary_step" domain="[('grade_id', '=', salary_grade)]"/>
+                    <field name="salary_expected" string="Total Gross Salary"/>
+                    <field name="pension_amount" />
+                    <field name="other_benifits" />
+                </group>
+            </xpath>
+            <xpath expr="//group/group[3]" position="replace">
+                <group string="Evaluation Committee Feedback">
+                    <field name="total_shortlisting_score" />
+                    <field name="total_score_category"/>
+                    <field name="written_test_result" attrs="{'readonly': [('stage_state_mode', '!=', 'written_test')]}"/>
+                    <field name="interview_result"/>
+                    <field name="test_interview_average"/>
+                </group>
+            </xpath>
+            <xpath expr="//group/group[4]" position="replace">
+                <group string="Applicant's Qualification">
+                    <field name="highest_qualification"/>
+                    <field name="total_years_of_experience"/>
+                </group>
+            </xpath>
+
+            <field name="description" position="before">
+                <notebook>
+                    <page string="Education">
+                        <field name="qualification_ids">
+                            <tree string="Qualification Details" editable="top">
+                                <field name="start_year"/>
+                                <field name="completion_year"/>
+                                <field name="degree_qualification"/>
+                                <field name="degree"/>
+                                <field name="university"/>
+                            </tree>
+                            <form string="Academic Experience">
+                                <group>
+                                    <field name="start_year"/>
+                                    <field name="completion_year"/>
+                                </group>
+                                <group row="2">
+                                    <field name="degree"/>
+                                    <field name="university"/>
+                                </group>
+
+                            </form>
+                        </field>
+                    </page>
+                    <page string="Experience">
+                        <field name="experience_ids">
+                            <tree string="Experience Experiences" editable="top">
+                                <field name="job_title"/>
+                                <field name="company"/>
+                                <field name="start_date"/>
+                                <field name="end_date" attrs="{'readonly': [('is_current', '=', True)]}"/>
+                                <field name="is_current"/>
+                            </tree>
+                            <form string="Academic Experience">
+                                <group>
+                                    <field name="job_title"/>
+                                    <field name="company"/>
+                                </group>
+                                <group row="2">
+                                    <field name="start_date"/>
+                                    <field name="end_date"/>
+                                </group>
+                            </form>
+                        </field>
+                    </page>
+                    <page string="Shortlisting Index" attrs="{'invisible': [('stage_state_sequence', '&lt;', 2)]}">
+                        <field name="score_ids" attrs="{'readonly': [('is_current_user_recruitment_admin', '=', False)]}" context="{'default_applicant_id': id}">
+                            <tree editable="top">
+                                <field name="shortlisting_score" string="Score"/>
+                                <field name="score_category" string="Category" force_save="1"/>
+                                <field name="applicant_id" invisible="1" />
+                                <field name="panel_members" invisible="1"/>
+                                <field name="user_id" string="Committee Member" domain="[('id', '=', panel_members)]"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Interview Result" attrs="{'invisible': [('stage_state_sequence', '&lt;', 4)]}">
+                        <field name="interview_score_line" attrs="{'readonly': [('is_current_user_recruitment_admin', '=', False)]}" context="{'default_applicant_id': id}">
+                            <tree editable="top">
+                                <field name="interview_score" string="Score"/>
+                                <field name="applicant_id" invisible="1" />
+                                <field name="panel_members" invisible="1"/>
+                                <field name="user_id" string="Committee Member" domain="[('id', '=', panel_members)]"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="References">
+                        <field name="references_ids" nolabel="1">
+                            <tree editable="top">
+                                <field name="name"/>
+                                <field name="job_title"/>
+                                <field name="organization"/>
+                                <field name="contact_number"/>
+                                <field name="email"/>
+                                <field name="reference_document" widget="binary"/>
+                                <field name="checked"/>
+                                <button name="send_email_to_reference" class="btn btn-primary" type="object" string="Send Email" />
+                            </tree>
+        
+                            <!-- <form js_class="hr_employee_form" class='o_employee_form' string="Reference Details"> 
+                                <header>
+                                    <field name="state" widget="statusbar"/>
+                                    <button name="send_email_to_reference" states="draft" class="btn btn-primary" type="object" string="Send Email" />
+                                </header>
+                                <h3 class="text-center" style="margin-bottom:20px;">Referee Answers</h3>
+                                <group >
+                                    <field name="candidate_capacity" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}" /><hr/>
+                                    <field name="key_responsibilities" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}" /><hr/>
+                                    <field name="candidate_performance" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}" /><hr/>
+                                    <field name="improvement_areas" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}" /><hr/>
+                                    <field name="good_terms" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}" /><hr/>
+                                    <field name="candidate_rehiring" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}" /><hr/>
+                                    <field name="team_work_rating" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}" /><hr/>
+                                    <field name="candidate_punctuality" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}" /><hr/>
+                                    <field name="work_quality" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}" /><hr/>
+                                    <field name="work_quality" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}" /><hr/>
+                                    <field name="multi_tasking" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}" /><hr/>
+                                    <field name="employee_self_sufficincies" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}" /><hr/>
+                                    <field name="other_skills" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}" /><hr/>
+                                    <field name="further_reservations" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}" /><hr/>
+                                    <field name="comments_explanation" options="{'no_create': True, 'no_create_edit':True, 'no_open':True}" /><hr/>
+                                </group>
+                            </form> -->
+                        </field>
+                    </page>
+                    <page string="Medical">
+                        <field name="medical_ids" nolabel='1'>
+                            <tree editable="top">
+                                <field name="type" />
+                                <field name="name" widget="binary"/>
+                                <field name="checked" />
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Assessments Summary">
+                        <field name="assessment_summary" nolabel='1' placeholder="Assessments Summary"/>
+                    </page>
+                </notebook>
+            </field>
+
+            <xpath expr="//field[@name='description']" position="replace"></xpath>
+
+           
+        </field>
+    </record>
+
+    <record id="nl_hr_applicant_view_kanban_custom" model="ir.ui.view">
+        <field name="name">hr.kanban.view.customization</field>
+        <field name="model">hr.applicant</field>
+        <field name="inherit_id" ref="hr_recruitment.hr_kanban_view_applicant"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='color']" position="after">
+                <field name="highest_qualification"/>
+                <field name="total_years_of_experience" force_save='1'/>
+                <field name="stage_state_mode" />
+            </xpath>
+            <xpath expr="//field[@name='categ_ids']" position="after">
+                <div class="mb-2">
+                    <span t-if="record.stage_state_mode.raw_value == 'shortlisted'" data-toggle="tooltip" data-placement="top" title="Average Shortlisting Score">
+                            <span class="badge" style="padding:5px; border-radius: 9px"><i class="fa fa-fw fa-trophy" role="img" style="margin-right: 1px"/> <field name="total_shortlisting_score"/> </span>
+                    </span>
+                    <span t-if="record.stage_state_mode.raw_value == 'written_test'" data-toggle="tooltip" data-placement="top" title="Written Test Result">
+                            <span class="badge" style="padding:5px; border-radius: 9px"><i class="fa fa-fw fa-trophy" role="img" style="margin-right: 1px"/> <field name="written_test_result"/> </span>
+                    </span>
+                    <span t-if="record.stage_state_mode.raw_value == 'interview'" data-toggle="tooltip" data-placement="top" title="Interview Result">
+                            <span class="badge" style="padding:5px; border-radius: 9px"><i class="fa fa-fw fa-trophy" role="img" style="margin-right: 1px"/> <field name="interview_result"/> </span>
+                    </span>
+                    <span t-if="record.highest_qualification.raw_value" data-toggle="tooltip" data-placement="top" title="Highest Qualification">
+                        <span class="badge " style="padding:5px; border-radius: 9px"><i style="margin-right: 1px" class="fa fa-graduation-cap"/> <field name="highest_qualification"/> </span>
+                    </span>
+                    <span data-toggle="tooltip" data-placement="top" title="Total Year Of Experience">
+                        <span class="badge" style="padding:5px; border-radius: 9px"><i  style="margin-right: 1px" class="fa fa-briefcase"> </i> <field name="total_years_of_experience"/> </span>
+                    </span>
+                </div>
+            </xpath>
+            <xpath expr="//div[@class='oe_kanban_bottom_left']" position="replace">
+                <div class="oe_kanban_bottom_left">
+                    <div class="float-left mr4">
+                        <!-- <field name="highest_qualification"/>
+                        <br></br> -->
+                        <!-- <field name="total_years_of_experience"/> -->
+                    <!-- <t t-if="record.test_passing_score.raw_value >= 49"><i class="fa fa-circle mr4" style="color:green;"/></t> <t t-if="record.test_passing_score.raw_value < 49"> <i class="fa fa-circle mr4" style="color:green;"/></t><field name="test_passing_score"/><br/> -->
+                    </div>
+                
+                </div>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="crm_case_tree_view_job_inherit">
+        <field name="name">Applicants</field>
+        <field name="inherit_id" ref="hr_recruitment.crm_case_tree_view_job"/>
+        <field name="model">hr.applicant</field>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="replace">
+                <tree string="Applicants" multi_edit="1" sample="1">
+                    <field name="va_reference"/>
+                    <field name="name"/>
+                    <field name="partner_mobile" widget="phone" string="Personal Mobile"/>
+                    <field name="email" widget="email" string="Personel Email"/>
+                    <field name="job_announcement_id" string="Applied Position"/>
+                    <field name="total_shortlisting_score" string="Average Score"/>
+                    <field name="application_date" string="Application Date"/>
+                    <field name="recruitment_officer" string="Recruitment Manager"/>
+                    <field name="stage_id" string="Recruitment Stage"/>
+                </tree>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="applicant_filter_inherit_hr_recruitment" model="ir.ui.view">
+        <field name="name">applicant.filter.inherit.hr.recruitment</field>
+        <field name="model">hr.applicant</field>
+        <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_search_bis"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='activities_overdue']" position="before">
+                <filter string="Male" name="male_applicants" domain="[('gender', '=', 'male')]"/>
+                <filter string="Female" name="female_applicants" domain="[('gender', '=', 'female')]"/>
+                <separator/>
+                <filter string="Shortlisted" name="shortlisted" domain="[('stage_state_mode', '=', 'shortlisted')]"/>
+                <separator/>
+                <filter string="Written Test" name="written_test" domain="[('stage_state_mode', '=', 'written_test')]"/>
+                <separator/>
+                <filter string="Interview" name="inteview" domain="[('stage_state_mode', '=', 'interview')]"/>
+                <separator/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

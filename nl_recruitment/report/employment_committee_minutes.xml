@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+        <report 
+            id="action_print_employment_committee_minutes"
+            model="hr.job.announcement"
+            string="Employment Committee Minutes"
+            report_type="qweb-pdf"
+            name="nl_recruitment.employment_committee_minutes"
+            file="nl_recruitment.employment_committee_minutes"
+        />
+
+        <record id="paperformat_employment_committee_minutes" model="report.paperformat">
+            <field name="name">Employment Committee Minutes Paper Format</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">15</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">10</field>
+            <field name="margin_right">10</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">20</field>
+            <field name="dpi">150</field>
+        </record>
+        <record id="action_print_employment_committee_minutes" model="ir.actions.report">
+            <field name="paperformat_id" ref="nl_recruitment.paperformat_employment_committee_minutes"/>
+        </record>
+
+    <template id="employment_committee_minutes_template">
+		<t t-call="web.basic_layout">
+			<style>
+				@font-face {
+                    font-family: 'georgia';
+					font-family: 'arial';
+                       src: url(/nl_contract/static/src/fonts/georgia.ttf);
+					   src: url(/nl_contract/static/src/fonts/arial-ce.ttf);
+                      }
+					  .emp_info {
+						padding-left:25px;
+					 }
+                
+					 p{
+						 font-size:26px;
+                 font-family: 'georgia' !important;
+					 }
+					 td{
+						 font-size:26px;
+                 font-family: 'georgia' !important;
+					 }
+					 th{
+						 font-size:26px;
+                 font-family: 'georgia' !important;
+					 }
+					 .contract-details{
+						 margin-left:25px;
+						 margin-right:25px;
+					 }
+					 .identifier{
+						font-size:26px;
+                        font-family: 'georgia' !important;
+						font-weigth:bolder;
+
+					}
+					.identifier-data{
+						font-size:26px;
+                         font-family: 'georgia' !important;
+						font-weigth:bold;
+						
+
+					}
+					.employee-info{
+						margin-left:15px;
+					}	
+					li{
+                 font-family: 'georgia' !important;
+						font-size:26px;
+					}
+					.b{
+						font-size:26px;
+						font-family: 'georgia' !important;
+					}
+					.border{
+						border:1.4px solid black !important;
+						padding:5px;
+					}
+			</style>
+            <div style="width:100%;">	
+                <img t-att-src="'/nl_contract/static/description/sca.png'" alt="Logo"/>
+                <p style="float:right; width:200px">Annex Recr 8</p>
+                <br/>
+                <h1 style="margin-top:10px" class="text-center"><b>EMPLOYMENT COMMITTEE MINUTES</b></h1>
+                <br />
+
+                <div class="contract-details">
+                    <p style="margin-top:-20px">
+                    The following minutes need to be completed and signed by all member of the Employment Committee (EC). This document continues the concluding assessment and selection done by the EC and serves as the combined official record of the transparent recruitment process.
+                    </p>
+                </div>
+
+                <div>
+                    <div>
+                        <div style="float:left"><p><b>Position:</b></p></div>
+                        <div style="width:700px; border-bottom:1px solid black; float:left; margin-left:288px;"><span t-esc="o.job_id.name" style="font-size: 25px"/></div><br/><br/><br/> 
+                        <div style="float:left"><p><b>Duty Station:</b></p></div>
+                        <div style="width:700px; border-bottom:1px solid black; float:left; margin-left:235px;"><span t-esc="o.office_id.name" style="font-size: 25px"/></div><br/><br/><br/>  
+                        <div style="float:left"><p><b>Unit/Department/Office:</b></p></div>
+                        <div style="width:700px; border-bottom:1px solid black; float:left; margin-left:80px;"><span t-esc="o.department_id.name" style="font-size: 25px"/></div><br/><br/><br/>                
+                    </div>
+                </div>
+
+                <div>
+                    <table style="width: 100%;" cellpadding="2">
+                        <tr class="border">
+                            <thead class="border">
+                                <th class="border" style="width:100px; background-color:#F3F1F0">EC MEMBERS</th>
+                                <t t-set="count" t-value="1"/>
+                                <t t-foreach="o.panel_members" t-as="member">
+                                    <th class="border" style="width:440px"><t t-esc="count"/>)<span t-esc="member.name"/></th>           
+                                    <t t-set="count" t-value="count+1"/>
+                                </t>
+                                
+                            </thead>
+                        </tr>
+                        <tr class="border">
+                            <td class="border" style="width:440px; height:40px; background-color:#F3F1F0">
+                                <span />
+                            </td>
+                            <t t-foreach="o.panel_members" t-as="member">
+                                <td class="border" style="width:100px; height:40px">
+                                    <span t-esc="member.employee_id.job_id.name"/>
+                                </td>
+                            </t>
+                        </tr>
+                    </table>
+                    <table style="width: 100%;" cellpadding="2">
+                        <tr class="border">
+
+                            <td class="border" style="width:300px">
+                                Date of Announcement:
+                            </td>
+                            <td class="border" style="width:440px">
+                                <span t-esc="o.vacancy_start_date"/>
+                            </td>
+                            <td class="border" style="width:440px">
+                                Closing Date:
+                            </td>
+                            <td class="border" style="width:440px">
+                                <span t-esc="o.vacancy_deadline"/>
+                            </td>
+                        </tr>
+
+                        <tr class="border">
+
+                            <td class="border" style="width:300px">
+                                Total Applications Received:
+                            </td>
+                            <t t-set="male" t-value="0" />
+                            <t t-set="female" t-value="0" />
+                            <t t-set="written_test_shortlisted" t-value="0" />
+                            <t t-set="interview_shortlisted" t-value="0" />
+                            <t t-set="appeared_for_interview" t-value="0" />
+                            <t t-foreach="o.application_ids" t-as="applicant">
+                                <t t-if="applicant.gender == 'male'">
+                                   <t t-set="male" t-value="male + 1" /> 
+                                </t>
+                                <t t-if="applicant.gender == 'female'">
+                                   <t t-set="female" t-value="female + 1" /> 
+                                </t>
+                                <t t-if="applicant.stage_id.state_mode in ['written_test','interview','offer_proposal','offer_signed']">
+                                   <t t-set="written_test_shortlisted" t-value="written_test_shortlisted + 1" /> 
+                                </t>
+                                <t t-if="applicant.stage_id.state_mode in ['interview','offer_proposal','offer_signed','refused']">
+                                   <t t-set="interview_shortlisted" t-value="interview_shortlisted + 1" /> 
+                                </t>
+                                <t t-if="applicant.interview_result != 0">
+                                   <t t-set="appeared_for_interview" t-value="appeared_for_interview + 1" /> 
+                                </t>
+                            </t>
+                            <td class="border" style="width:440px">
+                                <span>M:<t t-if="male != 0"><t t-esc="male" /></t></span><span style="margin-left:100px">F:<t t-if="female != 0"><t t-esc="female" /></t></span>
+                            </td>
+                            <td class="border" style="width:440px">
+                                Date of Written Test:
+                            </td>
+                            <td class="border" style="width:440px">
+                                <span t-esc="o.written_test_date.strftime('%Y-%m-%d')"/>
+                            </td>
+                        </tr>
+                        <tr class="border">
+
+                            <td class="border" style="width:300px">
+                                Number of Shortlisted for Written Test:
+                            </td>
+                            <td class="border" style="width:440px">
+                                <span t-esc="written_test_shortlisted"/>
+                            </td>
+                            <td class="border" style="width:440px">
+                                Date of Pannel Interview:
+                            </td>
+                            <td class="border" style="width:440px">
+                                <span t-esc="o.interview_date.strftime('%Y-%m-%d')"/>
+                            </td>
+                        </tr>
+                        <tr class="border">
+
+                            <td class="border" style="width:300px">
+                                Number of Shortlisted for Interview:
+                            </td>
+                            <td class="border" style="width:440px">
+                                <span t-esc="interview_shortlisted"/>
+                            </td>
+                            <td class="border" style="width:440px">
+                                Number appearing for interview:
+                            </td>
+                            <td class="border" style="width:440px">
+                                 <span t-esc="appeared_for_interview"/>
+                            </td>
+                        </tr>
+                        <tr class="border">
+
+                            <td class="border" style="width:300px">
+                                Place of Test/Interview:
+                            </td>
+                            <td class="border" style="width:440px" colspan="3">
+                                <span t-esc="o.office_id.name"/>
+                            </td>
+                            
+                        </tr>
+                        
+                    </table>
+                    <br/><br/>
+
+                    <table style="width: 100%;" cellpadding="2">
+                        <thead>
+                            <tr class="border">
+                                <th class="border" rowspan="2" style="text-align:center">No</th>
+                                <th class="border" rowspan="2" style="text-align:center; width:200px">Applicant Name</th>
+                                <th  class="border" colspan="5" style="text-align:center; width: 200px">Interview Panel members Scores</th>
+                                <th class="border" rowspan="2" style="text-align:center; width: 50px">Average Interview Scores</th>
+                                <th class="border" rowspan="2" style="text-align:center; width: 100px">Written Test Scores</th>
+                                <th class="border" rowspan="2" style="text-align:center; with: 100px">Total Average of Test and interview</th>
+                                <!-- <th class="border" rowspan="2">Last Modified By</th> -->
+                            </tr>
+                            <tr class="border">
+                                <t t-foreach="o.panel_members" t-as="member">
+                                    <td class="border" style="height: 40px; width: 200px"><span t-esc="member.name"/></td>
+                                </t>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="applicant_count" t-value="1"/>
+                            <t t-foreach="o.application_ids" t-as="applicant">
+                                <t t-if="applicant.stage_id.state_mode in ['written_test','interview','offer_proposal','offer_signed']">
+                                    <tr class="border">
+                                        <td class="border"><t t-esc="applicant_count"/></td>
+                                        <td class="border" style="width:250px"><span t-esc="applicant.name"/></td>
+                                        <t t-foreach="o.panel_members" t-as="member">
+                                            <t t-if="applicant.interview_score_line">
+                                                <t t-foreach="applicant.interview_score_line" t-as="score">
+                                                    <t t-if="score.user_id.id == member.id">
+                                                        <td class="border" style="width:50px"><span t-esc="score.interview_score"/></td> 
+                                                    </t>
+                                                </t>
+                                            </t>
+                                            <t t-if="not applicant.interview_score_line">
+                                                <td class="border" style="width:50px"></td>
+                                            </t>
+                                        </t> 
+                                        <t t-if="len(o.panel_members) == 3">
+                                            <td class="border" style="width:50px"></td>
+                                            <td class="border" style="width:50px"></td>
+                                        </t>
+                                        <t t-if="len(o.panel_members) == 4">
+                                            <td class="border" style="width:50px"></td>
+                                        </t>
+                                        <td class="border" style="width:100px"><span t-esc="round(applicant.interview_result, 2)"/></td>
+                                        <td class="border"><span t-esc="round(applicant.written_test_result, 2)"/></td>
+                                        <td class="border"><span t-esc="round(applicant.test_interview_average, 2)"/></td>
+                                    </tr>
+                                    <t t-set="applicant_count" t-value="applicant_count + 1"/>
+                                </t>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <br/><br/>
+
+                    <table style="width: 100%;" cellpadding="2">
+                        <thead>
+                            <tr class="border">
+                                <th class="border" rowspan="3" style="text-align:center">Name</th>
+                                <th class="border" rowspan="4" style="text-align:center">Interview assessment summary</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="o.application_ids" t-as="applicant">
+                                <t t-if="applicant.stage_id.state_mode in ['written_test','interview','offer_proposal','offer_signed']">
+                                    <tr class="border">
+                                        <td class="border" style="text-align:center;"><span t-esc="applicant.name"/></td>
+                                        <td class="border" style="text-align:center;"><span t-esc="applicant.assessment_summary"/></td>
+                                    </tr>
+                                </t>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+                <br/>
+                <br/>
+                <p style="page-break-after:always"/>
+
+                <div>
+                    <p><b>Conclusion </b>(give detailed arguments for the selection, strengths/weakness, and the order of any runner-up candidates):</p>
+                </div>
+                <br/>
+                <div style="position: relative; height: 200px; border: 1px solid black;">
+                    <span style="padding: 10px; font-size: 25px" t-esc="o.notes"/>
+                </div>
+
+                <div>
+                    <p>Grade/Step recommended: <span style="margin-left:10px; font-size: 25px;"><t t-esc="o.salary_grade.name" /></span><span style="margin-left:10px; font-size: 25px;">Step <t t-esc="o.salary_step.name" /></span></p><br/>
+                    <div style="float:left"><p>Is Trail Period recommended?</p></div>
+                    <div style="width:150px; border-bottom:1px solid black; float:left; margin-left:10px;"><t t-if="o.probation_period"><span style="font-size: 25px">Yes</span></t></div> 
+                    <div style="float:left"><p><input name="trial_period" type="checkbox"/><b style="margin-left:10px">For how long?</b></p></div>
+                    <div style="width:200px; border-bottom:1px solid black; float:left; margin-left:10px;"><span style="margin-left:10px; font-size: 25px"><t t-esc="o.probation_period" /></span></div> 
+                    <div style="float:left; width:300px"><p>probation (standard)</p></div><br/>
+                    
+                </div><br/>
+                <br/>
+
+                <div>
+                    <p>Panel members signature</p>
+                    <table style="width: 100%;" cellpadding="2">
+                        <tr class="border">
+                            <th class="border" style="width:200px">Name and position</th>
+                            <t t-foreach="o.panel_members" t-as="member">
+                                <td class="border"><span t-esc="member.name"/><br/><span t-esc="member.employee_id.job_id.name"/></td>           
+                            </t>
+                        </tr>
+                        <tr class="border">
+                            <th class="border" style="width:200px">Signature:</th>
+                            <td class="border"></td>
+                            <td class="border"></td>
+                            <td class="border"></td>
+                        </tr>
+                    </table>
+                </div>
+
+                
+
+
+                
+            </div>		
+		</t>
+	</template>
+
+
+    <template id="employment_committee_minutes">
+		<t t-call="web.html_container">
+			<t t-foreach="docs" t-as="o">
+				<t t-call="nl_recruitment.employment_committee_minutes_template"/>
+			</t>
+		</t>
+	</template>
+
+
+	</data>
+</odoo>
+
+
+

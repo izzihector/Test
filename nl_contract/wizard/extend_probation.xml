@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="extend_probation_wizard_action_view" model="ir.ui.view">
+        <field name="name">extend.employee.probation</field>
+        <field name="model">extend.employee.probation</field>
+        <field name="arch" type="xml">
+            <form string="Extend Probation Wizard">
+                <field name="has_probation_period_date" invisible='1'/>
+                <group> 
+                    <field name="probation_start_date" attrs="{'invisible':[('has_probation_period_date','!=',True)]}"/>
+                    <field name="probation_end_date" />
+                </group>
+                <footer>
+                    <button name="extend_probation" class="btn-primary" type="object" string="Extend"/>
+                    <button string="Cancel" class="oe_highlight" special="cancel" />
+                </footer>
+            </form>
+        </field>
+      </record>
+
+    <record model="ir.actions.act_window" id="action_extend_probation_wizard">
+            <field name="name">Extend Probation Wizard</field>
+            <field name="res_model">extend.employee.probation</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_id" ref="extend_probation_wizard_action_view"></field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+</odoo>

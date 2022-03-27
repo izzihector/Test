@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Record Rule:- Project manager can see its own and child employee's Leave summary -->
+    <record id="hr_holidays_project_manager" model="ir.rule">
+        <field name="name">Project manager can see its own and child employee's Leave summary</field>
+        <field name="model_id" ref="hr_holidays.model_hr_leave"/>
+        <field name="active">True</field>
+        <field name="domain_force">['|',('employee_id.user_id','child_of',user.id),('employee_id.parent_id.user_id','child_of',user.id)]</field>
+        <field name="groups" eval="[(4, ref('hr.group_hr_manager'))]"/>
+        <field name='perm_create' eval='True'/>
+        <field name='perm_read' eval='True'/>
+        <field name='perm_unlink' eval='False'/>
+        <field name='perm_write' eval='True'/>
+    </record>
+
+    <!-- Record Rule:- Employee can see own Leave Summary -->
+    <record id="hr_holidays_summary_report_user" model="ir.rule">
+        <field name="name">Employee can see its own Leave summary</field>
+        <field name="model_id" ref="hr_holidays.model_hr_leave_report"/>
+        <field name="active">True</field>
+        <field name="domain_force">['|',('employee_id.user_id','=',user.id),('employee_id.user_id','=',False)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        <field name='perm_create' eval='True'/>
+        <field name='perm_read' eval='True'/>
+        <field name='perm_unlink' eval='False'/>
+        <field name='perm_write' eval='True'/>
+    </record>
+</odoo>

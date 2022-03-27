@@ -1,0 +1,17 @@
+<odoo>
+
+	<template id="certificate_footer">
+        <div class="footer">
+            <table width="100%">
+                <tr>
+                    <td class="text-center" style="font-size: 16px;padding:5px 5px; font-style:italic;text-align:center;">
+                        Address: Netlinks Plaza, Floor 1-4, Street 6, Lane 3, Phase A, Shahr-e-Naw, Kabul Afghanistan
+						<br/>Phones: +93 (0) 729909396 -- (0)799 115566 -- (0)773 020100 
+						<br/>Email: hr@netlinks.af  Website: www.netlinks.af
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </template>
+
+</odoo>

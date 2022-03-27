@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Inherited -->
+    <record id="hr_hr_employee_view_form3" model="ir.ui.view">
+        <field name="name">hr.hr.employee.view.form3</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr_contract.hr_hr_employee_view_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']/button[@icon='fa-book']" position="replace">
+                <button name="%(hr_contract.act_hr_employee_2_hr_contract)d"
+                    class="oe_stat_button"
+                    icon="fa-book"
+                    type="action"
+                    groups="hr_contract.group_hr_contract_manager,nl_master.group_hr_employee_read_only">
+                    <div attrs="{'invisible' : [('first_contract_date', '=', False)]}" class="o_stat_info">
+                        <span class="o_stat_text text-success" attrs="{'invisible' : [('contract_warning', '=', True)]}" title="In Contract Since"> In Contract Since</span>
+                        <span class="o_stat_value text-success" attrs="{'invisible' : [('contract_warning', '=', True)]}">
+                            <field name="first_contract_date" readonly="1"/>
+                        </span>
+                        <span class="o_stat_text text-danger" attrs="{'invisible' : [('contract_warning', '=', False)]}" title="In Contract Since">
+                            In Contract Since
+                        </span>
+                        <span class="o_stat_value text-danger" attrs="{'invisible' : [('contract_warning', '=', False)]}">
+                            <field name="first_contract_date" readonly="1"/>
+                        </span>
+                    </div>
+                    <div attrs="{'invisible' : [('first_contract_date', '!=', False)]}" class="o_stat_info">
+                        <span class="o_stat_value text-danger">
+                            <field name="contracts_count"/>
+                        </span>
+                        <span class="o_stat_text text-danger">
+                            Contracts
+                        </span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_employee_form_leave_inherit2" model="ir.ui.view">
+        <field name="name">hr.employee.leave.form.inherit2</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr_holidays.view_employee_form_leave_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']/button[@icon='fa-calendar']" position="replace">
+               <button name="%(hr_holidays.act_hr_employee_holiday_request)d"
+                        type="action"
+                        class="oe_stat_button"
+                        icon="fa-calendar"
+                        attrs="{'invisible': [('show_leaves','=', False)]}"
+                        context="{'search_default_employee_id': active_id}"
+                        groups="base.group_user,nl_master.group_hr_employee_read_only"
+                        help="Remaining leaves">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="allocation_used_display"/>/<field name="allocation_display"/> Days
+                        </span>
+                        <span class="o_stat_text">
+                            Time Off
+                        </span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="payroll_hr_employee_view_form2" model="ir.ui.view">
+        <field name="name">payroll.hr.employee.view.form2</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr_payroll.payroll_hr_employee_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']/button[@icon='fa-money']" position="replace">
+                    <button name="%(hr_payroll.act_hr_employee_payslip_list)d"
+                        class="oe_stat_button"
+                        icon="fa-money"
+                        type="action"
+                        groups="hr_payroll.group_hr_payroll_user,nl_master.group_hr_employee_read_only">
+                        <field name="payslip_count" widget="statinfo" string="Payslips"/>
+                    </button>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

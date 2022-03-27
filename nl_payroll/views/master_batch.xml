@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+   <menuitem
+         id="menu_hr_attendance_payroll"
+         name="Attendances"
+         parent="hr_work_entry_contract.menu_hr_payroll_root"
+         action="hr_attendance.hr_attendance_action"
+         sequence="50"
+         groups="hr_payroll.group_hr_payroll_user,nl_master.group_payroll_read_only"/>
+      <menuitem
+        id="hr_payroll.menu_hr_payroll_payslips"
+        name="Payslips"
+        parent="hr_work_entry_contract.menu_hr_payroll_root"
+        sequence="30"
+        groups="hr_payroll.group_hr_payroll_user"/>
+
+
+   <record model="ir.actions.act_window" id="action_hr_payroll_master_execution_batch">
+      <field name="name">Monthly Payroll</field>
+      <field name="res_model">generate.payroll.master</field>
+      <field name="view_mode">tree,form</field>
+   </record>
+   <record id="view_hr_payroll_payroll_master_batch_execution_tree" model="ir.ui.view">
+      <field name="name">hr.payroll.master.batch.execution.tree</field>
+      <field name="model">generate.payroll.master</field>
+      <field name="arch" type="xml">
+         <tree string="Master Payroll Execution">
+            <field name="name" />
+            <field name="start_date" />
+            <field name="end_date" />
+            <field name="month" />
+            <field name="state" widget="badge" decoration-success="state == 'done'" decoration-warning="state == 'finance'" decoration-danger="state == 'cancel'" decoration-info="state == 'hr'" />
+         </tree>
+      </field>
+   </record>
+   
+   <record id="view_hr_payroll_payroll_master_batch_execution_form" model="ir.ui.view">
+      <field name="name">hr.payroll.master.batch.execution.form</field>
+      <field name="model">generate.payroll.master</field>
+      <field name="arch" type="xml">
+         <form string="Master Payroll Execution">
+            <header>
+               <button name="generate_master_payroll" states="draft" string="Generate" groups="hr_payroll.group_hr_payroll_manager" type="object" class="oe_highlight" />
+               <button name="calculate_all_payslips"  string="Re Compute" type="object" groups="hr_payroll.group_hr_payroll_manager" class="oe_highlight" attrs="{ 'invisible': ['|',  '&amp;' ,('state', '=', 'hr'), ('current_user', '=', 'finance'), '|' ,'&amp;', ('state', '=', 'finance'), ('current_user', '=', 'admin'),  ('state', 'not in', ['finance', 'hr'])] }"/>
+               <button name="action_submit_to_finance" string="Submit to Finance" groups="hr_payroll.group_hr_payroll_manager" type="object" class="oe_highlight"  attrs="{ 'invisible': ['|', '&amp;', ('state', '=', 'hr'), ('current_user', '=', 'finance'), ('state', '!=', 'hr')] }"/>
+               <button name="action_payslip_done" groups="nl_payroll.group_payroll_finance" states="finance" string="Mark as Done" type="object" class="oe_highlight" />
+               <button name="reset_as_draft" groups="hr_payroll.group_hr_payroll_manager" string="Reset to Draft" type="object" attrs="{ 'invisible': ['|',  '&amp;' ,('state', '=', 'hr'), ('current_user', '=', 'finance'), '|' ,'&amp;', ('state', '=', 'finance'), ('current_user', '=', 'admin'),  ('state', 'not in', ['finance', 'hr'])] }"/>
+               <field name="state" widget="statusbar" statusbar_visible="draft,hr,finance,confirm,done,cancel" />
+            </header>
+            <sheet style="max-width:200px;">
+               <div class="oe_button_box" name="button_box">
+                  <span style="float: left;padding: 12px;font-weight: 900">
+                     <field name="payroll_sequence" />
+                  </span>
+                  <button name="action_view_monthly_attendance_absence" class="oe_stat_button" icon="fa-calendar-times-o" type="object" help="Absent Employees" attrs="{'invisible': [('calculate_attendance', '!=', '1')]}"  style="width:17%;">
+                     <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                           <field readonly="1" name="attendance_absent_count" />
+                        </span>
+                        <span class="o_stat_text">Absence</span>
+                     </div>
+                  </button>
+                  <button name="action_view_monthly_absence" class="oe_stat_button" icon="fa-calendar-times-o" type="object" help="Absent Employees" context="{'parent_state': state}" attrs="{'invisible': [('calculate_attendance', '!=', '2')]}"  style="width:17%;">
+                     <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                           <field readonly="1" name="abseent_employee_count" />
+                        </span>
+                        <span class="o_stat_text">Manual Absence</span>
+                     </div>
+                  </button>
+                  <button name="action_view_monthly_allowance_deduction" class="oe_stat_button" icon="fa-bookmark" context="{'parent_state': state}" type="object" help="Allowance &amp; Deductions"  style="width:17%;">
+                     <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                           <field readonly="1" name="allowance_deduciton_count" />
+                        </span>
+                        <span class="o_stat_text">Allowance/Deduction</span>
+                     </div>
+                  </button>
+                  <button name="action_open_payslips" class="oe_stat_button" icon="fa-book" type="object" help="Generated Payslips" attrs="{'invisible': [('payslip_counts', '=', 0)]}" style="width:17%;">
+                     <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                           <field readonly="1" name="payslip_counts" />
+                        </span>
+                        <span class="o_stat_text">Payslips</span>
+                     </div>
+                  </button>
+                  <button name="action_view_employee_pending" type="object" class="oe_stat_button" icon="fa-bullseye" style="width:17%;">
+                     <field name="employee_pending_count" widget="statinfo" string="Pending" />
+                  </button>
+               </div>
+               <!-- <label for="name" class="oe_edit_only" /> -->
+               <h1>
+                  <field name="name" readonly="1"/>
+               </h1>
+               <group >
+                  <group >
+                     <field name="current_user" invisible='1'/>
+                     <field name="calculate_attendance" string="Calculate Attendance Based on" attrs="{'readonly': [('state', '!=','draft')]}"/>
+                     <field name="office_id" options="{'no_create': True, 'no_create_edit':True}" attrs="{'readonly': [('state', '!=','draft')]}" />
+                     <field name="start_date" attrs="{'readonly': [('state', '!=','draft')]}" />
+                     <field name="end_date" attrs="{'readonly': [('state', '!=','draft')]}" />
+                     <field name="month" attrs="{'readonly': [('state', '!=','draft')]}" />
+                     <!-- <field name="afn_rate" attrs = "{'readonly': [('state', '!=','draft')]}"/> -->
+                  </group>
+                  <group>
+                     <!-- <field name="total_net_salary" invisible="1" /> -->
+                     <field name="employee_ids" widget="many2many_tags" options="{'no_create': True, 'no_create_edit':True}" attrs="{'readonly': [('state', '=','done')]}" />
+                     <field name="separation_ids" widget="many2many_tags" options="{'no_create': True, 'no_create_edit':True}" readonly="1" />
+                     <field name="payslip_counts" readonly="1" />
+                     <field name="absence_page" invisible="1" />
+                     <field name="adjustment_page" invisible="1" />
+                     <field name="pension_page" invisible="1" />
+                     <field name="other_allowance_page" invisible="1" />
+                     <field name="lunch_page" invisible="1" />
+                     <field name="transport_page" invisible="1" />
+                     <field name="late_hours_page" invisible="1" />
+                     <field name="overtime_page" invisible="1" />
+                     <field name="advance_page" invisible="1" />
+                     <field name="other_ded_page" invisible="1" />
+                     <field name="topup_page" invisible="1" />
+                     <field name="acting_page" invisible="1" />
+                     <field name="transport_deduction_page" invisible="1" />
+                  </group>
+               </group>
+               <notebook>
+                  <page name="batch_list" string="Overview">
+                     <field name="overview_item_ids" mode="tree" readonly="1">
+                        <tree>
+                           <field name="name" />
+                           <field name="amount" widget="monetary" />
+                        </tree>
+                     </field>
+                  </page>
+                  <page name="loan_list" attrs="{'invisible': [('absence_page', '=', False)]}" string="Absence">
+                     <field name="absence_ids" mode="tree" readonly="1">
+                        <tree>
+                           <field name="employee_id" />
+                           <field name="father_name" />
+                           <field name="unit_id" />
+                           <field name="amount" />
+                        </tree>
+                     </field>
+                  </page>
+                  <page name="loan_list" attrs="{'invisible': [('adjustment_page', '=', False)]}" string="Adjustments">
+                     <field name="adjustment_allowance_ids" mode="tree" readonly="1">
+                        <tree>
+                           <field name="employee_id" />
+                           <field name="father_name" />
+                           <field name="unit_id" />
+                           <field name="amount" />
+                        </tree>
+                     </field>
+                  </page>
+                  <page name="loan_list" attrs="{'invisible': [('pension_page', '=', False)]}" string="Pension Allowances">
+                     <field name="pension_allowance_ids" mode="tree" readonly="1">
+                        <tree>
+                           <field name="employee_id" />
+                           <field name="father_name" />
+                           <field name="unit_id" />
+                           <field name="amount" />
+                        </tree>
+                     </field>
+                  </page>
+                  <page name="loan_list" attrs="{'invisible': [('overtime_page', '=', False)]}" string="Overtime Allowance">
+                     <field name="overtime_ids" mode="tree" readonly="1">
+                        <tree>
+                           <field name="employee_id" />
+                           <field name="father_name" />
+                           <field name="unit_id" />
+                           <field name="amount" />
+                        </tree>
+                     </field>
+                  </page>
+                  <page name="loan_list" attrs="{'invisible': [('topup_page', '=', False)]}" string="Top-up Allowances">
+                     <field name="topup_allowance_ids" mode="tree" readonly="1">
+                        <tree>
+                           <field name="employee_id" />
+                           <field name="father_name" />
+                           <field name="unit_id" />
+                           <field name="amount" />
+                        </tree>
+                     </field>
+                  </page>
+                  <page name="loan_list" attrs="{'invisible': [('transport_page', '=', False)]}" string="Transport Allowances">
+                     <field name="transport_allowance_ids" mode="tree" readonly="1">
+                        <tree>
+                           <field name="employee_id" />
+                           <field name="father_name" />
+                           <field name="unit_id" />
+                           <field name="amount" />
+                        </tree>
+                     </field>
+                  </page>
+                  <page name="late_hours_list" attrs="{'invisible': [('late_hours_page', '=', False)]}" string="Late Hours">
+                     <field name="late_hours_ids" mode="tree" readonly="1">
+                        <tree>
+                           <field name="employee_id" />
+                           <field name="father_name" />
+                           <field name="unit_id" />
+                           <field name="amount" />
+                        </tree>
+                     </field>
+                  </page>
+                  <page name="loan_list" attrs="{'invisible': [('lunch_page', '=', False)]}" string="Lunch Allowance">
+                     <field name="lunch_allowance_ids" mode="tree" readonly="1">
+                        <tree>
+                           <field name="employee_id" />
+                           <field name="father_name" />
+                           <field name="unit_id" />
+                           <field name="amount" />
+                        </tree>
+                     </field>
+                  </page>
+                  <page name="loan_list" attrs="{'invisible': [('acting_page', '=', False)]}" string="Acting Allowance">
+                     <field name="acting_allowance_ids" mode="tree" readonly="1">
+                        <tree>
+                           <field name="employee_id" />
+                           <field name="father_name" />
+                           <field name="unit_id" />
+                           <field name="amount" />
+                        </tree>
+                     </field>
+                  </page>
+                  <page name="loan_list" attrs="{'invisible': [('advance_page', '=', False)]}" string="Advance Dedcutions">
+                     <field name="advance_deduction_ids" mode="tree" readonly="1">
+                        <tree>
+                           <field name="employee_id" />
+                           <field name="father_name" />
+                           <field name="unit_id" />
+                           <field name="amount" />
+                        </tree>
+                     </field>
+                  </page>
+                  <page name="loan_list" attrs="{'invisible': [('other_ded_page', '=', False)]}" string="Other Dedcutions">
+                     <field name="other_deduction_ids" mode="tree" readonly="1">
+                        <tree>
+                           <field name="employee_id" />
+                           <field name="father_name" />
+                           <field name="unit_id" />
+                           <field name="amount" />
+                        </tree>
+                     </field>
+                  </page>
+                  <page name="loan_list" attrs="{'invisible': [('transport_deduction_page', '=', False)]}" string="Transport Deductions">
+                     <field name="transport_deduction_ids" mode="tree" readonly="1">
+                        <tree>
+                           <field name="employee_id" />
+                           <field name="father_name" />
+                           <field name="unit_id" />
+                           <field name="amount" />
+                        </tree>
+                     </field>
+                  </page>
+                  <page name="loan_list" attrs="{'invisible': [('other_allowance_page', '=', False)]}" string="Other Allowances">
+                     <field name="other_allowance_ids" mode="tree" readonly="1">
+                        <tree>
+                           <field name="employee_id" />
+                           <field name="father_name" />
+                           <field name="unit_id" />
+                           <field name="amount" />
+                        </tree>
+                     </field>
+                  </page>
+                  
+                  
+                  
+                  
+                  
+               </notebook>
+            </sheet>
+            <div class="oe_chatter">
+               <field name="message_follower_ids" widget="mail_followers" />
+               <field name="activity_ids" widget="mail_activity"/>
+               <field name="message_ids" widget="mail_thread" />
+            </div>
+         </form>
+      </field>
+   </record>
+
+   
+   <menuitem id="menu_hr_payroll_master_batch_execution" name="Generate Payroll" parent="hr_payroll.menu_hr_salary_configuration" groups="hr.group_hr_manager" />
+   <menuitem id="menu_hr_payroll_master_batch_execution_action" parent="hr_payroll.menu_hr_payroll_payslips" sequence="0" action="action_hr_payroll_master_execution_batch" />
+</odoo>

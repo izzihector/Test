@@ -1,0 +1,39 @@
+<odoo>
+    <data noupdate='1'>
+        <record id="auto_move_appraisal_to_self_review" model="ir.cron">
+            <field name="name">Auto Move Appraisal Records to Self Assessment 1 Month Before the Appraisal Year End Date</field>
+            <field name="model_id" ref="model_employee_appraisal"/>
+            <field name="state">code</field>
+            <field name="code">model.auto_move_appraisal_to_self_review()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="nextcall" eval="(DateTime.now() + timedelta(days=1)).strftime('%Y-%m-%d 00:00:00')" /> 
+            <field name="numbercall">-1</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="auto_move_pip_to_assessment" model="ir.cron">
+            <field name="name">Auto Move PIP records on same day as review date</field>
+            <field name="model_id" ref="model_appraisal_pip"/>
+            <field name="state">code</field>
+            <field name="code">model.auto_move_pip_to_assessment()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="nextcall" eval="(DateTime.now() + timedelta(days=1)).strftime('%Y-%m-%d 00:00:00')" /> 
+            <field name="numbercall">-1</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="auto_move_probation_appraisal_to_supervisor_assessment" model="ir.cron">
+            <field name="name">Auto Move Probation Appraisal Records to Supervisor Assessment state 7 days Before the Appraisal end date</field>
+            <field name="model_id" ref="model_probation_appraisal"/>
+            <field name="state">code</field>
+            <field name="code">model.auto_move_probation_appraisal_to_supervisor_assessment()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="nextcall" eval="(DateTime.now() + timedelta(days=1)).strftime('%Y-%m-%d 00:00:00')" /> 
+            <field name="numbercall">-1</field>
+            <field name="active" eval="True"/>
+        </record>
+    </data>
+</odoo>

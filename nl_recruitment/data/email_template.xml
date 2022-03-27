@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="email_application_confirm" model="mail.template">
+            <field name="name">Application Confirm Mail</field>
+            <field name="subject">Application Confirm</field>
+            <field name="model_id" ref="model_hr_applicant"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="body_html"></field>
+        </record>
+
+        <record id="email_applicant_reference_check" model="mail.template">
+            <field name="name">Applicant Reference Check</field>
+            <field name="subject"></field>
+            <field name="model_id" ref="model_hr_applicant"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="body_html"></field>
+        </record>
+
+
+        <record id="email_employee_offer_letter" model="mail.template">
+            <field name="name">Email Employee Offer Letter</field>
+            <field name="model_id" ref="model_hr_applicant"/>
+            <field name="subject">Your Employment Letter - ${object.create_date}</field>
+            <field name="email_from">Swedish Committee for Afghanistan</field>
+            <field name="email_to">${object.email}</field>
+            <field name="body_html" type="html">
+                <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;">
+                    <tr>
+                        <td align="center">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+                                <tbody>
+<!-- 
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                                <tr>
+                                                    <td valign="middle" align="right">
+                                                        <img src="/logo.png?company=${object.company_id.id}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="${object.user_id.partner_id.company_id.name}"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="text-align:center;">
+                                                        <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr> -->
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                                <tr>
+                                                    <td valign="top" style="font-size: 13px;">
+                                                        <div>
+                        Dear ${object.name},<br/>
+                                                        <br/>
+                        Based on Recruitment Committee Decision, we are happy to inform you that SCA has decided to offer you the position of (${object.job_announcement_id.job_id.name}).<br/>
+                        Please note that the offer will be valid after successful Medical check-up conducted by SCA. <br />
+                                                <br/>
+                        Attached is your Employment Offer Letter. Your soonest response and acceptance would be highly appreciated. <br/>
+                                            <br />
+                                            <br/>
+                        Sincerely,
+
+                                            <div style="margin: 16px 0px 16px 0px;">
+                                            </div>
+
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td >
+                    Human Resources Unit
+                                        <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" style="min-width: 590px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                <tr>
+                                    <td>
+                                        <img src="/logo.png?company=${object.company_id.id}" style="padding: 0px; margin: 0px; height: auto; width: 190px;margin-bottom: 13px" alt="${object.user_id.partner_id.company_id.name}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td valign="middle" align="left" style="opacity: 0.7;">
+                    ${object.company_id.phone}
+                    % if object.company_id.email
+                        |                                        <a href="'mailto:%s' % ${object.company_id.email}" style="text-decoration:none; color: #454748;">${object.user_id.partner_id.company_id.email}</a>
+                    % endif
+                    % if object.company_id.website
+                        |                                        <a href="'%s' % ${object.company_id.website}" style="text-decoration:none; color: #454748;">
+                        ${object.company_id.website}
+                                        </a>
+                    % endif
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" style="min-width: 590px;">
+            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;">
+                <tr>
+                    <td style="text-align: center; font-size: 13px;">
+        Powered by <a target="_blank" href="https://netlinks.af" style="color: #875A7B;">NETLINKS</a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</field>
+<!-- <field name="lang">${object.lang}</field> -->
+<field name="auto_delete" eval="False"/>
+</record>
+
+
+</data>
+</odoo>

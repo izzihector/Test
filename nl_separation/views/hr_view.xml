@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- inherited hr employee view -->
+    <record id="view_scs_sepration" model="ir.ui.view">
+        <field name="name">view.scs.sepration</field>
+        <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr ="//notebook/page[@name='public']/div[1]" position="after">
+                    <group col="4" colspan="2">
+                        <field name="resign_date" readonly="1" attrs="{'invisible':[('check_date','=',False)]}"/>
+                        <field name="last_date" readonly="1" attrs="{'invisible':[('check_date','=',False)]}"/>
+                        <field name="check_date" invisible='1'/>
+                    </group>
+                </xpath>
+            </field>
+    </record>
+</odoo>
